@@ -1,4 +1,17 @@
-var ctx = nlapiGetContext();
+/**
+ * Module Description
+ * 
+ * NSVersion    Date            			Author         
+ * 1.00       	2019-11-16 08:09:51   		Ankith
+ *
+ * Description:         
+ * 
+ * @Last Modified by:   Ankith
+ * @Last Modified time: 2019-11-16 08:52:51
+ *
+ */
+
+ var ctx = nlapiGetContext();
 
 var zee = 0;
 var role = ctx.getRole();
