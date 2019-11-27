@@ -7,7 +7,7 @@
  * Description: Update the Customer Stock Level        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-27 13:33:17
+ * @Last Modified time: 2019-11-28 10:20:40
  *
  */
 
@@ -67,16 +67,7 @@ function main() {
         var field = 'custentity_' + barcode_beg.toLowerCase();
 
         if (!isNullorEmpty(old_customer_id) && old_customer_id != customer_id) {
-            var customer_record = nlapiLoadRecord('customer', old_customer_id);
-            for (var x = 0; x < barcodes_prefix_status.length; x++) {
-                if (barcodes_prefix_status[x] == 0) {
-                    var field = 'custentity_' + barcodes_prefix[x];
-                    customer_record.setFieldValue(field, 0);
-                }
-            }
-            customer_record.setFieldValue('custentity_mpex_usage_update', 1);
-
-            nlapiSubmitRecord(customer_record);
+            updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
             barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
         }
 
@@ -92,15 +83,21 @@ function main() {
         return true;
     });
 
-    if (!isNullorEmpty(old_customer_id) && old_customer_id != customer_id) {
-        var customer_record = nlapiLoadRecord('customer', old_customer_id);
-        customer_record.setFieldValue('custentity_mpex_usage_update', 1);
-        for (var x = 0; x < barcodes_prefix_status.length; x++) {
-            if (barcodes_prefix_status[x] == 0) {
-                var field = 'custentity_' + barcodes_prefix[x];
-                customer_record.setFieldValue(field, 0);
-            }
-        }
-        nlapiSubmitRecord(customer_record);
+    if (!isNullorEmpty(old_customer_id)) {
+       updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
     }
+}
+
+function updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status) {
+    var customer_record = nlapiLoadRecord('customer', old_customer_id);
+    customer_record.setFieldValue('custentity_mpex_usage_update', 1);
+    for (var x = 0; x < barcodes_prefix_status.length; x++) {
+        if (barcodes_prefix_status[x] == 0) {
+            var field = 'custentity_' + barcodes_prefix[x];
+            customer_record.setFieldValue(field, 0);
+        }
+    }
+     customer_record.setFieldValue('custentity_mpex_usage_update', 1);
+
+    nlapiSubmitRecord(customer_record);
 }
