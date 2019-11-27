@@ -7,7 +7,7 @@
  * Description: Update the Customer Stock Level        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-27 13:33:17
+ * @Last Modified time: 2019-11-28 10:02:50
  *
  */
 
@@ -92,7 +92,7 @@ function main() {
         return true;
     });
 
-    if (!isNullorEmpty(old_customer_id) && old_customer_id != customer_id) {
+    if (!isNullorEmpty(old_customer_id)) {
         var customer_record = nlapiLoadRecord('customer', old_customer_id);
         customer_record.setFieldValue('custentity_mpex_usage_update', 1);
         for (var x = 0; x < barcodes_prefix_status.length; x++) {
