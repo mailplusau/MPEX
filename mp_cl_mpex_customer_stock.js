@@ -7,7 +7,7 @@
  * Description:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-16 08:52:51
+ * @Last Modified time: 2019-11-29 09:43:58
  *
  */
 
@@ -45,7 +45,7 @@ function pageInit() {
 
     console.log(nlapiGetFieldValue('zee'));
 
-    //Search: RP - Services
+    //Search: Product Stock - Customer Level
     var prodStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_prod_stock_refill_custome_2');
 
     var addFilterExpression = new nlobjSearchFilter('partner', 'CUSTRECORD_CUST_PROD_STOCK_CUSTOMER', 'anyof', parseInt(nlapiGetFieldValue('zee')));

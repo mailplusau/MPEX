@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-12 14:40:23
+ * @Last Modified time: 2019-11-29 09:31:52
  *
  */
 
@@ -65,15 +65,8 @@ function main(type) {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
-    // if (!isNullorEmpty(ctx.getSetting('SCRIPT', 'custscript_invoicedate_list'))) {
-    //     //get date from custom parameter
-    //     todayDate = ctx.getSetting('SCRIPT', 'custscript_invoicedate_list');
-    // tranDate = todayDate;
-    // } else {
     todayDate = new Date();
     todayDate.setHours(todayDate.getHours() + 17);
-
-    //     if (todayDate.getDay() == 1) {
 
     var lastSat = nlapiAddDays(todayDate, -2);
 
@@ -84,12 +77,8 @@ function main(type) {
         //if last Sat is in the previous month, use last Friday's date
         tranDate = nlapiDateToString(nlapiAddDays(todayDate, -3));
     }
-    //     } else {
-    //         throw nlapiCreateError('MONDAY ONLY SCRIPT', 'script can only be run on Monday\'s if custscript_invoicedate_list is not defined', false);
-    //         return false;
-    //     }
-    // }
-
+    
+    // SEARCH: MPEX Monthly Product Order Invoicing (List) - DO NOT DELETE
     var searchResults = nlapiSearchRecord('customrecord_mp_ap_product_order', 'customsearch_mpex_product_invoice_list_2');
 
     if (!isNullorEmpty(searchResults)) {
@@ -116,6 +105,7 @@ function main(type) {
             }
 
             var customer_po = searchResults[n].getValue('custentity11', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+            var mpex_po = searchResults[n].getValue('custentity_mpex_po', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
             var product_po = searchResults[n].getValue('custrecord_mp_ap_order_po', "GROUP");
             var ordered_by = searchResults[n].getValue('custrecord_mp_ap_order_ordered_by', "GROUP");
 
@@ -157,17 +147,12 @@ function main(type) {
                         recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
-                        if (isNullorEmpty(product_po) && isNullorEmpty(customer_po)) {
-                            // if (!isNullorEmpty(ordered_by)) {
-                            //     var final_po_text = 'Order By - ' + ordered_by;
-                            //     recInvoice.setFieldValue('custbody6', final_po_text);
-                            // }
+                        if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) && isNullorEmpty(customer_po))) {
+                            recInvoice.setFieldValue('custbody6', mpex_po);
                         } else if (!isNullorEmpty(product_po)) {
-                            // var final_po_text = product_po + ' Order By - ' + ordered_by;
                             var final_po_text = product_po;
                             recInvoice.setFieldValue('custbody6', final_po_text);
                         } else {
-                            // var final_po_text = customer_po + ' Order By - ' + ordered_by;
                             var final_po_text = customer_po;
                             recInvoice.setFieldValue('custbody6', final_po_text);
                         }
@@ -217,18 +202,12 @@ function main(type) {
                         recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
-                        if (isNullorEmpty(product_po) && isNullorEmpty(customer_po)) {
-                            // if (!isNullorEmpty(ordered_by)) {
-                            //     var final_po_text = 'Order By - ' + ordered_by;
-                            //     recInvoice.setFieldValue('custbody6', final_po_text);
-                            // }
-
+                        if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) && isNullorEmpty(customer_po))) {
+                            recInvoice.setFieldValue('custbody6', mpex_po);
                         } else if (!isNullorEmpty(product_po)) {
-                            // var final_po_text = product_po + ' Order By - ' + ordered_by;
                             var final_po_text = product_po;
                             recInvoice.setFieldValue('custbody6', final_po_text);
                         } else {
-                            // var final_po_text = customer_po + ' Order By - ' + ordered_by;
                             var final_po_text = customer_po;
                             recInvoice.setFieldValue('custbody6', final_po_text);
                         }
@@ -236,7 +215,6 @@ function main(type) {
                         //recInvoice.setFieldValue('custbody_satchel_inv', "T");
                         recInvoice.setFieldValue('custbody_inv_type', 8);
                         recInvoice.setFieldValue('partner', 435);
-
                         recInvoice.setFieldValue('terms', 7);
                     }
 
@@ -276,7 +254,7 @@ function main(type) {
                     if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
 
                         for (var x = 0; x < item_rates.length; x++) {
-                            // uses dynmic column values from search (ie. custrecord_ap_qty_a)
+                            // uses dynamic column values from search (ie. custrecord_ap_qty_a)
                             var temp = text + item_rates[x];
                             var y = poSearch[0].getValue(temp);
                             if (y != '') {
@@ -558,95 +536,6 @@ function main(type) {
                         nlapiCreateError('Pricing Algorithm Undefined', message);
 
                         return false;
-
-                        // for (var x = 0; x < item_rates.length; x++) {
-
-                        //     var temp = text + item_rates[x];
-                        //     var y = poSearch[0].getValue(temp);
-
-                        //     var qty_per_carton = poSearch[0].getValue('custrecord_ap_item_qty_per_carton');
-
-                        //     var total_packets_in_carton = y * qty_per_carton;
-
-
-                        //     if (line_qty < total_packets_in_carton) {
-
-                        //         if (x == 0) {
-
-                        //             var qty = 0;
-
-                        //             qty = line_qty;
-
-                        //         } else {
-
-                        //             var qty = 0;
-
-                        //             qty = line_qty / qty_per_carton;
-                        //         }
-
-
-                        //         var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                        //         if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                        //             var inv_details_rec = nlapiCreateRecord('customrecord62');
-                        //             if (!isNullorEmpty(ordered_by)) {
-                        //                 var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                        //             } else {
-                        //                 var new_inv_details = inv_details;
-                        //             }
-                        //             inv_details_rec.setFieldValue('name', new_inv_details);
-                        //             inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
-                        //             inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                        //             var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                        //         }
-
-                        //         recInvoice.selectNewLineItem('item');
-                        //         recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                        //         recInvoice.setCurrentLineItemValue('item', 'quantity', qty);
-
-                        //         if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                        //             item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                        //             recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                        //             recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                        //         }
-
-                        //         recInvoice.commitLineItem('item');
-                        //         break;
-                        //     }
-                        //     if (x == (item_rates.length - 1)) {
-                        //         var qty = 0;
-
-                        //         qty = line_qty / qty_per_carton;
-
-                        //         var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                        //         if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                        //             var inv_details_rec = nlapiCreateRecord('customrecord62');
-                        //             if (!isNullorEmpty(ordered_by)) {
-                        //                 var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                        //             } else {
-                        //                 var new_inv_details = inv_details;
-                        //             }
-                        //             inv_details_rec.setFieldValue('name', new_inv_details);
-                        //             inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
-                        //             inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                        //             var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                        //         }
-
-                        //         recInvoice.selectNewLineItem('item');
-                        //         recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                        //         recInvoice.setCurrentLineItemValue('item', 'quantity', qty);
-
-                        //         if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                        //             item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                        //             recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                        //             recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                        //         }
-
-                        //         recInvoice.commitLineItem('item');
-                        //         break;
-                        //     }
-                        // }
                     }
                 }
             } catch (err) {
