@@ -7,7 +7,7 @@
  * Description: Update the Customer Stock Level        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-28 10:20:40
+ * @Last Modified time: 2019-11-28 16:02:14
  *
  */
 
@@ -40,19 +40,19 @@ function main() {
     resultProdStock.forEachResult(function(searchResult) {
 
         var usage_loopstart_cust = ctx.getRemainingUsage();
-        if (usage_loopstart_cust < usage_threshold) {
+        // if (usage_loopstart_cust < usage_threshold) {
 
-            var params = {
-                custscript_prev_deploy_update_stock: ctx.getDeploymentId(),
-            }
+        //     var params = {
+        //         custscript_prev_deploy_update_stock: ctx.getDeploymentId(),
+        //     }
 
-            reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
-            nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
-            if (reschedule == false) {
+        //     reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
+        //     nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+        //     if (reschedule == false) {
 
-                return false;
-            }
-        }
+        //         return false;
+        //     }
+        // }
 
 
         var customer_id = searchResult.getValue("custrecord_cust_prod_stock_customer", null, "GROUP");
@@ -68,7 +68,17 @@ function main() {
 
         if (!isNullorEmpty(old_customer_id) && old_customer_id != customer_id) {
             updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
-            barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
+            var params = {
+                custscript_prev_deploy_update_stock: ctx.getDeploymentId(),
+            }
+
+            reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
+            nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+            if (reschedule == false) {
+
+                return false;
+            }
+            // barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
         }
 
 
@@ -84,7 +94,7 @@ function main() {
     });
 
     if (!isNullorEmpty(old_customer_id)) {
-       updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
+        updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
     }
 }
 
@@ -97,7 +107,7 @@ function updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status
             customer_record.setFieldValue(field, 0);
         }
     }
-     customer_record.setFieldValue('custentity_mpex_usage_update', 1);
+    customer_record.setFieldValue('custentity_mpex_usage_update', 1);
 
     nlapiSubmitRecord(customer_record);
 }
