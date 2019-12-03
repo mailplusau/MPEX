@@ -7,7 +7,7 @@
  * Description: Create MPEX Usage Report        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-19 17:00:09
+ * @Last Modified time: 2019-12-01 12:40:17
  *
  */
 
@@ -30,6 +30,7 @@ function main() {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+    //SEARCH: MPEX Monthly Product Order Usage Report (List) - Customer List
     var customerList = nlapiLoadSearch('customrecord_mp_ap_product_order', 'customsearch_mpex_product_invoice_list_4');
     if (!isNullorEmpty(customerID)) {
         var newFilters = new Array();
@@ -40,6 +41,8 @@ function main() {
 
     resultCustomerList.forEachResult(function(searchResultCustomer) {
         var cust_prod_customer = searchResultCustomer.getValue("custrecord_ap_order_customer", null, "GROUP");
+
+        //SEARCH: MPEX Monthly Product Order Usage Report (List) - DO NOT DELETE
         var createProdOrderSearch = nlapiLoadSearch('customrecord_mp_ap_product_order', 'customsearch_mpex_product_invoice_list_3');
         // if (!isNullorEmpty(customerID)) {
         var newFilters = new Array();
@@ -139,8 +142,6 @@ function main() {
                     var all_pages_id;
                     if (!isNullorEmpty(all_pages)) {
 
-                        // nlapiLogExecution('DEBUG', 'URL', (fileRecord.getURL()).toString());
-
                         var xml = "<?xml version=\"1.0\"?>\n<!DOCTYPE pdf PUBLIC \"-//big.faceless.org//report\" \"report-1.1.dtd\">\n";
                         xml += "<pdfset>\n";
                         xml += "<pdf>\n<body font-size=\"12\">\n<h3>Genereated MPEX Usage Report</h3>\n";
@@ -194,20 +195,7 @@ function main() {
                     return false;
                 }
 
-                // usage_report_prod = [];
-                // usage_report_barcode = [];
-                // usage_report_date = [];
-                // all_pages = [];
-
-                // usage_report_barcode[usage_report_barcode.length] = barcode;
-                // usage_report_date[usage_report_date.length] = date_used[1];
-                // usage_report_prod[usage_report_prod.length] = cust_prod_item;
-
-
             } else {
-
-                // nlapiLogExecution('AUDIT', 'Array Creation', ctx.getRemainingUsage());
-
                 var usageStart = ctx.getRemainingUsage();
 
                 if (usageStart <= usageThreshold) {
@@ -297,10 +285,6 @@ function main() {
             var all_pages_id;
             if (!isNullorEmpty(all_pages)) {
 
-                
-
-                // nlapiLogExecution('DEBUG', 'URL', (fileRecord.getURL()).toString());
-
                 var xml = "<?xml version=\"1.0\"?>\n<!DOCTYPE pdf PUBLIC \"-//big.faceless.org//report\" \"report-1.1.dtd\">\n";
                 xml += "<pdfset>\n";
                 xml += "<pdf>\n<body font-size=\"12\">\n<h3>Genereated MPEX Usage Report</h3>\n";
@@ -345,6 +329,13 @@ function main() {
                 product_order_id = nlapiSubmitRecord(product_order_rec);
             }
 
+        }
+
+        reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, null);
+        nlapiLogExecution('EMERGENCY', 'Reschedule Return', reschedule);
+        if (reschedule == false) {
+
+            return false;
         }
         return true;
     });

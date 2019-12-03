@@ -7,7 +7,7 @@
  * Description: Update the Customer Stock Level        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-28 16:02:14
+ * @Last Modified time: 2019-11-29 15:03:28
  *
  */
 
@@ -30,6 +30,9 @@ function main() {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+    /**
+     * SEARCH: MPEX - Update Customer Stock
+     */
     var prodStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_prod_stock_per_customer_2_2');
     var resultProdStock = prodStockSearch.runSearch();
 
@@ -40,21 +43,7 @@ function main() {
     resultProdStock.forEachResult(function(searchResult) {
 
         var usage_loopstart_cust = ctx.getRemainingUsage();
-        // if (usage_loopstart_cust < usage_threshold) {
-
-        //     var params = {
-        //         custscript_prev_deploy_update_stock: ctx.getDeploymentId(),
-        //     }
-
-        //     reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
-        //     nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
-        //     if (reschedule == false) {
-
-        //         return false;
-        //     }
-        // }
-
-
+  
         var customer_id = searchResult.getValue("custrecord_cust_prod_stock_customer", null, "GROUP");
         var barcode_beg = searchResult.getValue("custrecord_ap_item_sku", "CUSTRECORD_CUST_STOCK_PROD_NAME", "GROUP");
         var product_count = searchResult.getValue("name", null, "COUNT");
@@ -78,10 +67,7 @@ function main() {
 
                 return false;
             }
-            // barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
         }
-
-
 
         var customer_record = nlapiLoadRecord('customer', customer_id);
         customer_record.setFieldValue(field, product_count);
@@ -98,6 +84,12 @@ function main() {
     }
 }
 
+/**
+ * @old_customer_id  {Customer ID}
+ * @barcodes_prefix  {Array of Barcode prefix}
+ * @barcodes_prefix_status  {Array}
+ * @return None
+ */
 function updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status) {
     var customer_record = nlapiLoadRecord('customer', old_customer_id);
     customer_record.setFieldValue('custentity_mpex_usage_update', 1);
