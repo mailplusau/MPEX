@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-29 09:31:52
+ * @Last Modified time: 2020-01-06 13:28:29
  *
  */
 
@@ -77,7 +77,7 @@ function main(type) {
         //if last Sat is in the previous month, use last Friday's date
         tranDate = nlapiDateToString(nlapiAddDays(todayDate, -3));
     }
-    
+
     // SEARCH: MPEX Monthly Product Order Invoicing (List) - DO NOT DELETE
     var searchResults = nlapiSearchRecord('customrecord_mp_ap_product_order', 'customsearch_mpex_product_invoice_list_2');
 
@@ -119,7 +119,6 @@ function main(type) {
                     } else {
                         new_invoice = true;
                         invCount++;
-
                     }
 
 
@@ -129,7 +128,8 @@ function main(type) {
                         //--------------- Init New Invoice ---------------//
                         usage_per_inv = ctx.getRemainingUsage();
 
-                        // internal_id = searchResults[n].getValue('internalid');
+                        internal_id[internal_id.length] = parseInt(searchResults[n].getValue('internalid', null, "GROUP"));
+
                         // recInvoice = nlapiCreateRecord('invoice', {
                         //     recordmode: 'dynamic'
                         // });
@@ -341,186 +341,6 @@ function main(type) {
                                 recInvoice.commitLineItem('item');
                                 break;
                             }
-                        }
-                    } else if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 2) { //IF PRICING ALGORITHM: REMAINDER
-                        for (var x = 0; x < item_rates.length; x++) {
-                            var temp = text + item_rates[x];
-                            var y = poSearch[0].getValue(temp);
-                            if (y != '') {
-                                if (parseInt(line_qty) < y && x == 0) {
-
-                                    var SODrem = parseInt(line_qty) % y;
-
-                                    if (SODrem != 0) {
-
-                                        var item_selected = 'custrecord_ap_item_' + item_rates[0];
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                            if (!isNullorEmpty(ordered_by)) {
-                                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                                            } else {
-                                                var new_inv_details = inv_details;
-                                            }
-                                            inv_details_rec.setFieldValue('name', new_inv_details);
-                                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
-                                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                        }
-                                        recInvoice.selectNewLineItem('item');
-                                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                        recInvoice.setCurrentLineItemValue('item', 'quantity', SODrem);
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                        }
-
-                                        recInvoice.commitLineItem('item');
-
-                                    }
-                                    break;
-                                } else if (x == 1) {
-                                    var SODrem = parseInt(line_qty) % (y - 1);
-                                    var SOD_50pack = Math.floor(parseInt(line_qty) / (y - 1));
-
-                                    if (SOD_50pack != 0) {
-
-                                        var item_selected = 'custrecord_ap_item_' + item_rates[1];
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                            if (!isNullorEmpty(ordered_by)) {
-                                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                                            } else {
-                                                var new_inv_details = inv_details;
-                                            }
-                                            inv_details_rec.setFieldValue('name', new_inv_details);
-                                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
-                                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                        }
-
-                                        recInvoice.selectNewLineItem('item');
-                                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                        recInvoice.setCurrentLineItemValue('item', 'quantity', SOD_50pack);
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                        }
-
-                                        recInvoice.commitLineItem('item');
-                                    }
-                                    if (SODrem != 0) {
-
-                                        var item_selected = 'custrecord_ap_item_' + item_rates[0];
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                            if (!isNullorEmpty(ordered_by)) {
-                                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                                            } else {
-                                                var new_inv_details = inv_details;
-                                            }
-                                            inv_details_rec.setFieldValue('name', new_inv_details);
-                                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
-                                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                        }
-
-                                        recInvoice.selectNewLineItem('item');
-                                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                        recInvoice.setCurrentLineItemValue('item', 'quantity', SODrem);
-
-                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                        }
-
-                                        recInvoice.commitLineItem('item');
-                                    }
-                                    break;
-
-                                }
-
-                            }
-                        }
-                    } else if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 3) { //FOR OLD LIST REMIANDER 
-                        for (var x = 0; x < item_rates.length; x++) {
-
-                            var temp = text + item_rates[x];
-                            var y = poSearch[0].getValue(temp);
-
-                            var qty_per_carton = poSearch[0].getValue('custrecord_ap_item_qty_per_carton');
-
-                            var total_packets_in_carton = y * qty_per_carton;
-
-                            var gst_applicable = poSearch[0].getValue('custrecord_ap_item_pricing_algorithm');
-
-                            if (line_qty < total_packets_in_carton) {
-
-                                var packages_piece = line_qty % qty_per_carton;
-                                var packages_carton = Math.floor(line_qty / qty_per_carton);
-
-                                if (packages_carton != 0) {
-
-                                    var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                                    recInvoice.selectNewLineItem('item');
-                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                    recInvoice.setCurrentLineItemValue('item', 'quantity', packages_carton);
-                                    recInvoice.commitLineItem('item');
-
-
-                                }
-                                if (packages_piece != 0) {
-
-                                    var item_selected = 'custrecord_ap_item_' + item_rates[0];
-
-                                    recInvoice.selectNewLineItem('item');
-                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                    recInvoice.setCurrentLineItemValue('item', 'quantity', packages_piece);
-                                    recInvoice.commitLineItem('item');
-
-                                }
-
-
-
-                                break;
-                            }
-                            if (x == (item_rates.length - 1)) {
-
-                                var packages_piece = line_qty % qty_per_carton;
-                                var packages_carton = Math.floor(line_qty / qty_per_carton);
-
-                                if (packages_carton != 0) {
-                                    var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                                    recInvoice.selectNewLineItem('item');
-                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                    recInvoice.setCurrentLineItemValue('item', 'quantity', packages_carton);
-                                    recInvoice.commitLineItem('item');
-
-
-                                }
-                                if (packages_piece != 0) {
-
-                                    var item_selected = 'custrecord_ap_item_' + item_rates[0];
-
-                                    recInvoice.selectNewLineItem('item');
-                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                    recInvoice.setCurrentLineItemValue('item', 'quantity', packages_piece);
-                                    recInvoice.commitLineItem('item');
-
-                                }
-
-                                break;
-                            }
-
                         }
                     } else {
                         /**
