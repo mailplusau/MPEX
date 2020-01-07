@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-15 10:19:19
+ * @Last Modified time: 2019-11-29 15:49:07
  *
  */
 
@@ -27,6 +27,10 @@ function main() {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+    /**
+     * Product Stock - To Create Product Order
+     * @type {[type]}
+     */
     var createProdOrderSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_prod_stock_create_prod_orde');
     var resultCreateProdOrder = createProdOrderSearch.runSearch();
 
