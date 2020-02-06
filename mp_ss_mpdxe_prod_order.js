@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-29 15:49:07
+ * @Last Modified time: 2020-02-05 09:47:21
  *
  */
 
@@ -55,6 +55,12 @@ function main() {
 
         // var ap_item_record = nlapiLoadRecord('customrecord_ap_item', cust_prod_item);
         // var single_ap_item = ap_item_record.getFieldValue('custrecord_ap_item_single_name');
+        // 
+        var z1 = cust_prod_date_stock_used.split('/');
+        var date = (parseInt(z1[0]) < 10 ? '0' : '') + parseInt(z1[0]);
+        var month = (parseInt(z1[1]) < 10 ? '0' : '') + parseInt(z1[1]);
+
+        var new_date = date + '/' + month + '/' + z1[2];
 
         nlapiLogExecution('DEBUG', 'Prod Order ID', product_order_id);
 
@@ -102,7 +108,7 @@ function main() {
                 } else if (cust_prod_stock_status == 5) {
                     ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_ap_item_toll);
                 }
-            } else if(special_customer_type == 4){
+            } else if (special_customer_type == 4) {
                 if (cust_prod_stock_status == 4) {
                     ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_3rd_party_mp);
                 } else if (cust_prod_stock_status == 5) {
@@ -110,8 +116,8 @@ function main() {
                 }
             }
 
-            nlapiLogExecution('DEBUG', 'Details', 'Date Used:' + cust_prod_date_stock_used + '-' + barcode);
-            ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + cust_prod_date_stock_used + '-' + barcode);
+            nlapiLogExecution('DEBUG', 'Details', 'Date Used:' + new_date + '-' + barcode);
+            ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + new_date + '-' + barcode);
             ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_actual_qty', 1);
 
 
@@ -133,14 +139,14 @@ function main() {
                 } else if (cust_prod_stock_status == 5) {
                     ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_ap_item_toll);
                 }
-            } else if(special_customer_type == 4){
+            } else if (special_customer_type == 4) {
                 if (cust_prod_stock_status == 4) {
                     ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_3rd_party_mp);
                 } else if (cust_prod_stock_status == 5) {
                     ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_3rd_party_toll);
                 }
             }
-            ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + cust_prod_date_stock_used + '-' + barcode);
+            ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + new_date + '-' + barcode);
             ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_actual_qty', 1);
 
 
