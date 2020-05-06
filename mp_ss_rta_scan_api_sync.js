@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-04-29 10:30:32
+ * @Last Modified time: 2020-05-05 13:00:05
  *
  * @Description:
  *
@@ -318,6 +318,10 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
+                         if (invoiceable == false) {
+                            customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                            customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                        }
                         if (barcode_beg == 'MPEN' ||
                             barcode_beg == 'MPET' ||
                             barcode_beg == 'MPEF' ||
