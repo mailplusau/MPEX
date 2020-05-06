@@ -156,7 +156,7 @@ function main(type) {
                         }
                         recInvoice.setFieldValue('custbody_dont_update_trandate', "T");
                         //recInvoice.setFieldValue('custbody_satchel_inv', "T");
-                        recInvoice.setFieldValue('custbody_inv_type', 5);
+                        recInvoice.setFieldValue('custbody_inv_type', 8);
                         recInvoice.setFieldValue('partner', 435);
 
                         recInvoice.setFieldValue('terms', 1);
@@ -207,7 +207,7 @@ function main(type) {
                         }
                         recInvoice.setFieldValue('custbody_dont_update_trandate', "T");
                         //recInvoice.setFieldValue('custbody_satchel_inv', "T");
-                        recInvoice.setFieldValue('custbody_inv_type', 5);
+                        recInvoice.setFieldValue('custbody_inv_type', 8);
                         recInvoice.setFieldValue('partner', 435);
 
                         recInvoice.setFieldValue('terms', 1);
