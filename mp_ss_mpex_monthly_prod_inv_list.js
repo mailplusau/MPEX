@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-01-06 13:28:29
+ * @Last Modified time: 2020-05-07 09:57:12
  *
  */
 
@@ -104,8 +104,8 @@ function main(type) {
                 }
             }
 
-            var customer_po = searchResults[n].getValue('custentity11', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
-            var mpex_po = searchResults[n].getValue('custentity_mpex_po', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+            var customer_po = searchResults[n].getValue('custentity11', 'CUSTRECORD_AP_ORDER_CUSTOMER', "GROUP");
+            var mpex_po = searchResults[n].getValue('custentity_mpex_po', 'CUSTRECORD_AP_ORDER_CUSTOMER', "GROUP");
             var product_po = searchResults[n].getValue('custrecord_mp_ap_order_po', "GROUP");
             var ordered_by = searchResults[n].getValue('custrecord_mp_ap_order_ordered_by', "GROUP");
 
