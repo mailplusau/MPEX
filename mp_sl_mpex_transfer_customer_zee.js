@@ -7,7 +7,7 @@
  * Description: Page used to transfer the customer product stock and Product Order (if necessary) in case of a change of Customer Name or Franchisee.
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-13 16:24:00
+ * @Last Modified time: 2020-05-18 16:50:00
  *
  */
 
@@ -18,45 +18,21 @@ if (nlapiGetContext().getEnvironment() == "SANDBOX") {
 
 function transferMpexForm(request, response) {
     if (request.getMethod() == "GET") {
-        // var new_customer_name = '';
-        var old_customer_id = '';
-        var old_zee_id = '';
-        var transfertype = '';
-        var status_filter = null;
-        var result_set_length = null;
-
-        var params = request.getParameter('custparam_params');
-        if (!isNullorEmpty(params)) {
-            // Parameters when reloading from updateProgressBar()
-            params = JSON.parse(params);
-            old_customer_id = params.custparam_old_customer_id;
-            old_zee_id = params.custparam_old_zee_id;
-            transfertype = params.custparam_transfertype;
-            status_filter = params.custparam_status_filter;
-            result_set_length = params.custparam_result_set_length;
-        } else if (!isNullorEmpty(request.getParameter('custparam_result_set_length'))) {
-            // Parameters when saving record
-            old_customer_id = request.getParameter('custparam_old_customer_id');
-            old_zee_id = request.getParameter('custparam_old_zee_id');
-            transfertype = request.getParameter('custparam_transfertype');
-            status_filter = request.getParameter('custparam_status_filter');
-            result_set_length = request.getParameter('custparam_result_set_length');
-        }
 
         var form = nlapiCreateForm('Transfer MPEX');
 
         // Load jQuery scripts and bootstrap styles.
         var inlineHtml = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://1048144.app.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://1048144.app.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://1048144.app.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><style>.mandatory{color:red;}</style>';
-        
+
+        // Define hidden link to download CSV.
+        inlineHtml += '<a id="export_csv" href="" target="_blank" hidden></a>'
+
         // Define alert window.
         inlineHtml += '<div class="container" style="margin-top:14px;" hidden><div id="alert" class="alert alert-danger fade in"></div></div>';
 
         // Define information window.
         inlineHtml += '<div class="container" hidden><p id="info" class="alert alert-info"></p></div>';
 
-        if (!isNullorEmpty(result_set_length)) {
-            inlineHtml += progressBar(result_set_length);
-        }
         inlineHtml += transferTypeSection();
         inlineHtml += customerIDSection();
         inlineHtml += customerNameSection();
@@ -67,16 +43,18 @@ function transferMpexForm(request, response) {
 
         form.addField('preview_table', 'inlinehtml', '').setLayoutType('outsidebelow', 'startrow').setLayoutType('midrow').setDefaultValue(inlineHtml);
 
-        form.addField('custpage_old_customer_id', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(old_customer_id);
-        form.addField('custpage_old_zee_id', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(old_zee_id);
+        form.addField('custpage_old_customer_id', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_old_zee_id', 'text', 'Customer ID').setDisplayType('hidden');
         form.addField('custpage_new_customer_id', 'text', 'Customer ID').setDisplayType('hidden');
         form.addField('custpage_new_zee_id2', 'text', 'Customer ID').setDisplayType('hidden');
-        form.addField('custpage_transfertype', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(transfertype);
-        form.addField('custpage_status_filter', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(status_filter);
-        form.addField('custpage_result_set_length', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(result_set_length);
+        form.addField('custpage_transfertype', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_status_filter', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_result_set_length', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_table_csv', 'text', 'Customer ID').setDisplayType('hidden');
 
         form.addSubmitButton('Transfer MPEX');
         form.addButton('update_table', 'Refresh Table', 'tableTransfersPreview()');
+        form.addButton('download_csv', 'Export as CSV', 'downloadCsv()');
         form.setScript('customscript_cl_mpex_tr_customer_zee');
         response.writePage(form);
     } else {
@@ -87,6 +65,7 @@ function transferMpexForm(request, response) {
         var transfertype = request.getParameter('custpage_transfertype');
         var status_filter = request.getParameter('custpage_status_filter');
         var result_set_length = request.getParameter('custpage_result_set_length');
+        var timestamp = Date.now().toString();
 
         var params = {
             custscript_old_customer_id: old_customer_id,
@@ -94,27 +73,24 @@ function transferMpexForm(request, response) {
             custscript_new_customer_id: new_customer_id,
             custscript_new_zee_id2: new_zee_id,
             custscript_transfertype: transfertype,
-            custscript_status_filter: status_filter
+            custscript_status_filter: status_filter,
+            custscript_timestamp: timestamp
         };
         var reschedule_status = nlapiScheduleScript('customscript_ss_mpex_tr_customer_zee', 'customdeploy_ss_mpex_tr_customer_zee', params);
         nlapiLogExecution('DEBUG', 'reschedule_status', reschedule_status);
 
         var params_progress = {
             custparam_old_customer_id: old_customer_id,
+            custparam_new_customer_id: new_customer_id,
             custparam_old_zee_id: old_zee_id,
+            custparam_new_zee_id: new_zee_id,
             custparam_transfertype: transfertype,
             custparam_status_filter: status_filter,
-            custparam_result_set_length: result_set_length
+            custparam_result_set_length: result_set_length,
+            custparam_timestamp: timestamp
         };
-        nlapiSetRedirectURL('SUITELET', 'customscript_sl_mpex_tr_customer_zee', 'customdeploy_sl_mpex_tr_customer_zee', null, params_progress);
+        nlapiSetRedirectURL('SUITELET', 'customscript_sl_mpex_transferred_records', 'customdeploy_sl_mpex_transferred_records', null, params_progress);
     }
-}
-
-function progressBar(nb_records_total) {
-    var inlineQty = '<div class="progress">';
-    inlineQty += '<div class="progress-bar progress-bar-warning" id="progress-records" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="' + nb_records_total + '" style="width:0%">MPEX records moved : 0 / ' + nb_records_total + '</div>';
-    inlineQty += '</div>';
-    return inlineQty;
 }
 
 function transferTypeSection() {
@@ -205,7 +181,7 @@ function statusDropdownSection() {
 }
 
 function dataTablePreview() {
-    var inlineQty = '<style>table#mpex-transfers-preview {font-size: 12px;text-align: center;border: none;}table {font-size: 14px;}</style>';
+    var inlineQty = '<style>table#mpex-transfers-preview {font-size: 12px;text-align: center;border: none;}table {font-size: 14px;}table#mpex-transfers-preview th{text-align: center;}</style>';
     inlineQty += '<table cellpadding="15" id="mpex-transfers-preview" class="table table-responsive table-striped customer tablesorter" cellspacing="0" style="width: 100%;">';
     inlineQty += '<thead style="color: white;background-color: #607799;">';
     inlineQty += '<tr class="text-center">';

@@ -5,7 +5,7 @@
  * 1.00         2020-04-30 16:38:00 Raphael
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-13 16:24:00
+ * @Last Modified time: 2020-05-18 16:50:00
  *
  */
 
@@ -52,7 +52,6 @@ $("input[type=radio][name=transfertype]").on("change", function () {
             $("#new_zee_id").attr("readonly", true);
             $('#old_customer_id').trigger('blur');
             $('#new_customer_id').trigger('blur');
-
             break;
         case "zee":
             $(".customer_id_section").hide();
@@ -69,11 +68,6 @@ $('#new_customer_id').blur({ input_customer_id: '#new_customer_id', input_custom
 $('#old_zee_id').blur({ input_zee_id: '#old_zee_id', input_zee_name: '#old_zee_name' }, calculateZeeName);
 $('#new_zee_id').blur({ input_zee_id: '#new_zee_id', input_zee_name: '#new_zee_name' }, calculateZeeName);
 $('#status').blur(function () { tableTransfersPreview(); });
-
-var resultSetLength = nlapiGetFieldValue('custpage_result_set_length');
-if (!isNullorEmpty(resultSetLength)) {
-    var progressBar = setInterval(updateProgressBar, 5000);
-}
 
 var recordDataSet = [];
 $(document).ready(function () {
@@ -96,9 +90,8 @@ $(document).ready(function () {
 });
 
 function calculateZeeId(event) {
-    if (!isNullorEmpty($(event.data.input_customer_id).val())) {
-        var customer_id = $(event.data.input_customer_id).val();
-        customer_id = removeSpaces(customer_id);
+    if (!isNullorEmpty($(event.data.input_customer_id).val().trim())) {
+        var customer_id = $(event.data.input_customer_id).val().trim();
         $(event.data.input_customer_id).val(customer_id);
         try {
             var customerRecord = nlapiLoadRecord('customer', customer_id);
@@ -118,13 +111,16 @@ function calculateZeeId(event) {
                 }
             }
         }
+    } else {
+        $(event.data.input_customer_name).val('');
+        $(event.data.input_zee_id).val('');
+        $(event.data.input_zee_name).val('');
     }
 }
 
 function calculateZeeName(event) {
-    if (!isNullorEmpty($(event.data.input_zee_id).val())) {
-        var zee_id = $(event.data.input_zee_id).val();
-        zee_id = removeSpaces(zee_id);
+    if (!isNullorEmpty($(event.data.input_zee_id).val().trim())) {
+        var zee_id = $(event.data.input_zee_id).val().trim();
         $(event.data.input_zee_id).val(zee_id);
         try {
             var zeeRecord = nlapiLoadRecord('partner', zee_id);
@@ -138,12 +134,9 @@ function calculateZeeName(event) {
                 }
             }
         }
+    } else {
+        $(event.data.input_zee_id).val('');
     }
-}
-
-function removeSpaces(string) {
-    var string_without_spaces = string.split(' ').join('');
-    return string_without_spaces;
 }
 
 function tableTransfersPreview() {
@@ -181,7 +174,7 @@ function tableTransfersPreview() {
                 return false;
             }
 
-            resultCustomerProductSlice.forEach(function (searchCustomerProductResult, index) {
+            resultCustomerProductSlice.forEach(function (searchCustomerProductResult) {
                 var barcode_id = searchCustomerProductResult.getValue('internalid');
                 var barcode_name = searchCustomerProductResult.getValue('name');
                 var old_customer_ns_id = searchCustomerProductResult.getValue('custrecord_cust_prod_stock_customer');
@@ -219,8 +212,40 @@ function tableTransfersPreview() {
         datatable.rows.add(recordDataSet);
         datatable.draw();
 
+        saveCsv(recordDataSet);
+
         return true;
     }
+}
+
+function saveCsv(tableArray) {
+    // Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.
+    var csv = "Barcode Internal ID, Barcode Name, Status, Old Customer NS ID, Old Customer Name, New Customer NS ID, New Customer Name, Old Franchisee NS ID, Old Franchisee Name, New Franchisee NS ID, New Franchisee Name\n";
+    tableArray.forEach(function (row) {
+        csv += row.join(',');
+        csv += "\n";
+    });
+    nlapiSetFieldValue('custpage_table_csv', csv);
+
+    return true;
+}
+
+function downloadCsv() {
+    // Load the string stored in the hidden field 'custpage_table_csv'.
+    // Converts it to a CSV file
+    // Creates a hidden link to download the file and triggers the click of the link.
+    var csv = nlapiGetFieldValue('custpage_table_csv');
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    var content_type = 'text/csv';
+    var csvFile = new Blob([csv], { type: content_type });
+    var url = window.URL.createObjectURL(csvFile);
+    var filename = 'mpex_transfer_' + getCsvName() + '.csv';
+    a.href = url;
+    a.download = filename;
+    a.click();
+    window.URL.revokeObjectURL(url);
 }
 
 function validate() {
@@ -326,46 +351,28 @@ function getResultSetLength(resultSet) {
     return totalResultsLength;
 }
 
-function updateProgressBar() {
-    var old_customer_id = nlapiGetFieldValue('custpage_old_customer_id');
-    var old_zee_id = nlapiGetFieldValue('custpage_old_zee_id');
-    var transfertype = nlapiGetFieldValue('custpage_transfertype');
-    var status_filter = nlapiGetFieldValue('custpage_status_filter');
-    var resultSetLength = nlapiGetFieldValue('custpage_result_set_length');
-
-    console.log("updateProgressBar is running");
-    if (!isNullorEmpty(resultSetLength)) {
-        status_filter = JSON.parse(status_filter);
-        try {
-            var resultCustomerProductSet = loadCustomerProductStockSearch(old_customer_id, old_zee_id, transfertype, status_filter);
-            var nb_records_left_to_move = getResultSetLength(resultCustomerProductSet);
-            if (nb_records_left_to_move == 0) {
-                clearInterval(progressBar);
-                $('#progress-records').attr('class', 'progress-bar progress-bar-success');
-            }
-
-            var nb_records_moved = resultSetLength - nb_records_left_to_move;
-            var width = parseInt((nb_records_moved / resultSetLength) * 100);
-
-            $('#progress-records').attr('aria-valuenow', nb_records_moved);
-            $('#progress-records').attr('style', 'width:' + width + '%');
-            $('#progress-records').text('MPEX records moved : ' + nb_records_moved + ' / ' + resultSetLength);
-        } catch (e) {
-            if (e instanceof nlobjError) {
-                if (e.getCode() == "SCRIPT_EXECUTION_USAGE_LIMIT_EXCEEDED") {
-                    var params_progress = {
-                        custparam_old_customer_id: old_customer_id,
-                        custparam_old_zee_id: old_zee_id,
-                        custparam_transfertype: transfertype,
-                        custparam_status_filter: JSON.stringify(status_filter),
-                        custparam_result_set_length: resultSetLength
-                    };
-                    params_progress = JSON.stringify(params_progress);
-                    var reload_url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_mpex_tr_customer_zee', 'customdeploy_sl_mpex_tr_customer_zee') + '&custparam_params=' + params_progress;
-                    window.open(reload_url, "_self");
-                }
-            }
-        }
-
+function getCsvName() {
+    var old_customer_name = $('#old_customer_name').val();
+    var old_zee_name = $('#old_zee_name').val();
+    var new_customer_name = $('#new_customer_name').val();
+    var new_zee_name = $('#new_zee_name').val();
+    var transfertype = $("input[type=radio][name=transfertype]:checked").val();
+    var csv_name = '';
+    switch (transfertype) {
+        case "customer":
+            old_customer_name = nameToCode(old_customer_name);
+            new_customer_name = nameToCode(new_customer_name);
+            csv_name = old_customer_name + '_' + new_customer_name;
+            break;
+        case "zee":
+            old_zee_name = nameToCode(old_zee_name);
+            new_zee_name = nameToCode(new_zee_name);
+            csv_name = old_zee_name + '_' + new_zee_name;
+            break;
     }
+    return csv_name;
+}
+
+function nameToCode(string) {
+    return string.toLowerCase().trim().split(' - ').join('_').split(' ').join('_');
 }
