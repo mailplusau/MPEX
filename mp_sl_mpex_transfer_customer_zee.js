@@ -7,7 +7,7 @@
  * Description: Page used to transfer the customer product stock and Product Order (if necessary) in case of a change of Customer Name or Franchisee.
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-18 16:50:00
+ * @Last Modified time: 2020-05-21 11:23:00
  *
  */
 
@@ -48,6 +48,8 @@ function transferMpexForm(request, response) {
         form.addField('custpage_status_filter', 'text', 'Customer ID').setDisplayType('hidden');
         form.addField('custpage_result_set_length', 'text', 'Customer ID').setDisplayType('hidden');
         form.addField('custpage_table_csv', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_contact_email', 'text', 'Customer ID').setDisplayType('hidden');
+        form.addField('custpage_operator_ns_id', 'text', 'Customer ID').setDisplayType('hidden');
 
         form.addSubmitButton('Transfer MPEX');
         form.addButton('update_table', 'Refresh Table', 'tableTransfersPreview()');
@@ -63,6 +65,8 @@ function transferMpexForm(request, response) {
         var status_filter = request.getParameter('custpage_status_filter');
         var result_set_length = request.getParameter('custpage_result_set_length');
         var timestamp = Date.now().toString();
+        var contact_email = request.getParameter('custpage_contact_email');
+        var operator_ns_id = request.getParameter('custpage_operator_ns_id');
 
         var params = {
             custscript_old_customer_id: old_customer_id,
@@ -84,7 +88,9 @@ function transferMpexForm(request, response) {
             custparam_transfertype: transfertype,
             custparam_status_filter: status_filter,
             custparam_result_set_length: result_set_length,
-            custparam_timestamp: timestamp
+            custparam_timestamp: timestamp,
+            custparam_contact_email: contact_email,
+            custparam_operator_ns_id: operator_ns_id
         };
         nlapiSetRedirectURL('SUITELET', 'customscript_sl_mpex_transferred_records', 'customdeploy_sl_mpex_transferred_records', null, params_progress);
     }

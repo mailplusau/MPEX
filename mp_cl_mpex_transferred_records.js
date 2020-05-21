@@ -5,7 +5,7 @@
  * 1.00         2020-05-14 15:28:00 Raphael
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-14 15:28:00
+ * @Last Modified time: 2020-05-21 11:23:00
  *
  */
 
@@ -31,7 +31,9 @@ $(document).ready(function () {
             { title: "Barcode Name" },
             { title: "Status" },
             { title: "Customer Name" },
-            { title: "Franchisee Name" }
+            { title: "Franchisee Name" },
+            { title: "New contact email" },
+            { title: "New operator NS ID" }
         ]
     });
 });
@@ -92,6 +94,8 @@ function updateProgressBar() {
     var status_filter = nlapiGetFieldValue('custpage_status_filter');
     var resultSetLength = nlapiGetFieldValue('custpage_result_set_length');
     var timestamp = nlapiGetFieldValue('custpage_timestamp');
+    var contact_email = nlapiGetFieldValue('custpage_contact_email');
+    var operator_ns_id = nlapiGetFieldValue('custpage_operator_ns_id');
 
     console.log("updateProgressBar is running");
     if (!isNullorEmpty(resultSetLength)) {
@@ -123,7 +127,9 @@ function updateProgressBar() {
                         custparam_transfertype: transfertype,
                         custparam_status_filter: JSON.stringify(status_filter),
                         custparam_result_set_length: resultSetLength,
-                        custparam_timestamp: timestamp
+                        custparam_timestamp: timestamp,
+                        custparam_contact_email: contact_email,
+                        custparam_operator_ns_id: operator_ns_id
                     };
                     params_progress = JSON.stringify(params_progress);
                     var reload_url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_mpex_transferred_records', 'customdeploy_sl_mpex_transferred_records') + '&custparam_params=' + params_progress;
@@ -135,7 +141,8 @@ function updateProgressBar() {
 }
 
 function displayMovedBarcodes() {
-    console.log('Barcodes will be displayed');
+    var contact_email = nlapiGetFieldValue('custpage_contact_email');
+    var operator_ns_id = nlapiGetFieldValue('custpage_operator_ns_id');
 
     // Load MPEX transfer record
     var record_name = nlapiGetFieldValue('custpage_record_name');
@@ -172,7 +179,7 @@ function displayMovedBarcodes() {
             var customer_name = searchCustomerProductResult.getText('custrecord_cust_prod_stock_customer');
             var zee_name = searchCustomerProductResult.getText('custrecord_cust_prod_stock_zee');
 
-            recordDataSet.push([barcode_id, barcode_name, status, customer_name, zee_name])
+            recordDataSet.push([barcode_id, barcode_name, status, customer_name, zee_name, contact_email, operator_ns_id])
 
             return true;
         });

@@ -5,7 +5,7 @@
  * 1.00         2020-05-14 15:28:00 Raphael
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-14 15:28:00
+ * @Last Modified time: 2020-05-21 11:23:00
  *
  */
 
@@ -25,6 +25,8 @@ function transferredMpexForm(request, response) {
         var status_filter = null;
         var result_set_length = null;
         var timestamp = '';
+        var contact_email = '';
+        var operator_ns_id = '';
 
         var params = request.getParameter('custparam_params');
         if (!isNullorEmpty(params)) {
@@ -42,6 +44,8 @@ function transferredMpexForm(request, response) {
             status_filter = params.custparam_status_filter;
             result_set_length = params.custparam_result_set_length;
             timestamp = params.custparam_timestamp;
+            contact_email = params.custparam_contact_email;
+            operator_ns_id = params.custparam_operator_ns_id;
         } else if (!isNullorEmpty(request.getParameter('custparam_result_set_length'))) {
             // Parameters when saving record
             if (!isNullorEmpty(request.getParameter('custparam_old_customer_id'))) {
@@ -56,6 +60,8 @@ function transferredMpexForm(request, response) {
             status_filter = request.getParameter('custparam_status_filter');
             result_set_length = request.getParameter('custparam_result_set_length');
             timestamp = request.getParameter('custparam_timestamp');
+            contact_email = request.getParameter('custparam_contact_email');
+            operator_ns_id = request.getParameter('custparam_operator_ns_id');
         }
 
         var record_name = getBarcodeRecordName(old_customer_id, new_customer_id, old_zee_id, new_zee_id, transfertype, timestamp);
@@ -79,6 +85,8 @@ function transferredMpexForm(request, response) {
         form.addField('custpage_result_set_length', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(result_set_length);
         form.addField('custpage_timestamp', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(timestamp);
         form.addField('custpage_record_name', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(record_name);
+        form.addField('custpage_contact_email', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(contact_email);
+        form.addField('custpage_operator_ns_id', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(operator_ns_id);
 
         form.setScript('customscript_cl_mpex_transferred_records');
         response.writePage(form);
