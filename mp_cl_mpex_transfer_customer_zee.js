@@ -5,7 +5,7 @@
  * 1.00         2020-04-30 16:38:00 Raphael
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-18 16:50:00
+ * @Last Modified time: 2020-05-21 11:23:00
  *
  */
 
@@ -84,7 +84,9 @@ $(document).ready(function () {
             { title: "Old Franchisee NS ID" },
             { title: "Old Franchisee Name" },
             { title: "New Franchisee NS ID" },
-            { title: "New Franchisee Name" }
+            { title: "New Franchisee Name" },
+            { title: "New contact email" },
+            { title: "New operator NS ID" }
         ]
     });
 });
@@ -153,6 +155,10 @@ function tableTransfersPreview() {
         // The new zee id has already been evaluated in the calculateZeeId function.
         var new_zee_ns_id = new_zee_id;
 
+        var [contact_email, operator_ns_id] = getZeeContactEmail(new_zee_ns_id);
+        nlapiSetFieldValue('custpage_contact_email', contact_email);
+        nlapiSetFieldValue('custpage_operator_ns_id', operator_ns_id);
+
         var resultCustomerProductSet = loadCustomerProductStockSearch(old_customer_id, old_zee_id, transfertype);
 
         $('#result_customer_product_slice').empty();
@@ -195,7 +201,7 @@ function tableTransfersPreview() {
                         break;
                 }
 
-                recordDataSet.push([barcode_id, barcode_name, status, old_customer_ns_id, old_customer_name, new_customer_ns_id, new_customer_name, old_zee_ns_id, old_zee_name, new_zee_ns_id, new_zee_name]);
+                recordDataSet.push([barcode_id, barcode_name, status, old_customer_ns_id, old_customer_name, new_customer_ns_id, new_customer_name, old_zee_ns_id, old_zee_name, new_zee_ns_id, new_zee_name, contact_email, operator_ns_id]);
 
                 return true;
             });
@@ -218,9 +224,12 @@ function tableTransfersPreview() {
     }
 }
 
+/**
+ * Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.
+ * @param   {Array} tableArray The recordDataSet created in tableTransfersPreview().
+ */
 function saveCsv(tableArray) {
-    // Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.
-    var csv = "Barcode Internal ID, Barcode Name, Status, Old Customer NS ID, Old Customer Name, New Customer NS ID, New Customer Name, Old Franchisee NS ID, Old Franchisee Name, New Franchisee NS ID, New Franchisee Name\n";
+    var csv = "Barcode Internal ID, Barcode Name, Status, Old Customer NS ID, Old Customer Name, New Customer NS ID, New Customer Name, Old Franchisee NS ID, Old Franchisee Name, New Franchisee NS ID, New Franchisee Name, New contact email, New operator NS ID\n";
     tableArray.forEach(function (row) {
         csv += row.join(',');
         csv += "\n";
@@ -230,10 +239,12 @@ function saveCsv(tableArray) {
     return true;
 }
 
+/**
+* Load the string stored in the hidden field 'custpage_table_csv'.
+* Converts it to a CSV file.
+* Creates a hidden link to download the file and triggers the click of the link.
+*/
 function downloadCsv() {
-    // Load the string stored in the hidden field 'custpage_table_csv'.
-    // Converts it to a CSV file
-    // Creates a hidden link to download the file and triggers the click of the link.
     var csv = nlapiGetFieldValue('custpage_table_csv');
     var a = document.createElement("a");
     document.body.appendChild(a);
@@ -299,13 +310,20 @@ function validate() {
     return return_value;
 }
 
+/**
+ * Displays error messages in the alert box on top of the page.
+ * @param   {String}    message The message to be displayed.
+ */
 function showAlert(message) {
     $('#alert').html('<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + message);
     $('#alert').parent().show();
 }
 
+/**
+ * Returns the filter to be concatenated to the filter expressions in tableTransfersPreview.
+ * @return  {Array} A filter expression to be used in tableTransfersPreview().
+ */
 function loadSelectedStatusFilter() {
-    // Returns the filter to be concatenated to the filter expressions in tableTransfersPreview.
     var filter = ["custrecord_cust_prod_stock_status", "anyOf"];
     $.each($(".status option:selected"), function () {
         filter.push($(this).val());
@@ -313,6 +331,14 @@ function loadSelectedStatusFilter() {
     return filter;
 }
 
+/**
+ * Load the result set of the Customer Product Stock records satisfying the required conditions.
+ * @param   {String}                old_customer_id
+ * @param   {String}                old_zee_id
+ * @param   {String}                transfertype    The type of record change, either "customer" or "zee".
+ * @param   {Array}                 status_filter   The filter of the selected status.
+ * @return  {nlobjSearchResultSet}  The result set of the Customer Product Stock records.
+ */
 function loadCustomerProductStockSearch(old_customer_id, old_zee_id, transfertype, status_filter) {
     var customerProductStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_rta_product_stock_4');
     var customerFilterExpression = [["custrecord_cust_prod_stock_customer", "is", old_customer_id], 'AND'];
@@ -351,6 +377,11 @@ function getResultSetLength(resultSet) {
     return totalResultsLength;
 }
 
+/**
+ * Converts the customer and franchisee names into the CSV filename.
+ * @return  {String} The old customer/franchisee name followed by the new customer/franchisee.
+ * Both in lowercase and separated by an underscore.
+ */
 function getCsvName() {
     var old_customer_name = $('#old_customer_name').val();
     var old_zee_name = $('#old_zee_name').val();
@@ -373,6 +404,42 @@ function getCsvName() {
     return csv_name;
 }
 
+/**
+ * Converts the customer and franchisee names into an appropriate format for the CSV filename.
+ * @param   {String} string Customer or franchisee name
+ * @return  {String}        The same string with the spaces or " - " converted in "_".
+ */
 function nameToCode(string) {
     return string.toLowerCase().trim().split(' - ').join('_').split(' ').join('_');
+}
+
+/**
+ * Retrieves the contact email and operator ns id of a Franchisee using the search "RTA - Operator Load".
+ * @param   {String} new_zee_id New franchisee internal ID
+ * @return  {Array}             [contact_email, operator_ns_id]
+ */
+function getZeeContactEmail(new_zee_id) {
+    var appOperatorSearch = nlapiLoadSearch('customrecord_operator', 'customsearch_rta_operator_load');
+    var operatorFilterExpression = [["custrecord_operator_franchisee", "is", new_zee_id], 'AND', ["custrecord_operator_employment", "is", "4"]];
+    appOperatorSearch.setFilterExpression(operatorFilterExpression);
+    var resultAppOperatorSet = appOperatorSearch.runSearch();
+    var resultAppOperatorSlice = resultAppOperatorSet.getResults(0, 1);
+    if (isNullorEmpty(resultAppOperatorSlice)) {
+        var contact_results = [null, null];
+    } else {
+        var contact_results = [];
+        resultAppOperatorSlice.forEach(function (appOperatorResult) {
+            // Get Operator email
+            var col_email = new nlobjSearchColumn('custrecord_operator_email', null, 'group');
+            var contact_email = appOperatorResult.getValue(col_email);
+
+            // Get Operator internal ID
+            var col_operator_ns_id = new nlobjSearchColumn('internalid', null, 'group');
+            var operator_ns_id = appOperatorResult.getValue(col_operator_ns_id);
+
+            contact_results.push(contact_email, operator_ns_id);
+            return true;
+        });
+    }
+    return contact_results;
 }
