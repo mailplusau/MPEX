@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-05 13:00:05
+ * @Last Modified time: 2020-05-27 13:27:14
  *
  * @Description:
  *
@@ -164,6 +164,10 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'allocate') {
                         if (!isNullorEmpty(customer_id)) {
+                            if (invoiceable == false) {
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                            }
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 1);
                             customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
@@ -175,6 +179,10 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'pickup') {
                         if (!isNullorEmpty(customer_id)) {
+                            if (invoiceable == false) {
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                            }
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_date_stock_used', updated_at);
@@ -185,6 +193,10 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "delivery") {
                         if (!isNullorEmpty(customer_id)) {
+                            if (invoiceable == false) {
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                            }
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 4);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_final_del', 4);
@@ -196,6 +208,10 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "lodgement") {
                         if (!isNullorEmpty(customer_id)) {
+                            if (invoiceable == false) {
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                            }
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 5);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_final_del', 5);
@@ -318,7 +334,7 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
-                         if (invoiceable == false) {
+                        if (invoiceable == false) {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                         }
