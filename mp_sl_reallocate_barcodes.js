@@ -136,9 +136,9 @@ function customerSection() {
     var inlineQty = '<div class="form-group container customer_section">';
     inlineQty += '<div class="row">';
     // Customer ID field
-    inlineQty += '<div class="col-xs-6 customer_id"><div class="input-group"><span class="input-group-addon" id="customer_id_text">CUSTOMER ID</span><input id="customer_id" class="form-control customer_id"></div></div>';
+    inlineQty += '<div class="col-xs-6 customer_id"><div class="input-group"><span class="input-group-addon" id="customer_id_text">NEW CUSTOMER ID</span><input id="customer_id" class="form-control customer_id"></div></div>';
     // Customer name field
-    inlineQty += '<div class="col-xs-6 customer_name"><div class="input-group"><span class="input-group-addon" id="customer_name_text">CUSTOMER NAME</span><input id="customer_name" class="form-control customer_name" readonly></div></div>';
+    inlineQty += '<div class="col-xs-6 customer_name"><div class="input-group"><span class="input-group-addon" id="customer_name_text">NEW CUSTOMER NAME</span><input id="customer_name" class="form-control customer_name" readonly></div></div>';
     inlineQty += '</div>';
     inlineQty += '</div>';
 

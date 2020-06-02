@@ -67,6 +67,10 @@ function saveRecord() {
     var selector_type = nlapiGetFieldValue('custpage_selector_type');
 
     var resultSetLength = $('#barcodes-preview').DataTable().rows('.selected').data().length;
+    if (resultSetLength == 0) {
+        showAlert('Please select at least one record.');
+        return false;
+    }
     nlapiSetFieldValue('custpage_result_set_length', resultSetLength);
 
     // Save the Barcodes internal IDs in a "MPEX Transfer" record.

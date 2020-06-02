@@ -42,8 +42,8 @@ function reallocateBarcodes() {
 
     // Load MPEX transfer record
     var mpexJSONSearch = nlapiLoadSearch('customrecord_mpex_tr_customer_zee', 'customsearch_mpex_tr_customer_zee');
-    var newFilterExpression = [["name", "startswith", record_name]];
-    mpexJSONSearch.setFilterExpression(newFilterExpression);
+    var nameFilterExpression = [["name", "is", record_name]];
+    mpexJSONSearch.setFilterExpression(nameFilterExpression);
     var mpexJSONSearchResultSet = mpexJSONSearch.runSearch();
     var resultsMpexJSON = mpexJSONSearchResultSet.getResults(0, 1);
     var mpexResult = resultsMpexJSON[0];
