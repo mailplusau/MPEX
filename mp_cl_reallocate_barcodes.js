@@ -91,6 +91,7 @@ function saveRecord() {
     }
     var mpexRecord = nlapiCreateRecord('customrecord_mpex_tr_customer_zee');
     mpexRecord.setFieldValue('name', record_name);
+    mpexRecord.setFieldValue('custrecord_name', record_name);
     var selectedRows = $('#barcodes-preview').DataTable().rows({ selected: true });
     var barcodes_records_id_list = $('#barcodes-preview').DataTable().cells(selectedRows.nodes(), 1).data().toArray();
     var json_record_as_string = JSON.stringify({ 'barcodes_internal_id': barcodes_records_id_list });

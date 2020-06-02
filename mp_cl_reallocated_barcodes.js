@@ -172,7 +172,7 @@ function getBarcodesIDsList() {
     // Load MPEX transfer record
     var record_name = nlapiGetFieldValue('custpage_record_name');
     var mpexJSONSearch = nlapiLoadSearch('customrecord_mpex_tr_customer_zee', 'customsearch_mpex_tr_customer_zee');
-    var newFilterExpression = [["name", "startswith", record_name]];
+    var newFilterExpression = [["custrecord_name", "is", record_name]];
     mpexJSONSearch.setFilterExpression(newFilterExpression);
     var mpexJSONSearchResultSet = mpexJSONSearch.runSearch();
     var resultsMpexJSON = mpexJSONSearchResultSet.getResults(0, 1);

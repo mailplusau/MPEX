@@ -39,10 +39,11 @@ function reallocateBarcodes() {
             var record_name = 'po_id_' + selector_id + '_ts_' + timestamp;
             break;
     }
+    nlapiLogExecution('DEBUG', 'record_name', record_name);
 
     // Load MPEX transfer record
     var mpexJSONSearch = nlapiLoadSearch('customrecord_mpex_tr_customer_zee', 'customsearch_mpex_tr_customer_zee');
-    var nameFilterExpression = [["name", "is", record_name]];
+    var nameFilterExpression = [['custrecord_name', 'is', record_name]];
     mpexJSONSearch.setFilterExpression(nameFilterExpression);
     var mpexJSONSearchResultSet = mpexJSONSearch.runSearch();
     var resultsMpexJSON = mpexJSONSearchResultSet.getResults(0, 1);
