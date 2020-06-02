@@ -76,11 +76,6 @@ function reallocateBarcodes(request, response) {
         var zee_id = request.getParameter('custpage_zee_id');
         var result_set_length = request.getParameter('custpage_result_set_length');
         var timestamp = request.getParameter('custpage_timestamp');
-        nlapiLogExecution('DEBUG', 'selector_id', selector_id);
-        nlapiLogExecution('DEBUG', 'selector_type', selector_type);
-        nlapiLogExecution('DEBUG', 'customer_id', customer_id);
-        nlapiLogExecution('DEBUG', 'zee_id', zee_id);
-        nlapiLogExecution('DEBUG', 'timestamp', timestamp);
 
         var params = {
             custscript_selector_id: selector_id,

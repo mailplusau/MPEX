@@ -23,12 +23,6 @@ function reallocateBarcodes() {
     var zee_id = ctx.getSetting('SCRIPT', 'custscript_zee_id2');
     var timestamp = ctx.getSetting('SCRIPT', 'custscript_timestamp2');
 
-    nlapiLogExecution('DEBUG', 'selector_id', selector_id);
-    nlapiLogExecution('DEBUG', 'selector_type', selector_type);
-    nlapiLogExecution('DEBUG', 'customer_id', customer_id);
-    nlapiLogExecution('DEBUG', 'zee_id', zee_id);
-    nlapiLogExecution('DEBUG', 'timestamp', timestamp);
-
     var count = 0;
 
     // Get MPEX transfer record name
@@ -60,7 +54,6 @@ function reallocateBarcodes() {
     var json_record_as_string = mpexRecord.getFieldValue('custrecord_json2');
     var json_record = JSON.parse(json_record_as_string);
     var barcodes_records_id_list = json_record.barcodes_internal_id;
-    nlapiLogExecution('DEBUG', 'barcodes_records_id_list', barcodes_records_id_list);
 
     // Load the result set of the active barcodes records that should be duplicated.
     var customerProductStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_rta_product_stock');
@@ -96,12 +89,10 @@ function reallocateBarcodes() {
         } else {
             var barcode_id = searchCustomerProductResult.getValue('internalid');
         }
-        nlapiLogExecution('DEBUG', 'barcode_id', barcode_id);
 
         // Inactivate Customer Product Stock record.
         var customerProductRecord = nlapiLoadRecord('customrecord_customer_product_stock', barcode_id);
         var barcode_name = customerProductRecord.getFieldValue('name');
-        nlapiLogExecution('DEBUG', 'barcode_name initial record', barcode_name);
         customerProductRecord.setFieldValue('isinactive', 'T');
         nlapiSubmitRecord(customerProductRecord);
 
@@ -118,9 +109,6 @@ function reallocateBarcodes() {
         var new_barcode_id = nlapiSubmitRecord(copyCustomerProductRecord);
 
         count++;
-        nlapiLogExecution('DEBUG', 'nb_records_changed', count);
-        nlapiLogExecution('DEBUG', 'Old CPS id', barcode_id);
-        nlapiLogExecution('DEBUG', 'New CPS id', new_barcode_id);
 
         return true;
     });
