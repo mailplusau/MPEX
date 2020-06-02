@@ -4,10 +4,11 @@
  * NSVersion    Date                Author         
  * 1.00         2020-05-22 11:29:00 Raphael
  *
- * Description: Scheduled script used to reallocate invoiced barcodes who were allocated to the wrong customer. 
+ * Description: Scheduled script used to reallocate inactivate barcodes who were allocated to the wrong customer.
+ *              The barcodes are then duplicated and allocated to another customer.
  * 
  * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-05-27 15:16:00
+ * @Last Modified time: 2020-06-02 14:09:00
  *
  */
 var adhoc_inv_deploy = 'customdeploy_ss_reallocate_barcodes';
@@ -16,15 +17,58 @@ var ctx = nlapiGetContext();
 
 function reallocateBarcodes() {
 
-    var invoice_id = ctx.getSetting('SCRIPT', 'custscript_invoice_id');
+    var selector_id = ctx.getSetting('SCRIPT', 'custscript_selector_id');
+    var selector_type = ctx.getSetting('SCRIPT', 'custscript_selector_type');
     var customer_id = ctx.getSetting('SCRIPT', 'custscript_customer_id2');
     var zee_id = ctx.getSetting('SCRIPT', 'custscript_zee_id2');
     var timestamp = ctx.getSetting('SCRIPT', 'custscript_timestamp2');
 
+    nlapiLogExecution('DEBUG', 'selector_id', selector_id);
+    nlapiLogExecution('DEBUG', 'selector_type', selector_type);
+    nlapiLogExecution('DEBUG', 'customer_id', customer_id);
+    nlapiLogExecution('DEBUG', 'zee_id', zee_id);
+    nlapiLogExecution('DEBUG', 'timestamp', timestamp);
+
     var count = 0;
 
+    // Get MPEX transfer record name
+    switch (selector_type) {
+        case 'invoice_number':
+            var record_name = 'inv_id_' + selector_id + '_ts_' + timestamp;
+            break;
+
+        case 'barcode_number':
+            var record_name = 'barcode_id_' + selector_id + '_ts_' + timestamp;
+            break;
+
+        case 'product_order_id':
+            var record_name = 'po_id_' + selector_id + '_ts_' + timestamp;
+            break;
+    }
+
+    // Load MPEX transfer record
+    var mpexJSONSearch = nlapiLoadSearch('customrecord_mpex_tr_customer_zee', 'customsearch_mpex_tr_customer_zee');
+    var newFilterExpression = [["name", "startswith", record_name]];
+    mpexJSONSearch.setFilterExpression(newFilterExpression);
+    var mpexJSONSearchResultSet = mpexJSONSearch.runSearch();
+    var resultsMpexJSON = mpexJSONSearchResultSet.getResults(0, 1);
+    var mpexResult = resultsMpexJSON[0];
+    var mpex_record_id = mpexResult.getId();
+    var mpexRecord = nlapiLoadRecord('customrecord_mpex_tr_customer_zee', mpex_record_id);
+
+    // Load barcodes internal ids
+    var json_record_as_string = mpexRecord.getFieldValue('custrecord_json2');
+    var json_record = JSON.parse(json_record_as_string);
+    var barcodes_records_id_list = json_record.barcodes_internal_id;
+    nlapiLogExecution('DEBUG', 'barcodes_records_id_list', barcodes_records_id_list);
+
+    // Load the result set of the active barcodes records that should be duplicated.
     var customerProductStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_rta_product_stock');
-    var filterExpression = [["custrecord_cust_prod_stock_status", "is", "6"], 'AND', ["custrecord_prod_stock_invoice", "is", invoice_id], 'AND', ["isinactive", "is", 'F']];
+    var barcodesFilter = ["internalid", "anyOf"];
+    barcodesFilter.push(barcodes_records_id_list);
+    var filterExpression = [barcodesFilter,
+        'AND',
+        ["isinactive", "is", 'F']];
     customerProductStockSearch.setFilterExpression(filterExpression);
     var resultCustomerProductSet = customerProductStockSearch.runSearch();
 
@@ -33,7 +77,8 @@ function reallocateBarcodes() {
         var usage_loopstart_cust = ctx.getRemainingUsage();
         if ((usage_loopstart_cust < 200) || (count == 3999)) {
             var params = {
-                custscript_invoice_id: invoice_id,
+                custscript_selector_id: selector_id,
+                custscript_selector_type: selector_type,
                 custscript_customer_id2: customer_id,
                 custscript_zee_id2: zee_id,
                 custscript_timestamp: timestamp
@@ -46,7 +91,12 @@ function reallocateBarcodes() {
             }
         }
 
-        var barcode_id = searchCustomerProductResult.getValue('internalid');
+        if (selector_type == 'barcode_number') {
+            var barcode_id = selector_id;
+        } else {
+            var barcode_id = searchCustomerProductResult.getValue('internalid');
+        }
+        nlapiLogExecution('DEBUG', 'barcode_id', barcode_id);
 
         // Inactivate Customer Product Stock record.
         var customerProductRecord = nlapiLoadRecord('customrecord_customer_product_stock', barcode_id);
@@ -66,38 +116,6 @@ function reallocateBarcodes() {
         copyCustomerProductRecord.setFieldValue('custrecord_prod_stock_prod_order', '');
         copyCustomerProductRecord.setFieldValue('custrecord_prod_stock_invoice', '');
         var new_barcode_id = nlapiSubmitRecord(copyCustomerProductRecord);
-
-        // Update the JSON record
-        var record_name = 'inv_id_' + invoice_id + '_ts_' + timestamp;
-
-        // Create or load an MPEX transfer record to store the list of the barcodes ID.
-        var mpexJSONSearch = nlapiLoadSearch('customrecord_mpex_tr_customer_zee', 'customsearch_mpex_tr_customer_zee');
-        var newFilterExpression = [["name", "startswith", record_name]];
-        mpexJSONSearch.setFilterExpression(newFilterExpression);
-        var mpexJSONSearchResultSet = mpexJSONSearch.runSearch();
-        // One field can store an array of approximately 120 000 barcodes id, so we shouldn't need to load more records.
-        var resultsMpexJSON = mpexJSONSearchResultSet.getResults(0, 1);
-        nlapiLogExecution('DEBUG', 'resultsMpexJSON', resultsMpexJSON);
-        var mpexResult = resultsMpexJSON[0];
-        nlapiLogExecution('DEBUG', 'mpexResult', mpexResult);
-        if (mpexResult === undefined) {
-            nlapiLogExecution('DEBUG', 'Part of if entered', '1');
-            var mpexRecord = nlapiCreateRecord('customrecord_mpex_tr_customer_zee');
-            mpexRecord.setFieldValue('name', record_name);
-            var json_record_as_string = JSON.stringify({ 'barcodes_internal_id': [] });
-        } else {
-            nlapiLogExecution('DEBUG', 'Part of if entered', '2');
-            var mpex_record_id = mpexResult.getId();
-            nlapiLogExecution('DEBUG', 'mpex_record_id', mpex_record_id);
-            var mpexRecord = nlapiLoadRecord('customrecord_mpex_tr_customer_zee', mpex_record_id);
-            json_record_as_string = mpexRecord.getFieldValue('custrecord_json2');
-        }
-
-        json_record = JSON.parse(json_record_as_string);
-        json_record.barcodes_internal_id.push(new_barcode_id);
-        json_record_as_string = JSON.stringify(json_record);
-        mpexRecord.setFieldValue('custrecord_json2', json_record_as_string);
-        nlapiSubmitRecord(mpexRecord);
 
         count++;
         nlapiLogExecution('DEBUG', 'nb_records_changed', count);
