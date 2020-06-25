@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-27 13:27:14
+ * @Last Modified time: 2020-06-24 10:12:11
  *
  * @Description:
  *
@@ -156,6 +156,7 @@ function getLatestFiles() {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 8);
                             customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
                             customer_prod_stock.setFieldValue('custrecord_cust_time_stock_given', time_updated_at);
+                            customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', null);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
                         } else {
                             nlapiSendEmail(409635, ['ankith.ravindran@mailplus.com.au'], 'MPEX Scan Sync', 'Barcode: ' + barcode + ' has empty Zee ID', null);
