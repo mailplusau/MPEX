@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-07 08:30:00
+ * @Last Modified time: 2020-07-07 08:33:33
  *
  * @Description:
  *
@@ -76,7 +76,7 @@ function getLatestFiles() {
             }
 
 
-            // nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
+            nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
 
 
             var barcode = scans[x].barcode.toUpperCase();
@@ -99,7 +99,7 @@ function getLatestFiles() {
             var save_barcode = true;
 
             nlapiLogExecution('DEBUG', 'barcode usage', barcode);
-            nlapiLogExecution('DEBUG', 'invoiceable', invoiceable);
+            // nlapiLogExecution('DEBUG', 'invoiceable', invoiceable);
 
 
             var barcode_beg = barcode.slice(0, 4);
