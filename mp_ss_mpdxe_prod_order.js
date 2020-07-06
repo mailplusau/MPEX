@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-02-05 09:47:21
+ * @Last Modified time: 2020-07-02 16:02:59
  *
  */
 
@@ -90,8 +90,10 @@ function main() {
 
 
             product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '30/06/2020');
 
             product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '30/06/2020');
             product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
 
 

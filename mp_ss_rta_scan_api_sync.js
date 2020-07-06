@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-24 10:12:11
+ * @Last Modified time: 2020-07-07 08:30:00
  *
  * @Description:
  *
@@ -24,7 +24,7 @@ function getLatestFiles() {
 
     //To get todays date
     var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
-    //var today = '2/9/2019';
+    // var today = '1/7/2020';
 
     var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json', 'customsearch_scan_json');
     var newFilterExpression = [
@@ -61,7 +61,7 @@ function getLatestFiles() {
             var x = (scans.length - 1);
             var usage_loopstart_cust = ctx.getRemainingUsage();
 
-            if (usage_loopstart_cust < 200) {
+            if (usage_loopstart_cust < 300) {
                 var scan_json_2 = '{ "scans": ' + JSON.stringify(scans) + '}';
                 var scan_json_record = nlapiLoadRecord('customrecord_scan_json', scan_json_record_id);
                 scan_json_record.setFieldValue('custrecord_scan_json_2', scan_json_2);
@@ -69,16 +69,18 @@ function getLatestFiles() {
 
                 reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, null);
                 nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
-                if (reschedule == false) {
+                if (reschedule == 'false') {
 
                     return false;
                 }
             }
 
-            nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
+
+            // nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
+
 
             var barcode = scans[x].barcode.toUpperCase();
-            nlapiLogExecution('DEBUG', 'barcode usage', barcode);
+
             var customer_id = scans[x].customer_ns_id;
             // var zee_id = scans[x].zee_ns_id;
             var rta_id = scans[x].id;
@@ -95,6 +97,10 @@ function getLatestFiles() {
             time_updated_at = onTimeChange(time_updated_at[0]);
             var updated_at = updated_at[0];
             var save_barcode = true;
+
+            nlapiLogExecution('DEBUG', 'barcode usage', barcode);
+            nlapiLogExecution('DEBUG', 'invoiceable', invoiceable);
+
 
             var barcode_beg = barcode.slice(0, 4);
 
@@ -165,7 +171,7 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'allocate') {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == false) {
+                            if (invoiceable == 'false') {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -180,7 +186,7 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'pickup') {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == false) {
+                            if (invoiceable == 'false') {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -194,7 +200,7 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "delivery") {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == false) {
+                            if (invoiceable == 'false') {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -209,7 +215,7 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "lodgement") {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == false) {
+                            if (invoiceable == 'false') {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -227,7 +233,7 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
-                        if (invoiceable == false) {
+                        if (invoiceable == 'false') {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                         }
@@ -272,7 +278,7 @@ function getLatestFiles() {
 
                     customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
                     customer_prod_stock.setFieldValue('custrecord_cust_time_stock_given', time_updated_at);
-                    if (invoiceable == false) {
+                    if (invoiceable == 'false') {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                     }
@@ -335,7 +341,7 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
-                        if (invoiceable == false) {
+                        if (invoiceable == 'false') {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                         }

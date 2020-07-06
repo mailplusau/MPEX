@@ -6,8 +6,8 @@
  *
  * Description:         
  * 
- * @Last Modified by:   ankith.ravindran
- * @Last Modified time: 2019-05-07 09:44:41
+ * @Last Modified by:   Ankith
+ * @Last Modified time: 2020-06-30 12:00:39
  *
  */
 
@@ -27,6 +27,7 @@ function main() {
 		prev_inv_deploy = ctx.getDeploymentId();
 	}
 
+	//Product Stock - Update Invoice
 	var prodStockSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_prod_stock_update_invoice');
 	var resultProdStock = prodStockSearch.runSearch();
 
