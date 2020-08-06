@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-07 09:57:12
+ * @Last Modified time: 2020-07-02 16:02:07
  *
  */
 
@@ -41,6 +41,8 @@ function main(type) {
     var recInvoice;
     var internal_id = [];
     var customer_ids;
+    var old_line_items;
+    var total_line_item_qty = 0;
     var new_invoice = true;
     var invCount = 0;
 
@@ -166,6 +168,141 @@ function main(type) {
 
                     if (new_invoice == true && n > 0) {
 
+                        var inv_details = null;
+
+                        var count = 0;
+
+                        //--------------- Search AP Item Pricing Algorithm ---------------//
+                        var fil_po = [];
+                        fil_po[fil_po.length] = new nlobjSearchFilter('internalid', null, 'anyof', old_line_items);
+
+                        var col_po = [];
+                        col_po[col_po.length] = new nlobjSearchColumn('internalid');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_pricing_algorithm');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_qty_per_carton');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_a');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_b');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_c');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_d');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_e');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_f');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_a');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_b');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_c');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_d');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_e');
+                        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_f');
+
+                        var poSearch = nlapiSearchRecord('customrecord_ap_item', null, fil_po, col_po);
+
+                        //--------------- Apply AP Item Pricing Algorithm ---------------//
+                        if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
+
+                            for (var x = 0; x < item_rates.length; x++) {
+                                // uses dynamic column values from search (ie. custrecord_ap_qty_a)
+                                var temp = text + item_rates[x];
+                                var y = poSearch[0].getValue(temp);
+                                if (y != '') {
+                                    if (parseInt(line_qty) < y) {
+
+                                        var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                                        //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
+                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                            var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                            if (!isNullorEmpty(ordered_by)) {
+                                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                                            } else {
+                                                var new_inv_details = inv_details;
+                                            }
+                                            inv_details_rec.setFieldValue('name', new_inv_details);
+                                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                        }
+
+                                        recInvoice.selectNewLineItem('item');
+                                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                        recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                        }
+
+                                        recInvoice.commitLineItem('item');
+                                        break;
+                                    }
+                                    // else if(x >= 1 && parseInt(line_qty) >= y){ 
+                                    //     var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                                    //    if(!isNullorEmpty(inv_details)){
+                                    //         var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                    //         inv_details_rec.setFieldValue('name', inv_details);
+                                    //         inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
+                                    //         inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                    //         var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                    //     }
+                                    //     recInvoice.selectNewLineItem('item');
+                                    //     recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                    //     recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
+
+                                    //      if(!isNullorEmpty(inv_details)){
+                                    //         item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                    //         recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                    //         recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                    //     }
+
+                                    //     recInvoice.commitLineItem('item');
+                                    //     break;
+                                    // }
+                                } else {
+
+                                    var item_selected = 'custrecord_ap_item_' + item_rates[(x - 1)];
+
+                                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                        var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                        if (!isNullorEmpty(ordered_by)) {
+                                            var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                                        } else {
+                                            var new_inv_details = inv_details;
+                                        }
+                                        inv_details_rec.setFieldValue('name', new_inv_details);
+                                        inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                                        inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                        var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                    }
+                                    recInvoice.selectNewLineItem('item');
+                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                    recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                        item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                        recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                        recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                    }
+
+                                    recInvoice.commitLineItem('item');
+                                    break;
+                                }
+                            }
+                        } else {
+                            /**
+                             * SHOULD BE AN ERROR ???
+                             */
+
+                            var message = '';
+                            message += 'AP Item: ' + searchResults[n].getText('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+                            message += ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+                            message += ' | OrderID:' + searchResults[n].getValue('internalid', null, "GROUP");
+
+
+                            nlapiCreateError('Pricing Algorithm Undefined', message);
+
+                            return false;
+                        }
+
                         //--------------- Submit Current Invoice ---------------//
                         nlapiLogExecution('AUDIT', 'Loop: ' + invCount + '.' + n + ' | Product IDS: ' + internal_id, usage_per_loop - ctx.getRemainingUsage());
                         internal_id = removeDups(internal_id);
@@ -182,6 +319,9 @@ function main(type) {
                                 var submitted = nlapiSubmitRecord(recOrder);
                             }
                         }
+
+                        old_line_items = null;
+                        total_line_item_qty = 0;
 
                         //--------------- Init New Invoice ---------------//
                         usage_per_inv = ctx.getRemainingUsage();
@@ -221,142 +361,159 @@ function main(type) {
 
 
                     var line_item = searchResults[n].getValue('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
-                    var line_qty = searchResults[n].getValue('custrecord_ap_stock_line_actual_qty', 'CUSTRECORD_AP_PRODUCT_ORDER', "SUM");
+                    var line_qty = parseInt(searchResults[n].getValue('custrecord_ap_stock_line_actual_qty', 'CUSTRECORD_AP_PRODUCT_ORDER', "SUM"));
 
-                    var inv_details = null;
-
-                    var count = 0;
-
-                    //--------------- Search AP Item Pricing Algorithm ---------------//
-                    var fil_po = [];
-                    fil_po[fil_po.length] = new nlobjSearchFilter('internalid', null, 'anyof', line_item);
-
-                    var col_po = [];
-                    col_po[col_po.length] = new nlobjSearchColumn('internalid');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_pricing_algorithm');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_qty_per_carton');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_a');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_b');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_c');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_d');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_e');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_f');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_a');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_b');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_c');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_d');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_e');
-                    col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_f');
-
-                    var poSearch = nlapiSearchRecord('customrecord_ap_item', null, fil_po, col_po);
-
-                    //--------------- Apply AP Item Pricing Algorithm ---------------//
-                    if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
-
-                        for (var x = 0; x < item_rates.length; x++) {
-                            // uses dynamic column values from search (ie. custrecord_ap_qty_a)
-                            var temp = text + item_rates[x];
-                            var y = poSearch[0].getValue(temp);
-                            if (y != '') {
-                                if (parseInt(line_qty) < y) {
-
-                                    var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                                    //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
-                                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                        var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                        if (!isNullorEmpty(ordered_by)) {
-                                            var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                                        } else {
-                                            var new_inv_details = inv_details;
-                                        }
-                                        inv_details_rec.setFieldValue('name', new_inv_details);
-                                        inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
-                                        inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                        var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                    }
-
-                                    recInvoice.selectNewLineItem('item');
-                                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                    recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
-
-                                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                        item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                        recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                        recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                    }
-
-                                    recInvoice.commitLineItem('item');
-                                    break;
-                                }
-                                // else if(x >= 1 && parseInt(line_qty) >= y){ 
-                                //     var item_selected = 'custrecord_ap_item_' + item_rates[x];
-
-                                //    if(!isNullorEmpty(inv_details)){
-                                //         var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                //         inv_details_rec.setFieldValue('name', inv_details);
-                                //         inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
-                                //         inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                //         var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                //     }
-                                //     recInvoice.selectNewLineItem('item');
-                                //     recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                //     recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
-
-                                //      if(!isNullorEmpty(inv_details)){
-                                //         item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                //         recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                //         recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                //     }
-
-                                //     recInvoice.commitLineItem('item');
-                                //     break;
-                                // }
-                            } else {
-
-                                var item_selected = 'custrecord_ap_item_' + item_rates[(x - 1)];
-
-                                if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                    var inv_details_rec = nlapiCreateRecord('customrecord62');
-                                    if (!isNullorEmpty(ordered_by)) {
-                                        var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
-                                    } else {
-                                        var new_inv_details = inv_details;
-                                    }
-                                    inv_details_rec.setFieldValue('name', new_inv_details);
-                                    inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
-                                    inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
-                                    var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
-                                }
-                                recInvoice.selectNewLineItem('item');
-                                recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
-                                recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
-
-                                if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
-                                    item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
-                                    recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
-                                    recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
-                                }
-
-                                recInvoice.commitLineItem('item');
-                                break;
-                            }
-                        }
+                    if (n == 0 || (total_line_item_qty == 0 && old_line_items == null)) {
+                        old_line_items = line_item;
+                        total_line_item_qty = total_line_item_qty + line_qty
                     } else {
-                        /**
-                         * SHOULD BE AN ERROR ???
-                         */
+                        if (line_item == old_line_items) {
+                            old_line_items = line_item;
+                            total_line_item_qty = total_line_item_qty + line_qty;
+                        } else if (line_item != old_line_items) {
+                            var inv_details = null;
 
-                        var message = '';
-                        message += 'AP Item: ' + searchResults[n].getText('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
-                        message += ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
-                        message += ' | OrderID:' + searchResults[n].getValue('internalid', null, "GROUP");
+                            var count = 0;
+
+                            //--------------- Search AP Item Pricing Algorithm ---------------//
+                            var fil_po = [];
+                            fil_po[fil_po.length] = new nlobjSearchFilter('internalid', null, 'anyof', old_line_items);
+
+                            var col_po = [];
+                            col_po[col_po.length] = new nlobjSearchColumn('internalid');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_pricing_algorithm');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_qty_per_carton');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_a');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_b');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_c');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_d');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_e');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_f');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_a');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_b');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_c');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_d');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_e');
+                            col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_f');
+
+                            var poSearch = nlapiSearchRecord('customrecord_ap_item', null, fil_po, col_po);
+
+                            //--------------- Apply AP Item Pricing Algorithm ---------------//
+                            if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
+
+                                for (var x = 0; x < item_rates.length; x++) {
+                                    // uses dynamic column values from search (ie. custrecord_ap_qty_a)
+                                    var temp = text + item_rates[x];
+                                    var y = poSearch[0].getValue(temp);
+                                    if (y != '') {
+                                        if (parseInt(line_qty) < y) {
+
+                                            var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                                            //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
+                                            if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                                var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                                if (!isNullorEmpty(ordered_by)) {
+                                                    var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                                                } else {
+                                                    var new_inv_details = inv_details;
+                                                }
+                                                inv_details_rec.setFieldValue('name', new_inv_details);
+                                                inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                                                inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                                var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                            }
+
+                                            recInvoice.selectNewLineItem('item');
+                                            recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                            recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                                            if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                                item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                                recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                                recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                            }
+
+                                            recInvoice.commitLineItem('item');
+                                            break;
+                                        }
+                                        // else if(x >= 1 && parseInt(line_qty) >= y){ 
+                                        //     var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                                        //    if(!isNullorEmpty(inv_details)){
+                                        //         var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                        //         inv_details_rec.setFieldValue('name', inv_details);
+                                        //         inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
+                                        //         inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                        //         var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                        //     }
+                                        //     recInvoice.selectNewLineItem('item');
+                                        //     recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                        //     recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
+
+                                        //      if(!isNullorEmpty(inv_details)){
+                                        //         item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                        //         recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                        //         recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                        //     }
+
+                                        //     recInvoice.commitLineItem('item');
+                                        //     break;
+                                        // }
+                                    } else {
+
+                                        var item_selected = 'custrecord_ap_item_' + item_rates[(x - 1)];
+
+                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                            var inv_details_rec = nlapiCreateRecord('customrecord62');
+                                            if (!isNullorEmpty(ordered_by)) {
+                                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                                            } else {
+                                                var new_inv_details = inv_details;
+                                            }
+                                            inv_details_rec.setFieldValue('name', new_inv_details);
+                                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                                        }
+                                        recInvoice.selectNewLineItem('item');
+                                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                                        recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                                        }
+
+                                        recInvoice.commitLineItem('item');
+                                        break;
+                                    }
+                                }
+                            } else {
+                                /**
+                                 * SHOULD BE AN ERROR ???
+                                 */
+
+                                var message = '';
+                                message += 'AP Item: ' + searchResults[n].getText('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+                                message += ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+                                message += ' | OrderID:' + searchResults[n].getValue('internalid', null, "GROUP");
 
 
-                        nlapiCreateError('Pricing Algorithm Undefined', message);
+                                nlapiCreateError('Pricing Algorithm Undefined', message);
 
-                        return false;
+                                return false;
+                            }
+
+                            old_line_items = line_item;
+                            total_line_item_qty = 0;
+                            total_line_item_qty = total_line_item_qty + line_qty;
+                        }
+
+
                     }
+
                 }
             } catch (err) {
                 nlapiCreateError(err);
@@ -367,6 +524,141 @@ function main(type) {
             }
             nlapiLogExecution('AUDIT', 'Loop: ' + invCount + '.' + n + ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP"), usage_per_loop - ctx.getRemainingUsage());
             nlapiLogExecution('AUDIT', 'Loop: ' + invCount + '.' + n + ' | Product IDS: ' + internal_id, usage_per_loop - ctx.getRemainingUsage());
+        }
+
+        var inv_details = null;
+
+        var count = 0;
+
+        //--------------- Search AP Item Pricing Algorithm ---------------//
+        var fil_po = [];
+        fil_po[fil_po.length] = new nlobjSearchFilter('internalid', null, 'anyof', old_line_items);
+
+        var col_po = [];
+        col_po[col_po.length] = new nlobjSearchColumn('internalid');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_pricing_algorithm');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_qty_per_carton');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_a');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_b');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_c');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_d');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_e');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_qty_f');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_a');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_b');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_c');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_d');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_e');
+        col_po[col_po.length] = new nlobjSearchColumn('custrecord_ap_item_f');
+
+        var poSearch = nlapiSearchRecord('customrecord_ap_item', null, fil_po, col_po);
+
+        //--------------- Apply AP Item Pricing Algorithm ---------------//
+        if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
+
+            for (var x = 0; x < item_rates.length; x++) {
+                // uses dynamic column values from search (ie. custrecord_ap_qty_a)
+                var temp = text + item_rates[x];
+                var y = poSearch[0].getValue(temp);
+                if (y != '') {
+                    if (parseInt(line_qty) < y) {
+
+                        var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                        //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
+                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                            var inv_details_rec = nlapiCreateRecord('customrecord62');
+                            if (!isNullorEmpty(ordered_by)) {
+                                var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                            } else {
+                                var new_inv_details = inv_details;
+                            }
+                            inv_details_rec.setFieldValue('name', new_inv_details);
+                            inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                            inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                            var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                        }
+
+                        recInvoice.selectNewLineItem('item');
+                        recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                        recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                        if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                            item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                            recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                            recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                        }
+
+                        recInvoice.commitLineItem('item');
+                        break;
+                    }
+                    // else if(x >= 1 && parseInt(line_qty) >= y){ 
+                    //     var item_selected = 'custrecord_ap_item_' + item_rates[x];
+
+                    //    if(!isNullorEmpty(inv_details)){
+                    //         var inv_details_rec = nlapiCreateRecord('customrecord62');
+                    //         inv_details_rec.setFieldValue('name', inv_details);
+                    //         inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer'));
+                    //         inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                    //         var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                    //     }
+                    //     recInvoice.selectNewLineItem('item');
+                    //     recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                    //     recInvoice.setCurrentLineItemValue('item', 'quantity', line_qty);
+
+                    //      if(!isNullorEmpty(inv_details)){
+                    //         item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                    //         recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                    //         recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                    //     }
+
+                    //     recInvoice.commitLineItem('item');
+                    //     break;
+                    // }
+                } else {
+
+                    var item_selected = 'custrecord_ap_item_' + item_rates[(x - 1)];
+
+                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                        var inv_details_rec = nlapiCreateRecord('customrecord62');
+                        if (!isNullorEmpty(ordered_by)) {
+                            var new_inv_details = 'Order By - ' + ordered_by + '. ' + inv_details;
+                        } else {
+                            var new_inv_details = inv_details;
+                        }
+                        inv_details_rec.setFieldValue('name', new_inv_details);
+                        inv_details_rec.setFieldValue('custrecord57_2', searchResults[n].getValue('custrecord_ap_order_customer', null, "GROUP"));
+                        inv_details_rec.setFieldValue('custrecord56_2', poSearch[0].getValue(item_selected));
+                        var inv_details_rec_id = nlapiSubmitRecord(inv_details_rec);
+                    }
+                    recInvoice.selectNewLineItem('item');
+                    recInvoice.setCurrentLineItemValue('item', 'item', poSearch[0].getValue(item_selected));
+                    recInvoice.setCurrentLineItemValue('item', 'quantity', total_line_item_qty);
+
+                    if (!isNullorEmpty(inv_details) || !isNullorEmpty(ordered_by)) {
+                        item_desc = nlapiLoadRecord('customrecord62', inv_details_rec_id);
+                        recInvoice.setCurrentLineItemValue('item', 'custcol1', inv_details_rec_id);
+                        recInvoice.setCurrentLineItemValue('item', 'custcol1_display', item_desc.getFieldValue('name'));
+                    }
+
+                    recInvoice.commitLineItem('item');
+                    break;
+                }
+            }
+        } else {
+            /**
+             * SHOULD BE AN ERROR ???
+             */
+
+            var message = '';
+            message += 'AP Item: ' + searchResults[n].getText('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+            message += ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER', "GROUP");
+            message += ' | OrderID:' + searchResults[n].getValue('internalid', null, "GROUP");
+
+
+            nlapiCreateError('Pricing Algorithm Undefined', message);
+
+            return false;
         }
 
         //--------------- Submit Current Invoice ---------------//

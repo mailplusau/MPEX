@@ -7,11 +7,11 @@
  * Description: Create MPEX Usage Report        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-12-01 12:40:17
+ * @Last Modified time: 2020-07-06 11:53:39
  *
  */
 
-var prod_usage_report = [196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215];
+var prod_usage_report = [196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 243, 244, 245];
 
 var month = moment().utc().format('MMMM')
 
@@ -228,6 +228,7 @@ function main() {
             return true;
         });
 
+        nlapiLogExecution('AUDIT', 'old_customer_id --->', old_customer_id);
         if (!isNullorEmpty(old_customer_id)) {
             old_pord_array[old_pord_array.length] = old_prod_id;
             var recCustomer = nlapiLoadRecord('customer', old_customer_id);

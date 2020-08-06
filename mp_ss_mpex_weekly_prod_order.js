@@ -2,12 +2,12 @@
  * Module Description
  * 
  * NSVersion    Date                        Author         
- * 1.00         2019-04-11 12:25:19         ankith.ravindran
+ * 1.00         2020-06-17 10:00:05         Ankith
  *
- * Description: Create Product Orders for MPEX       
+ * Description: Create Product Orders for MPEX Weekly Invoicing     
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:31
+ * @Last Modified time: 2020-08-07 09:03:34
  *
  */
 
@@ -19,18 +19,15 @@ var ctx = nlapiGetContext();
 
 function main() {
 
-
     nlapiLogExecution('AUDIT', 'prev_deployment', ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order'));
-    if (!isNullorEmpty(ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order'))) {
-        prev_inv_deploy = ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order');
-    } else {
-        prev_inv_deploy = ctx.getDeploymentId();
-    }
+
+    prev_inv_deploy = ctx.getDeploymentId();
+
 
     /**
-     * MPEX - To Create Product Order (For Monthly Invoicing)
+     * MPEX - To Create Product Order (For Weekly Invoicing)
      */
-    var createProdOrderSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_prod_stock_create_prod_orde');
+    var createProdOrderSearch = nlapiLoadSearch('customrecord_customer_product_stock', 'customsearch_mpex_weekly_prod_order');
     var resultCreateProdOrder = createProdOrderSearch.runSearch();
 
     var old_customer_id = null;
@@ -73,20 +70,6 @@ function main() {
         var new_date = date + '/' + month + '/' + z1[2];
 
         nlapiLogExecution('DEBUG', 'Prod Order ID', product_order_id);
-        nlapiLogExecution('DEBUG', 'single_gold_toll', single_gold_toll);
-        nlapiLogExecution('DEBUG', 'single_gold_mp', single_gold_mp);
-        nlapiLogExecution('DEBUG', 'single_platinum_mp', single_platinum_mp);
-        nlapiLogExecution('DEBUG', 'single_platinum_toll', single_platinum_toll);
-        nlapiLogExecution('DEBUG', 'single_standard_mp', single_standard_mp);
-        nlapiLogExecution('DEBUG', 'single_standard_toll', single_standard_toll);
-        nlapiLogExecution('DEBUG', 'mpex_5kg_price_point', mpex_5kg_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_3kg_price_point', mpex_3kg_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_1kg_price_point', mpex_1kg_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_500g_price_point', mpex_500g_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_B4_price_point', mpex_B4_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_C5_price_point', mpex_C5_price_point);
-        nlapiLogExecution('DEBUG', 'mpex_DL_price_point', mpex_DL_price_point);
-
 
         if (cust_prod_customer != old_customer_id) {
 
@@ -106,22 +89,23 @@ function main() {
                 }
             }
 
+
             /**
              * Create Product Order
              */
-
             nlapiLogExecution('DEBUG', 'New Prod Order');
 
             var product_order_rec = nlapiCreateRecord('customrecord_mp_ap_product_order');
             product_order_rec.setFieldValue('custrecord_ap_order_customer', cust_prod_customer);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_franchisee', cust_prod_zee);
-            product_order_rec.setFieldValue('custrecord_mp_ap_order_order_status', 4);
-            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
-            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '31/07/2020');
-            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
-            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '31/07/2020');
+            product_order_rec.setFieldValue('custrecord_mp_ap_order_order_status', 4); //Order Fulfilled
+            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '31/07/2020');
+            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '31/07/2020');
             product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
             product_order_id = nlapiSubmitRecord(product_order_rec);
+
 
             /**
              * Create Line Items associated to the product order. 
@@ -131,9 +115,6 @@ function main() {
 
 
             var barcode_beg = barcode.slice(0, 4);
-
-            nlapiLogExecution('DEBUG', 'barcode_beg', barcode_beg);
-            nlapiLogExecution('DEBUG', 'barcode', barcode);
 
             /**
              * Pricing Points:
@@ -152,8 +133,6 @@ function main() {
                 barcode_beg == 'MPEC' ||
                 barcode_beg == 'MPED') {
                 if (barcode_beg == 'MPEN') {
-                    nlapiLogExecution('DEBUG', 'Inside MPEN');
-                    nlapiLogExecution('DEBUG', 'cust_prod_stock_status', cust_prod_stock_status);
                     switch (mpex_1kg_price_point) {
                         case 1:
                             if (cust_prod_stock_status == 4) {
@@ -384,6 +363,7 @@ function main() {
                 }
             }
 
+
             /**
              * Old Line Items Creation
              * Based on the delivery method and the special customer type.
@@ -402,10 +382,12 @@ function main() {
             //     }
             // }
 
+
             nlapiLogExecution('DEBUG', 'Details', 'Date Used:' + new_date + '-' + barcode);
             ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + new_date + '-' + barcode);
             ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_actual_qty', 1);
             nlapiSubmitRecord(ap_stock_line_item);
+
 
             /**
              * Update Customer Product Stock record with the product order ID
@@ -417,12 +399,12 @@ function main() {
 
 
         } else {
+
             /**
-             * Create Line Items associated to the product order. 
+             * Create Line Items associated to the product order.
              */
             var ap_stock_line_item = nlapiCreateRecord('customrecord_ap_stock_line_item');
             ap_stock_line_item.setFieldValue('custrecord_ap_product_order', product_order_id);
-
 
             var barcode_beg = barcode.slice(0, 4);
 
@@ -674,7 +656,6 @@ function main() {
             }
 
 
-
             /**
              * Old Line Items Creation
              * Based on the delivery method and the special customer type.
@@ -696,15 +677,15 @@ function main() {
             ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_actual_qty', 1);
             nlapiSubmitRecord(ap_stock_line_item);
 
-
             /**
-             * Update Customer Product Stock record with the product order ID
+             * Update the Customer Product Stoc record with the Product Order ID
              */
             var cust_prod_stock_record = nlapiLoadRecord('customrecord_customer_product_stock', cust_prod_stock_id);
             cust_prod_stock_record.setFieldValue('custrecord_prod_stock_prod_order', product_order_id)
             cust_prod_stock_record.setFieldValue('custrecord_cust_prod_stock_status', 7)
             nlapiSubmitRecord(cust_prod_stock_record);
         }
+
 
         old_customer_id = cust_prod_customer;
         count++;
@@ -717,7 +698,7 @@ function main() {
 
 /**
  * Return today's date
- * @return {[String]} date
+ * @return {[String]} today's date
  */
 function getDate() {
     var date = new Date();
