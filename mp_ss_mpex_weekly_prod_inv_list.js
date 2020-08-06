@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of every week            
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-16 14:36:03
+ * @Last Modified time: 2020-08-01 09:28:59
  *
  */
 
@@ -65,18 +65,15 @@ function main(type) {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+
     todayDate = new Date();
+    nlapiLogExecution('DEBUG', todayDate)
+
     todayDate.setHours(todayDate.getHours() + 17);
+    nlapiLogExecution('DEBUG', todayDate)
 
-    var lastSat = nlapiAddDays(todayDate, -2);
-
-    if ((lastSat.getMonth() - todayDate.getMonth()) == 0) {
-        //if last Sat is same month to today, use today's date
-        tranDate = nlapiDateToString(todayDate);
-    } else {
-        //if last Sat is in the previous month, use last Friday's date
-        tranDate = nlapiDateToString(nlapiAddDays(todayDate, -3));
-    }
+    tranDate = nlapiDateToString(todayDate);
+    nlapiLogExecution('DEBUG', tranDate)
 
     // SEARCH: MPEX Weekly Product Order Invoicing (List) - DO NOT DELETE
     var searchResults = nlapiSearchRecord('customrecord_mp_ap_product_order', 'customsearchweekly_mpex_invoice_list');

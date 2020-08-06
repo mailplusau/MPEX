@@ -7,7 +7,7 @@
  * Description:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:48
+ * @Last Modified time: 2020-07-16 15:46:27
  *
  */
 
@@ -74,14 +74,6 @@ function pageInit() {
         var mpex_b4 = searchResult.getValue("custentity_mpex_b4_price_point");
         var mpex_c5 = searchResult.getValue("custentity_mpex_c5_price_point");
         var mpex_dl = searchResult.getValue("custentity_mpex_dl_price_point");
-        var mpex_1kg_new = searchResult.getValue("custentity_mpex_1kg_price_point_new");
-        var mpex_3kg_new = searchResult.getValue("custentity_mpex_3kg_price_point_new");
-        var mpex_5kg_new = searchResult.getValue("custentity_mpex_5kg_price_point_new");
-        var mpex_500g_new = searchResult.getValue("custentity_mpex_500g_price_point_new");
-        var mpex_b4_new = searchResult.getValue("custentity_mpex_b4_price_point_new");
-        var mpex_c5_new = searchResult.getValue("custentity_mpex_c5_price_point_new");
-        var mpex_dl_new = searchResult.getValue("custentity_mpex_dl_price_point_new");
-        var mpex_start_date = searchResult.getValue("custentity_mpex_price_point_start_date");
 
         if (isNullorEmpty(mpex_1kg)) {
             mpex_1kg = '0';
@@ -105,35 +97,9 @@ function pageInit() {
             mpex_dl = '0';
         }
 
-        if (isNullorEmpty(mpex_1kg_new)) {
-            mpex_1kg_new = '0';
-        }
-        if (isNullorEmpty(mpex_3kg_new)) {
-            mpex_3kg_new = '0';
-        }
-        if (isNullorEmpty(mpex_5kg_new)) {
-            mpex_5kg_new = '0';
-        }
-        if (isNullorEmpty(mpex_500g_new)) {
-            mpex_500g_new = '0';
-        }
-        if (isNullorEmpty(mpex_b4_new)) {
-            mpex_b4_new = '0';
-        }
-        if (isNullorEmpty(mpex_c5_new)) {
-            mpex_c5_new = '0';
-        }
-        if (isNullorEmpty(mpex_dl_new)) {
-            mpex_dl_new = '0';
-        }
-
-        if (isNullorEmpty(mpex_start_date)) {
-            mpex_start_date = '';
-        }
-
         console.log(mpex_1kg)
 
-        dataSet += '{"cust_id":"' + custid + '", "entityid":"' + entityid + '", "companyname_text":"' + companyname + '", "company_name":"' + companyname + '","mpex_1kg": "' + mpex_1kg + '","mpex_3kg": "' + mpex_3kg + '","mpex_5kg": "' + mpex_5kg + '","mpex_500g": "' + mpex_500g + '","mpex_b4": "' + mpex_b4 + '","mpex_c5": "' + mpex_c5 + '","mpex_dl": "' + mpex_dl + '","mpex_1kg_new": "' + mpex_1kg_new + '","mpex_3kg_new": "' + mpex_3kg_new + '","mpex_5kg_new": "' + mpex_5kg_new + '","mpex_500g_new": "' + mpex_500g_new + '","mpex_b4_new": "' + mpex_b4_new + '","mpex_c5_new": "' + mpex_c5_new + '","mpex_dl_new": "' + mpex_dl_new + '", "mpex_start_date": "' + mpex_start_date + '"},';
+        dataSet += '{"cust_id":"' + custid + '", "entityid":"' + entityid + '", "companyname_text":"' + companyname + '", "company_name":"' + companyname + '","mpex_1kg": "' + mpex_1kg + '","mpex_3kg": "' + mpex_3kg + '","mpex_5kg": "' + mpex_5kg + '","mpex_500g": "' + mpex_500g + '","mpex_b4": "' + mpex_b4 + '","mpex_c5": "' + mpex_c5 + '","mpex_dl": "' + mpex_dl + '"},';
 
         count++;
         return true;
@@ -173,11 +139,6 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    return '<p><b>' + data.mpex_start_date + '</b><p>';
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
                     var column_data = '<input type="hidden" class="form-control old_5kg text-center" value="' + data.mpex_5kg + '"><select class="form-control 5kg text-center">';
                     if (data.mpex_5kg == 1) {
 
@@ -200,25 +161,7 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_5kg_new text-center" value="' + data.mpex_5kg_new + '"><select class="form-control 3kg text-center">';
-                    if (data.mpex_5kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_5kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_5kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_3kg text-center" value="' + data.mpex_3kg + '"><select class="form-control 1kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_3kg text-center" value="' + data.mpex_3kg + '"><select class="form-control 3kg text-center">';
                     if (data.mpex_3kg == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_3kg == "2") {
@@ -236,25 +179,7 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_3kg_new text-center" value="' + data.mpex_3kg_new + '"><select class="form-control 500g text-center">';
-                    if (data.mpex_3kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_3kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_3kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_1kg text-center" value="' + data.mpex_1kg + '"><select class="form-control b4 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_1kg text-center" value="' + data.mpex_1kg + '"><select class="form-control 1kg text-center">';
                     if (data.mpex_1kg == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_1kg == "2") {
@@ -272,25 +197,7 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_1kg_new text-center" value="' + data.mpex_1kg_new + '"><select class="form-control c5 text-center">';
-                    if (data.mpex_1kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_1kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_1kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_500g text-center" value="' + data.mpex_500g + '"><select class="form-control dl text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_500g text-center" value="' + data.mpex_500g + '"><select class="form-control 500g text-center">';
                     if (data.mpex_500g == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_500g == "2") {
@@ -304,33 +211,11 @@ function pageInit() {
                     column_data += '</select>';
                     return column_data;
 
-                },
+                }
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_500g_new text-center" value="' + data.mpex_500g_new + '"><select class="form-control 5kg text-center">';
-                    if (data.mpex_500g_new == 1) {
-
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option>h<option value="4">Standard</option>'
-                    } else if (data.mpex_500g_new == 2) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_500g_new == 4) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-                },
-
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_b4 text-center" value="' + data.mpex_b4 + '"><select class="form-control 3kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_b4 text-center" value="' + data.mpex_b4 + '"><select class="form-control b4 text-center">';
                     if (data.mpex_b4 == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_b4 == "2") {
@@ -348,25 +233,7 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_b4_new text-center" value="' + data.mpex_b4_new + '"><select class="form-control 1kg text-center">';
-                    if (data.mpex_b4_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_b4_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_b4_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_c5 text-center" value="' + data.mpex_c5 + '"><select class="form-control 500g text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_c5 text-center" value="' + data.mpex_c5 + '"><select class="form-control c5 text-center">';
                     if (data.mpex_c5 == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_c5 == "2") {
@@ -384,25 +251,7 @@ function pageInit() {
             }, {
                 "data": null,
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_c5_new text-center" value="' + data.mpex_c5_new + '"><select class="form-control b4 text-center">';
-                    if (data.mpex_c5_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_c5_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_c5_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_dl text-center" value="' + data.mpex_dl + '"><select class="form-control c5 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_dl text-center" value="' + data.mpex_dl + '"><select class="form-control dl text-center">';
                     if (data.mpex_dl == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_dl == "2") {
@@ -417,24 +266,6 @@ function pageInit() {
                     return column_data;
 
                 }
-            }, {
-                "data": null,
-                "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_dl_new text-center" value="' + data.mpex_dl_new + '"><select class="form-control dl text-center">';
-                    if (data.mpex_dl_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_dl_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_dl_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
-                    } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
-                    }
-
-                    column_data += '</select>';
-                    return column_data;
-
-                },
             }],
             "order": [
                 [1, 'asc']
@@ -445,173 +276,90 @@ function pageInit() {
                 "header": true
             },
             "createdRow": function(row, data, index) {
-                console.log(row);
+                console.log(data.mpex_5kg);
                 console.log(index);
                 if (data.mpex_5kg == 1) {
-                    $('td', row).eq(3).css('background-color', '#ecc60b');
+                    $('td', row).eq(2).css('background-color', '#ecc60b');
 
                 } else if (data.mpex_5kg == 2) {
-                    $('td', row).eq(3).css('background-color', '#a7a6a1');
+                    $('td', row).eq(2).css('background-color', '#a7a6a1');
 
                 } else if (data.mpex_5kg == 4) {
+                    $('td', row).eq(2).css('background-color', '#7abcf5');
+
+                } else {
+                    $('td', row).eq(2).removeAttr("style");
+                }
+                if (data.mpex_3kg == 1) {
+                    $('td', row).eq(3).css('background-color', '#ecc60b');
+
+                } else if (data.mpex_3kg == 2) {
+                    $('td', row).eq(3).css('background-color', '#a7a6a1');
+
+                } else if (data.mpex_3kg == 4) {
                     $('td', row).eq(3).css('background-color', '#7abcf5');
 
                 } else {
                     $('td', row).eq(3).removeAttr("style");
                 }
-                if (data.mpex_5kg_new == 1) {
+                if (data.mpex_1kg == 1) {
                     $('td', row).eq(4).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_5kg == 2) {
+                } else if (data.mpex_1kg == 2) {
                     $('td', row).eq(4).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_5kg == 4) {
+                } else if (data.mpex_1kg == 4) {
                     $('td', row).eq(4).css('background-color', '#7abcf5');
 
                 } else {
                     $('td', row).eq(4).removeAttr("style");
                 }
-                if (data.mpex_3kg == 1) {
+                if (data.mpex_500g == 1) {
                     $('td', row).eq(5).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_3kg == 2) {
+                } else if (data.mpex_500g == 2) {
                     $('td', row).eq(5).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_3kg == 4) {
+                } else if (data.mpex_500g == 4) {
                     $('td', row).eq(5).css('background-color', '#7abcf5');
 
                 } else {
                     $('td', row).eq(5).removeAttr("style");
                 }
-                if (data.mpex_3kg_new == 1) {
+                if (data.mpex_b4 == 1) {
                     $('td', row).eq(6).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_3kg_new == 2) {
+                } else if (data.mpex_b4 == 2) {
                     $('td', row).eq(6).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_3kg_new == 4) {
+                } else if (data.mpex_b4 == 4) {
                     $('td', row).eq(6).css('background-color', '#7abcf5');
 
                 } else {
                     $('td', row).eq(6).removeAttr("style");
                 }
-                if (data.mpex_1kg == 1) {
+                if (data.mpex_c5 == 1) {
                     $('td', row).eq(7).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_1kg == 2) {
+                } else if (data.mpex_c5 == 2) {
                     $('td', row).eq(7).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_1kg == 4) {
+                } else if (data.mpex_c5 == 4) {
                     $('td', row).eq(7).css('background-color', '#7abcf5');
-
                 } else {
                     $('td', row).eq(7).removeAttr("style");
                 }
-                 if (data.mpex_1kg_new == 1) {
+                if (data.mpex_dl == 1) {
                     $('td', row).eq(8).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_1kg_new == 2) {
+                } else if (data.mpex_dl == 2) {
                     $('td', row).eq(8).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_1kg_new == 4) {
+                } else if (data.mpex_dl == 4) {
                     $('td', row).eq(8).css('background-color', '#7abcf5');
 
                 } else {
                     $('td', row).eq(8).removeAttr("style");
-                }
-                if (data.mpex_500g == 1) {
-                    $('td', row).eq(9).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_500g == 2) {
-                    $('td', row).eq(9).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_500g == 4) {
-                    $('td', row).eq(9).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(9).removeAttr("style");
-                }
-                if (data.mpex_500g_new == 1) {
-                    $('td', row).eq(10).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_500g_new == 2) {
-                    $('td', row).eq(10).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_500g_new == 4) {
-                    $('td', row).eq(10).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(10).removeAttr("style");
-                }
-                if (data.mpex_b4 == 1) {
-                    $('td', row).eq(11).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_b4 == 2) {
-                    $('td', row).eq(11).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_b4 == 4) {
-                    $('td', row).eq(11).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(11).removeAttr("style");
-                }
-                if (data.mpex_b4_new == 1) {
-                    $('td', row).eq(12).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_b4_new == 2) {
-                    $('td', row).eq(12).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_b4_new == 4) {
-                    $('td', row).eq(12).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(12).removeAttr("style");
-                }
-                if (data.mpex_c5 == 1) {
-                    $('td', row).eq(13).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_c5 == 2) {
-                    $('td', row).eq(13).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_c5 == 4) {
-                    $('td', row).eq(13).css('background-color', '#7abcf5');
-                } else {
-                    $('td', row).eq(13).removeAttr("style");
-                }
-                if (data.mpex_c5_new == 1) {
-                    $('td', row).eq(14).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_c5_new == 2) {
-                    $('td', row).eq(14).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_c5_new == 4) {
-                    $('td', row).eq(14).css('background-color', '#7abcf5');
-                } else {
-                    $('td', row).eq(14).removeAttr("style");
-                }
-                if (data.mpex_dl == 1) {
-                    $('td', row).eq(15).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_dl == 2) {
-                    $('td', row).eq(15).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_dl == 4) {
-                    $('td', row).eq(15).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(15).removeAttr("style");
-                }
-                if (data.mpex_dl_new == 1) {
-                    $('td', row).eq(16).css('background-color', '#ecc60b');
-
-                } else if (data.mpex_dl_new == 2) {
-                    $('td', row).eq(16).css('background-color', '#a7a6a1');
-
-                } else if (data.mpex_dl_new == 4) {
-                    $('td', row).eq(16).css('background-color', '#7abcf5');
-
-                } else {
-                    $('td', row).eq(16).removeAttr("style");
                 }
             }
         });
@@ -820,7 +568,6 @@ function saveRecord() {
         if (mpex_1kg_elem[x].value != mpex_old_1kg_elem[x].value || mpex_3kg_elem[x].value != mpex_old_3kg_elem[x].value || mpex_5kg_elem[x].value != mpex_old_5kg_elem[x].value || mpex_500g_elem[x].value != mpex_old_500g_elem[x].value || mpex_b4_elem[x].value != mpex_old_b4_elem[x].value || mpex_c5_elem[x].value != mpex_old_c5_elem[x].value || mpex_dl_elem[x].value != mpex_old_dl_elem[x].value) {
 
             var customer_record = nlapiLoadRecord('customer', customer_id_elem[x].value);
-            var mpex_invoicing = customer_record.getFieldValue('custentity_mpex_invoicing_cycle')
 
             if (mpex_1kg_elem[x].value != mpex_old_1kg_elem[x].value) {
                 if (mpex_1kg_elem[x].value == '0') {
@@ -864,7 +611,7 @@ function saveRecord() {
                 } else {
                     customer_record.setFieldValue('custentity_mpex_b4_price_point', mpex_b4_elem[x].value);
                 }
-
+                
             }
             if (mpex_c5_elem[x].value != mpex_old_c5_elem[x].value) {
                 if (mpex_c5_elem[x].value == '0') {
@@ -872,7 +619,7 @@ function saveRecord() {
                 } else {
                     customer_record.setFieldValue('custentity_mpex_c5_price_point', mpex_c5_elem[x].value);
                 }
-
+                
             }
             if (mpex_dl_elem[x].value != mpex_old_dl_elem[x].value) {
                 if (mpex_dl_elem[x].value == '0') {
@@ -880,7 +627,7 @@ function saveRecord() {
                 } else {
                     customer_record.setFieldValue('custentity_mpex_dl_price_point', mpex_dl_elem[x].value);
                 }
-
+                
 
             }
             if (isNullorEmpty(mpex_invoicing) || mpex_invoicing == 1) {
@@ -891,7 +638,12 @@ function saveRecord() {
 
             customer_record.setFieldValue('custentity_mpex_price_date_update', getDate());
             nlapiSubmitRecord(customer_record)
+
         }
+
+
+
+
     }
 
     return true;

@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX Weekly Invoicing     
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-28 15:40:55
+ * @Last Modified time: 2020-08-07 09:03:34
  *
  */
 
@@ -20,11 +20,9 @@ var ctx = nlapiGetContext();
 function main() {
 
     nlapiLogExecution('AUDIT', 'prev_deployment', ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order'));
-    if (!isNullorEmpty(ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order'))) {
-        prev_inv_deploy = ctx.getSetting('SCRIPT', 'custscript_prev_deploy_create_prod_order');
-    } else {
-        prev_inv_deploy = ctx.getDeploymentId();
-    }
+
+    prev_inv_deploy = ctx.getDeploymentId();
+
 
     /**
      * MPEX - To Create Product Order (For Weekly Invoicing)
@@ -52,6 +50,8 @@ function main() {
         var single_platinum_toll = searchResult.getValue("custrecord_cust_prod_stock_3rd_party_tol");
         var single_standard_mp = searchResult.getValue("custrecord_mpex_standard_mp_rate");
         var single_standard_toll = searchResult.getValue("custrecord_mpex_standard_toll_rate");
+        var single_direct_toll = searchResult.getValue("custrecord_cust_prod_stock_direct_toll");
+        var single_direct_mp = searchResult.getValue("custrecord_cust_prod_stock_direct_mp");
         var cust_prod_stock_status = searchResult.getValue("custrecord_cust_prod_stock_status");
         var special_customer_type = searchResult.getValue("custentity_special_customer_type", "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
         var mpex_5kg_price_point = parseInt(searchResult.getValue("custentity_mpex_5kg_price_point", "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null));
@@ -100,7 +100,9 @@ function main() {
             product_order_rec.setFieldValue('custrecord_mp_ap_order_franchisee', cust_prod_zee);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_order_status', 4); //Order Fulfilled
             product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '31/07/2020');
             product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '31/07/2020');
             product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
             product_order_id = nlapiSubmitRecord(product_order_rec);
 
@@ -112,7 +114,7 @@ function main() {
             ap_stock_line_item.setFieldValue('custrecord_ap_product_order', product_order_id);
 
 
-            var barcode_beg = cust_prod_item.slice(0, 4);
+            var barcode_beg = barcode.slice(0, 4);
 
             /**
              * Pricing Points:
@@ -153,6 +155,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -182,6 +191,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
                         default:
@@ -215,6 +231,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -244,6 +267,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
                         default:
@@ -277,6 +307,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -308,6 +345,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -324,19 +368,19 @@ function main() {
              * Old Line Items Creation
              * Based on the delivery method and the special customer type.
              */
-            if (isNullorEmpty(special_customer_type) || special_customer_type != 4) {
-                if (cust_prod_stock_status == 4) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
-                } else if (cust_prod_stock_status == 5) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
-                }
-            } else if (special_customer_type == 4) {
-                if (cust_prod_stock_status == 4) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
-                } else if (cust_prod_stock_status == 5) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
-                }
-            }
+            // if (isNullorEmpty(special_customer_type) || special_customer_type != 4) {
+            //     if (cust_prod_stock_status == 4) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+            //     } else if (cust_prod_stock_status == 5) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+            //     }
+            // } else if (special_customer_type == 4) {
+            //     if (cust_prod_stock_status == 4) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
+            //     } else if (cust_prod_stock_status == 5) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
+            //     }
+            // }
 
 
             nlapiLogExecution('DEBUG', 'Details', 'Date Used:' + new_date + '-' + barcode);
@@ -362,7 +406,7 @@ function main() {
             var ap_stock_line_item = nlapiCreateRecord('customrecord_ap_stock_line_item');
             ap_stock_line_item.setFieldValue('custrecord_ap_product_order', product_order_id);
 
-            var barcode_beg = cust_prod_item.slice(0, 4);
+            var barcode_beg = barcode.slice(0, 4);
 
             /**
              * Pricing Points:
@@ -403,6 +447,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -432,6 +483,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
                         default:
@@ -465,6 +523,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -494,6 +559,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
                         default:
@@ -527,6 +599,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -558,6 +637,13 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
                             }
                             break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -574,19 +660,19 @@ function main() {
              * Old Line Items Creation
              * Based on the delivery method and the special customer type.
              */
-            if (isNullorEmpty(special_customer_type) || special_customer_type != 4) {
-                if (cust_prod_stock_status == 4) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
-                } else if (cust_prod_stock_status == 5) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
-                }
-            } else if (special_customer_type == 4) {
-                if (cust_prod_stock_status == 4) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
-                } else if (cust_prod_stock_status == 5) {
-                    ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
-                }
-            }
+            // if (isNullorEmpty(special_customer_type) || special_customer_type != 4) {
+            //     if (cust_prod_stock_status == 4) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+            //     } else if (cust_prod_stock_status == 5) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+            //     }
+            // } else if (special_customer_type == 4) {
+            //     if (cust_prod_stock_status == 4) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
+            //     } else if (cust_prod_stock_status == 5) {
+            //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
+            //     }
+            // }
             ap_stock_line_item.setFieldValue('custrecord_ap_line_item_inv_details', 'Used:' + new_date + '-' + barcode);
             ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_actual_qty', 1);
             nlapiSubmitRecord(ap_stock_line_item);
@@ -616,6 +702,9 @@ function main() {
  */
 function getDate() {
     var date = new Date();
+    if (date.getHours() > 6) {
+        date = nlapiAddDays(date, 1);
+    }
     date = nlapiDateToString(date);
 
     return date;

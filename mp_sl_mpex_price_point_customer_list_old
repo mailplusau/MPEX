@@ -7,7 +7,7 @@
  * Remarks: Page to show the list of all the customers based on the franchisee. To convert all the items listed in the financial tab into service records. Ability for the franchisee to cancel a customer as well.        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:45
+ * @Last Modified time: 2020-07-16 09:10:11
  *
  */
 
@@ -97,7 +97,7 @@ function main(request, response) {
 
     // form.addField('custpage_html2', 'inlinehtml').setPadding(1).setLayoutType('outsideabove').setDefaultValue(inlinehtml2);
 
-    inlineQty += '<br><br><table border="0" cellpadding="15" id="customer" class="display tablesorter table table-striped table-bordered table-responsive" cellspacing="0"><thead style="color: white;background-color: #607799;"><tr><th class="text-center">ID</th><th class="text-center">Customer</th><th class="text-center">Date Scheduled</th><th class="text-center" colspan=2>5Kg </th><th class="text-center" colspan=2>3Kg</th><th  class="text-center" colspan=2>1Kg</th><th class="text-center" colspan=2>500g</th><th class="text-center" colspan=2>B4</th><th class="text-center" colspan=2>C5</th><th class="text-center" colspan=2>DL</th></tr><tr><th class="text-center"></th><th class="text-center"></th><th class="text-center"></th><th class="text-center">Current</th><th class="text-center">Scheduled</th><th class="text-center">Current</th><th class="text-center">Scheduled</th><th class="text-center">Current</th><th class="text-center">Scheduled</th><th class="text-center">Cuurent</th></th><th class="text-center">Scheduled</th><th class="text-center">Current</th><th  class="text-center">Scheduled</th><th class="text-center">Current</th><th class="text-center">Scheduled</th><th class="text-center">Current</th><th class="text-center">Scheduled</th></tr></thead>';
+    inlineQty += '<br><br><table border="0" cellpadding="15" id="customer" class="display tablesorter table table-striped table-bordered table-responsive" cellspacing="0"><thead style="color: white;background-color: #607799;"><tr><th class="text-center">ID</th><th class="text-center">Customer</th><th class="text-center">5Kg </th><th class="text-center">3Kg</th><th  class="text-center">1Kg</th><th class="text-center">500g</th><th class="text-center">B4</th><th class="text-center">C5</th><th class="text-center">DL</th></tr></thead>';
 
 
 

@@ -7,7 +7,7 @@
  * Description: Schedule Script to update the Letter Code based on the Price Point selected for each product skew        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-23 10:37:33
+ * @Last Modified time: 2020-07-31 11:07:50
  *
  */
 
@@ -20,7 +20,9 @@ var ctx = nlapiGetContext();
  */
 function setLetterType() {
 
-
+    /**
+     * Search: MPEX Price Point - Customer List (Letter Code Updated)
+     */
     var mpexPricingCustomerList = nlapiLoadSearch('customer', 'customsearch_mpex_price_point_customer_5');
     var resultSetMpexPricing = mpexPricingCustomerList.runSearch();
 
