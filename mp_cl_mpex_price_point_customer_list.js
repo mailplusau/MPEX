@@ -6,8 +6,8 @@
  *
  * Description:         
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:48
+ * @Last Modified by:   Ankith Ravindran
+ * @Last Modified time: 2020-08-07 15:35:53
  *
  */
 
@@ -33,7 +33,7 @@ if (nlapiGetContext().getEnvironment() == "SANDBOX") {
 //To show loader while the page is laoding
 $(window).load(function() {
     // Animate loader off screen
-    $(".se-pre-con").fadeOut("slow");;
+    $(".se-pre-con").fadeOut("slow");
 });
 
 var table;
@@ -45,7 +45,7 @@ function pageInit() {
 
     console.log(nlapiGetFieldValue('zee'));
 
-    //Search: Product Stock - Customer Level
+    //Search: MPEX Price Point - Customer List
     var mpexPriceSearch = nlapiLoadSearch('customer', 'customsearch_mpex_price_point_customer');
 
     var addFilterExpression = new nlobjSearchFilter('partner', null, 'anyof', parseInt(nlapiGetFieldValue('zee')));
@@ -53,11 +53,8 @@ function pageInit() {
 
     var resultSetCustomer = mpexPriceSearch.runSearch();
 
-
     var count = 0;
     var customer_count = 0;
-
-
 
     var dataSet = '{"data":[';
 
@@ -83,6 +80,7 @@ function pageInit() {
         var mpex_dl_new = searchResult.getValue("custentity_mpex_dl_price_point_new");
         var mpex_start_date = searchResult.getValue("custentity_mpex_price_point_start_date");
 
+        //Current MPEX Price Points
         if (isNullorEmpty(mpex_1kg)) {
             mpex_1kg = '0';
         }
@@ -105,6 +103,7 @@ function pageInit() {
             mpex_dl = '0';
         }
 
+        //New MPEX Price Points
         if (isNullorEmpty(mpex_1kg_new)) {
             mpex_1kg_new = '0';
         }
@@ -127,19 +126,18 @@ function pageInit() {
             mpex_dl_new = '0';
         }
 
+        //MPEX Price Points Start Date
         if (isNullorEmpty(mpex_start_date)) {
             mpex_start_date = '';
         }
 
-        console.log(mpex_1kg)
 
+        //Create data set for each customer
         dataSet += '{"cust_id":"' + custid + '", "entityid":"' + entityid + '", "companyname_text":"' + companyname + '", "company_name":"' + companyname + '","mpex_1kg": "' + mpex_1kg + '","mpex_3kg": "' + mpex_3kg + '","mpex_5kg": "' + mpex_5kg + '","mpex_500g": "' + mpex_500g + '","mpex_b4": "' + mpex_b4 + '","mpex_c5": "' + mpex_c5 + '","mpex_dl": "' + mpex_dl + '","mpex_1kg_new": "' + mpex_1kg_new + '","mpex_3kg_new": "' + mpex_3kg_new + '","mpex_5kg_new": "' + mpex_5kg_new + '","mpex_500g_new": "' + mpex_500g_new + '","mpex_b4_new": "' + mpex_b4_new + '","mpex_c5_new": "' + mpex_c5_new + '","mpex_dl_new": "' + mpex_dl_new + '", "mpex_start_date": "' + mpex_start_date + '"},';
 
         count++;
         return true;
     });
-
-
 
     if (count > 0) {
         dataSet = dataSet.substring(0, dataSet.length - "1");
@@ -154,283 +152,287 @@ function pageInit() {
     var parsedData = JSON.parse(dataSet);
     console.log(parsedData.data);
 
-    // AddStyle('https://1048144.app.netsuite.com/core/media/media.nl?id=1988776&c=1048144&h=58352d0b4544df20b40f&_xt=.css', 'head');
-
     //JQuery to sort table based on click of header. Attached library  
     $(document).ready(function() {
         table = $("#customer").DataTable({
             "data": parsedData.data,
             "columns": [{
-                "data": null,
+                "data": null, //Entity ID
                 "render": function(data, type, row) {
                     return '<p><b>' + data.entityid + '</b><p>';
                 }
             }, {
-                "data": null,
+                "data": null, //Company Name
                 "render": function(data, type, row) {
                     return '<p><b>' + data.companyname_text + '</b><p><input type="hidden" class="form-control customer_id text-center" value="' + data.cust_id + '">';
                 }
             }, {
                 "data": null,
-                "render": function(data, type, row) {
+                "render": function(data, type, row) { //MPEX Start Date
                     return '<p><b>' + data.mpex_start_date + '</b><p>';
                 }
             }, {
-                "data": null,
+                "data": null, // MPEX 5Kg Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_5kg text-center" value="' + data.mpex_5kg + '"><select class="form-control 5kg text-center">';
-                    if (data.mpex_5kg == 1) {
-
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option>h<option value="4">Standard</option>'
-                    } else if (data.mpex_5kg == 2) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
-                    } else if (data.mpex_5kg == 4) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                    var column_data = '<input type="hidden" class="form-control old_5kg text-center" value="' + data.mpex_5kg + '"><select class="form-control 5kg text-center" disabled>';
+                    if (data.mpex_5kg == '1') {
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option>h<option value="4">Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_5kg == '2') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_5kg == '4') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_5kg == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
                 },
 
             }, {
-                "data": null,
+                "data": null, //MPEX 5Kg New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_5kg_new text-center" value="' + data.mpex_5kg_new + '"><select class="form-control 3kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_5kg_new text-center" value="' + data.mpex_5kg_new + '"><select class="form-control 5kg_new text-center" >';
                     if (data.mpex_5kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_5kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_5kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_5kg_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX 3Kg Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_3kg text-center" value="' + data.mpex_3kg + '"><select class="form-control 1kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_3kg text-center" value="' + data.mpex_3kg + '"><select class="form-control 3kg text-center" disabled>';
                     if (data.mpex_3kg == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_3kg == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_3kg == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_3kg == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX 3Kg New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_3kg_new text-center" value="' + data.mpex_3kg_new + '"><select class="form-control 500g text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_3kg_new text-center" value="' + data.mpex_3kg_new + '"><select class="form-control 3kg_new text-center">';
                     if (data.mpex_3kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_3kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_3kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_3kg == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX 1Kg Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_1kg text-center" value="' + data.mpex_1kg + '"><select class="form-control b4 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_1kg text-center" value="' + data.mpex_1kg + '"><select class="form-control 1kg text-center" disabled>';
                     if (data.mpex_1kg == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_1kg == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_1kg == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_1kg == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX 1Kg New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_1kg_new text-center" value="' + data.mpex_1kg_new + '"><select class="form-control c5 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_1kg_new text-center" value="' + data.mpex_1kg_new + '"><select class="form-control 1kg_new text-center">';
                     if (data.mpex_1kg_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_1kg_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_1kg_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_1kg_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX 500g Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_500g text-center" value="' + data.mpex_500g + '"><select class="form-control dl text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_500g text-center" value="' + data.mpex_500g + '"><select class="form-control 500g text-center" disabled>';
                     if (data.mpex_500g == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_500g == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_500g == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_500g == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 },
             }, {
-                "data": null,
+                "data": null, //MPEX 500g New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_500g_new text-center" value="' + data.mpex_500g_new + '"><select class="form-control 5kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_500g_new text-center" value="' + data.mpex_500g_new + '"><select class="form-control 500g_new text-center">';
                     if (data.mpex_500g_new == 1) {
-
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option>h<option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option>h<option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_500g_new == 2) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_500g_new == 4) {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_500g_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
                 },
 
             }, {
-                "data": null,
+                "data": null, //MPEX B4 Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_b4 text-center" value="' + data.mpex_b4 + '"><select class="form-control 3kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_b4 text-center" value="' + data.mpex_b4 + '"><select class="form-control b4 text-center" disabled>';
                     if (data.mpex_b4 == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_b4 == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_b4 == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_b4 == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX B4 New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_b4_new text-center" value="' + data.mpex_b4_new + '"><select class="form-control 1kg text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_b4_new text-center" value="' + data.mpex_b4_new + '"><select class="form-control b4_new text-center">';
                     if (data.mpex_b4_new == "1") {
-                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_b4_new == "2") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     } else if (data.mpex_b4_new == "4") {
-                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option><option value="5">AP Match</option>'
+                    } else if (data.mpex_b4_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5">AP Match</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX C5 Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_c5 text-center" value="' + data.mpex_c5 + '"><select class="form-control 500g text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_c5 text-center" value="' + data.mpex_c5 + '"><select class="form-control c5 text-center" disabled>';
                     if (data.mpex_c5 == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_c5 == "2") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_c5 == "4") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                    } else if (data.mpex_c5 == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX C5 New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_c5_new text-center" value="' + data.mpex_c5_new + '"><select class="form-control b4 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_c5_new text-center" value="' + data.mpex_c5_new + '"><select class="form-control c5_new text-center">';
                     if (data.mpex_c5_new == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_c5_new == "2") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_c5_new == "4") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                    } else if (data.mpex_c5_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
                         column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX DL Current Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_dl text-center" value="' + data.mpex_dl + '"><select class="form-control c5 text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_dl text-center" value="' + data.mpex_dl + '"><select class="form-control dl text-center" disabled>';
                     if (data.mpex_dl == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_dl == "2") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_dl == "4") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                    } else if (data.mpex_dl == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
-                        column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
+                        column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
                 }
             }, {
-                "data": null,
+                "data": null, //MPEX DL New Price
                 "render": function(data, type, row) {
-                    var column_data = '<input type="hidden" class="form-control old_dl_new text-center" value="' + data.mpex_dl_new + '"><select class="form-control dl text-center">';
+                    var column_data = '<input type="hidden" class="form-control old_dl_new text-center" value="' + data.mpex_dl_new + '"><select class="form-control dl_new text-center">';
                     if (data.mpex_dl_new == "1") {
                         column_data += '<option value="0"></option><option value="1" selected>Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_dl_new == "2") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2" selected>Platinum</option><option value="4">Standard</option>'
                     } else if (data.mpex_dl_new == "4") {
                         column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4" selected>Standard</option>'
+                    } else if (data.mpex_dl_new == '5') {
+                        column_data += '<option value="0"></option><option value="1">Gold</option><option value="2">Platinum</option><option value="4">Standard</option><option value="5" selected>AP Match</option>'
                     } else {
                         column_data += '<option value="0"></option><option value="1" >Gold</option><option value="2">Platinum</option><option value="4">Standard</option>'
                     }
-
                     column_data += '</select>';
                     return column_data;
 
@@ -445,8 +447,7 @@ function pageInit() {
                 "header": true
             },
             "createdRow": function(row, data, index) {
-                console.log(row);
-                console.log(index);
+
                 if (data.mpex_5kg == 1) {
                     $('td', row).eq(3).css('background-color', '#ecc60b');
 
@@ -462,10 +463,10 @@ function pageInit() {
                 if (data.mpex_5kg_new == 1) {
                     $('td', row).eq(4).css('background-color', '#ecc60b');
 
-                } else if (data.mpex_5kg == 2) {
+                } else if (data.mpex_5kg_new == 2) {
                     $('td', row).eq(4).css('background-color', '#a7a6a1');
 
-                } else if (data.mpex_5kg == 4) {
+                } else if (data.mpex_5kg_new == 4) {
                     $('td', row).eq(4).css('background-color', '#7abcf5');
 
                 } else {
@@ -507,7 +508,7 @@ function pageInit() {
                 } else {
                     $('td', row).eq(7).removeAttr("style");
                 }
-                 if (data.mpex_1kg_new == 1) {
+                if (data.mpex_1kg_new == 1) {
                     $('td', row).eq(8).css('background-color', '#ecc60b');
 
                 } else if (data.mpex_1kg_new == 2) {
@@ -623,7 +624,6 @@ function pageInit() {
 
 
 
-
     for (var i = 0; i < main_table.length; i++) {
         // main_table[i].style.width = "50%";
     }
@@ -669,17 +669,7 @@ $(document).on('click', '.instruction_button', function() {
     });
 });
 
-function onclick_back() {
-    var params = {
-
-    }
-    params = JSON.stringify(params);
-    var upload_url = baseURL + nlapiResolveURL('SUITELET', 'customscript_sl_full_calendar', 'customdeploy_sl_full_calender') + '&unlayered=T&zee=' + parseInt(nlapiGetFieldValue('zee')) + '&custparam_params=' + params;
-    window.open(upload_url, "_self", "height=750,width=650,modal=yes,alwaysRaised=yes");
-}
-
-
-//On selecting zee, reload the SMC - Summary page with selected Zee parameter
+//On selecting zee, reload the page with selected Zee parameter
 $(document).on("change", ".zee_dropdown", function(e) {
 
     var zee = $(this).val();
@@ -691,7 +681,10 @@ $(document).on("change", ".zee_dropdown", function(e) {
     window.location.href = url;
 });
 
-$(document).on("change", ".1kg", function(e) {
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".1kg_new", function(e) {
 
     var mpex_1kg = $(this).val();
 
@@ -705,7 +698,11 @@ $(document).on("change", ".1kg", function(e) {
         $(this).closest('td').removeAttr("style")
     }
 });
-$(document).on("change", ".3kg", function(e) {
+
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".3kg_new", function(e) {
 
     var mpex_3kg = $(this).val();
 
@@ -719,7 +716,11 @@ $(document).on("change", ".3kg", function(e) {
         $(this).closest('td').removeAttr("style")
     }
 });
-$(document).on("change", ".5kg", function(e) {
+
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".5kg_new", function(e) {
 
     var mpex_5kg = $(this).val();
 
@@ -734,7 +735,10 @@ $(document).on("change", ".5kg", function(e) {
     }
 });
 
-$(document).on("change", ".500g", function(e) {
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".500g_new", function(e) {
 
     var mpex_500g = $(this).val();
 
@@ -749,7 +753,10 @@ $(document).on("change", ".500g", function(e) {
     }
 });
 
-$(document).on("change", ".b4", function(e) {
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".b4_new", function(e) {
 
     var mpex_b4 = $(this).val();
 
@@ -764,7 +771,10 @@ $(document).on("change", ".b4", function(e) {
     }
 });
 
-$(document).on("change", ".c5", function(e) {
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".c5_new", function(e) {
 
     var mpex_c5 = $(this).val();
 
@@ -779,7 +789,10 @@ $(document).on("change", ".c5", function(e) {
     }
 });
 
-$(document).on("change", ".dl", function(e) {
+/**
+ * Change background color based on the selection from the dropdown
+ */
+$(document).on("change", ".dl_new", function(e) {
 
     var mpex_dl = $(this).val();
 
@@ -794,23 +807,26 @@ $(document).on("change", ".dl", function(e) {
     }
 });
 
+/**
+ * Save customer records based on the selection.  
+ */
 function saveRecord() {
 
     var customer_id_elem = document.getElementsByClassName("customer_id");
-    var mpex_1kg_elem = document.getElementsByClassName("1kg");
-    var mpex_old_1kg_elem = document.getElementsByClassName("old_1kg");
-    var mpex_3kg_elem = document.getElementsByClassName("3kg");
-    var mpex_old_3kg_elem = document.getElementsByClassName("old_3kg");
-    var mpex_5kg_elem = document.getElementsByClassName("5kg");
-    var mpex_old_5kg_elem = document.getElementsByClassName("old_5kg");
-    var mpex_500g_elem = document.getElementsByClassName("500g");
-    var mpex_old_500g_elem = document.getElementsByClassName("old_500g");
-    var mpex_b4_elem = document.getElementsByClassName("b4");
-    var mpex_old_b4_elem = document.getElementsByClassName("old_b4");
-    var mpex_c5_elem = document.getElementsByClassName("c5");
-    var mpex_old_c5_elem = document.getElementsByClassName("old_c5");
-    var mpex_dl_elem = document.getElementsByClassName("dl");
-    var mpex_old_dl_elem = document.getElementsByClassName("old_dl");
+    var mpex_1kg_elem = document.getElementsByClassName("1kg_new");
+    var mpex_old_1kg_elem = document.getElementsByClassName("old_1kg_new");
+    var mpex_3kg_elem = document.getElementsByClassName("3kg_new");
+    var mpex_old_3kg_elem = document.getElementsByClassName("old_3kg_new");
+    var mpex_5kg_elem = document.getElementsByClassName("5kg_new");
+    var mpex_old_5kg_elem = document.getElementsByClassName("old_5kg_new");
+    var mpex_500g_elem = document.getElementsByClassName("500g_new");
+    var mpex_old_500g_elem = document.getElementsByClassName("old_500g_new");
+    var mpex_b4_elem = document.getElementsByClassName("b4_new");
+    var mpex_old_b4_elem = document.getElementsByClassName("old_b4_new");
+    var mpex_c5_elem = document.getElementsByClassName("c5_new");
+    var mpex_old_c5_elem = document.getElementsByClassName("old_c5_new");
+    var mpex_dl_elem = document.getElementsByClassName("dl_new");
+    var mpex_old_dl_elem = document.getElementsByClassName("old_dl_new");
 
 
     for (var x = 0; x < customer_id_elem.length; x++) {
@@ -824,9 +840,9 @@ function saveRecord() {
 
             if (mpex_1kg_elem[x].value != mpex_old_1kg_elem[x].value) {
                 if (mpex_1kg_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_1kg_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_1kg_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_1kg_price_point', mpex_1kg_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_1kg_price_point_new', mpex_1kg_elem[x].value);
                 }
 
 
@@ -834,9 +850,9 @@ function saveRecord() {
             }
             if (mpex_3kg_elem[x].value != mpex_old_3kg_elem[x].value) {
                 if (mpex_3kg_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_3kg_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_3kg_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_3kg_price_point', mpex_3kg_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_3kg_price_point_new', mpex_3kg_elem[x].value);
                 }
 
 
@@ -844,41 +860,41 @@ function saveRecord() {
             }
             if (mpex_5kg_elem[x].value != mpex_old_5kg_elem[x].value) {
                 if (mpex_5kg_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_5kg_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_5kg_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_5kg_price_point', mpex_5kg_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_5kg_price_point_new', mpex_5kg_elem[x].value);
                 }
 
             }
             if (mpex_500g_elem[x].value != mpex_old_500g_elem[x].value) {
                 if (mpex_500g_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_500g_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_500g_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_500g_price_point', mpex_500g_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_500g_price_point_new', mpex_500g_elem[x].value);
                 }
 
             }
             if (mpex_b4_elem[x].value != mpex_old_b4_elem[x].value) {
                 if (mpex_b4_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_b4_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_b4_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_b4_price_point', mpex_b4_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_b4_price_point_new', mpex_b4_elem[x].value);
                 }
 
             }
             if (mpex_c5_elem[x].value != mpex_old_c5_elem[x].value) {
                 if (mpex_c5_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_c5_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_c5_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_c5_price_point', mpex_c5_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_c5_price_point_new', mpex_c5_elem[x].value);
                 }
 
             }
             if (mpex_dl_elem[x].value != mpex_old_dl_elem[x].value) {
                 if (mpex_dl_elem[x].value == '0') {
-                    customer_record.setFieldValue('custentity_mpex_dl_price_point', null);
+                    customer_record.setFieldValue('custentity_mpex_dl_price_point_new', null);
                 } else {
-                    customer_record.setFieldValue('custentity_mpex_dl_price_point', mpex_dl_elem[x].value);
+                    customer_record.setFieldValue('custentity_mpex_dl_price_point_new', mpex_dl_elem[x].value);
                 }
 
 
@@ -935,6 +951,10 @@ function getDate() {
     return date;
 }
 
+/**
+ * 3rd day of next month
+ * @return {String}
+ */
 function nextMonth() {
     var now = new Date();
     if (now.getMonth() == 11) {
@@ -947,6 +967,10 @@ function nextMonth() {
     return date;
 }
 
+/**
+ * Start of next week
+ * @return {String}
+ */
 function nextWeek() {
     var curr = new Date; // get current date
     var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week

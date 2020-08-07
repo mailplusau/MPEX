@@ -6,8 +6,8 @@
  *
  * Description:Schedule Script to update the MPEX current price points with the new price points         
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-31 12:32:12
+ * @Last Modified by:   Ankith Ravindran
+ * @Last Modified time: 2020-08-07 10:41:22
  *
  */
 
@@ -56,6 +56,14 @@ function updateMPEXCurrentPricePoints() {
         customer_record.setFieldValue('custentity_mpex_b4_price_point', mpex_b4_new);
         customer_record.setFieldValue('custentity_mpex_c5_price_point', mpex_c5_new);
         customer_record.setFieldValue('custentity_mpex_dl_price_point', mpex_dl_new);
+
+        customer_record.setFieldValue('custentity_mpex_1kg_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_3kg_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_5kg_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_500g_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_b4_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_c5_price_point_new', null);
+        customer_record.setFieldValue('custentity_mpex_dl_price_point_new', null);
 
         nlapiSubmitRecord(customer_record)
 
