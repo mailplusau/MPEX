@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX       
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:31
+ * @Last Modified time: 2020-08-09 10:07:03
  *
  */
 
@@ -116,10 +116,10 @@ function main() {
             product_order_rec.setFieldValue('custrecord_ap_order_customer', cust_prod_customer);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_franchisee', cust_prod_zee);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_order_status', 4);
-            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
-            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '31/07/2020');
-            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
-            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '31/07/2020');
+            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '31/07/2020');
+            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
+            // product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '31/07/2020');
             product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
             product_order_id = nlapiSubmitRecord(product_order_rec);
 
