@@ -7,8 +7,8 @@
  * Description: Scheduled script used to reallocate inactivate barcodes who were allocated to the wrong customer.
  *              The barcodes are then duplicated and allocated to another customer.
  * 
- * @Last Modified by:   raphaelchalicarnemailplus
- * @Last Modified time: 2020-06-02 14:09:00
+ * @Last Modified by:   Anesu Chakaingesu
+ * @Last Modified time: 2020-08-20 11:51:00
  *
  */
 var adhoc_inv_deploy = 'customdeploy_ss_reallocate_barcodes';
@@ -91,9 +91,44 @@ function reallocateBarcodes() {
             var barcode_id = searchCustomerProductResult.getValue('internalid');
         }
 
+        /** -------------------------------------------------------------------------------------------------------------------------------
+        *   Function to either remove line items or set product order void when barcodes have been selected
+        *   Changes By: Anesu - 17/08/20
+        *   -------------------------------------------------------------------------------------------------------------------------------
+        */
+        var customerProductStockRecord = nlapiLoadRecord('customrecord_customer_product_stock', barcode_id); // barcode_id
+        var product_order_id = customerProductStockRecord.getFieldValue('custrecord_prod_stock_prod_order');
+        var barcode_name = customerProductStockRecord.getFieldValue('name'); // Display Barcode Name
+
+        var customerProductOrder = nlapiLoadRecord('customrecord_mp_ap_product_order', product_order_id); //product_order_id or 1688870
+        var stockLineItemSearch = nlapiLoadSearch('customrecord_ap_stock_line_item', 'customsearch_ap_line_item_product_order'); //customsearch3366 or customsearch_ap_line_item_product_order
+        var filter_product_order = ['custrecord_ap_product_order', 'anyOf', product_order_id]; // Filter by Product Order
+        var filterExp = [filter_product_order, 'AND', ['isinactive', 'is', 'F']]; // Filter Expression
+        stockLineItemSearch.setFilterExpression(filterExp);
+        var resultStockLineItemSearch = stockLineItemSearch.runSearch(); // Run Search
+        var resultSetLineItem = resultStockLineItemSearch.getResults(0, 1000);
+
+        if (resultSetLineItem.length == 1){
+            customerProductOrder.setFieldValue('custrecord_mp_ap_order_order_status', '5'); // Set Status field to Void
+            nlapiSubmitRecord(customerProductOrder); // Record Submission
+        } else {
+            resultSetLineItem.forEach(function (searchLineItem) {
+                var searchResult_id = searchLineItem.getValue('internalid'); // Get ID of search items
+                var line_item = nlapiLoadRecord('customrecord_ap_stock_line_item', searchResult_id); // Load Line Item record
+                var line_item_name = line_item.getFieldValue('custrecord_ap_line_item_inv_details'); // Line Item which contains barcode name
+                if (line_item_name.slice(16, 26) == barcode_name){
+                    line_item.setFieldValue('isinactive', 'T'); // Set Value of inactive to True
+                    nlapiSubmitRecord(line_item); // Record Submission.
+                }
+                return true;
+            });
+        }
+        /** End Delete Function
+         * ------------------------------------------------------------------------------------------------------------------------------- */
+
         // Inactivate Customer Product Stock record.
         var customerProductRecord = nlapiLoadRecord('customrecord_customer_product_stock', barcode_id);
-        var barcode_name = customerProductRecord.getFieldValue('name');
+        // var barcode_name = customerProductRecord.getFieldValue('name');
         customerProductRecord.setFieldValue('isinactive', 'T');
         nlapiSubmitRecord(customerProductRecord);
 
