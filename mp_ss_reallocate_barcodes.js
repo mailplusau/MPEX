@@ -100,7 +100,6 @@ function reallocateBarcodes() {
         var product_order_id = customerProductStockRecord.getFieldValue('custrecord_prod_stock_prod_order');
         var barcode_name = customerProductStockRecord.getFieldValue('name'); // Display Barcode Name
 
-        var customerProductOrder = nlapiLoadRecord('customrecord_mp_ap_product_order', product_order_id); //product_order_id or 1688870
         var stockLineItemSearch = nlapiLoadSearch('customrecord_ap_stock_line_item', 'customsearch_ap_line_item_product_order'); //customsearch3366 or customsearch_ap_line_item_product_order
         var filter_product_order = ['custrecord_ap_product_order', 'anyOf', product_order_id]; // Filter by Product Order
         var filterExp = [filter_product_order, 'AND', ['isinactive', 'is', 'F']]; // Filter Expression
@@ -108,11 +107,8 @@ function reallocateBarcodes() {
         var resultStockLineItemSearch = stockLineItemSearch.runSearch(); // Run Search
         var resultSetLineItem = resultStockLineItemSearch.getResults(0, 1000);
 
-        if (resultSetLineItem.length == 1){
-            customerProductOrder.setFieldValue('custrecord_mp_ap_order_order_status', '5'); // Set Status field to Void
-            nlapiSubmitRecord(customerProductOrder); // Record Submission
-        } else {
-            resultSetLineItem.forEach(function (searchLineItem) {
+        if (resultSetLineItem.length > 0){
+            resultSetLineItem.forEach(function (searchLineItem) { // For each line item in product order
                 var searchResult_id = searchLineItem.getValue('internalid'); // Get ID of search items
                 var line_item = nlapiLoadRecord('customrecord_ap_stock_line_item', searchResult_id); // Load Line Item record
                 var line_item_name = line_item.getFieldValue('custrecord_ap_line_item_inv_details'); // Line Item which contains barcode name
@@ -123,6 +119,13 @@ function reallocateBarcodes() {
                 return true;
             });
         }
+        resultStockLineItemSearch = stockLineItemSearch.runSearch();
+        resultSetLineItem = resultStockLineItemSearch.getResults(0, 1000);
+        if (resultSetLineItem.length == 0){
+            var customerProductOrder = nlapiLoadRecord('customrecord_mp_ap_product_order', product_order_id); //product_order_id or 1688870
+            customerProductOrder.setFieldValue('custrecord_mp_ap_order_order_status', '5'); // Set Status field to Void
+            nlapiSubmitRecord(customerProductOrder); // Record Submission
+        } 
         /** End Delete Function
          * ------------------------------------------------------------------------------------------------------------------------------- */
 
