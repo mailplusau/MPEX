@@ -3,8 +3,8 @@
  * NSVersion    Date            		Author         
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-17 13:16:59
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-09-16 11:31:03
  *
  * @Description:
  *
@@ -245,7 +245,8 @@ function getLatestFiles() {
                             barcode_beg == 'MPEF' ||
                             barcode_beg == 'MPEB' ||
                             barcode_beg == 'MPEC' ||
-                            barcode_beg == 'MPED') {
+                            barcode_beg == 'MPED' ||
+                            barcode_beg == 'MPEG') {
                             if (barcode_beg == 'MPEN') {
                                 prod_id = 552;
                             } else if (barcode_beg == 'MPET') {
@@ -258,6 +259,8 @@ function getLatestFiles() {
                                 prod_id = 551;
                             } else if (barcode_beg == 'MPED') {
                                 prod_id = 549;
+                            } else if (barcode_beg == 'MPEG') {
+                                prod_id = 638;
                             }
                             customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
                         }
@@ -352,7 +355,8 @@ function getLatestFiles() {
                             barcode_beg == 'MPEF' ||
                             barcode_beg == 'MPEB' ||
                             barcode_beg == 'MPEC' ||
-                            barcode_beg == 'MPED') {
+                            barcode_beg == 'MPED' ||
+                            barcode_beg == 'MPEG') {
                             if (barcode_beg == 'MPEN') {
                                 prod_id = 552;
                             } else if (barcode_beg == 'MPET') {
@@ -365,6 +369,8 @@ function getLatestFiles() {
                                 prod_id = 551;
                             } else if (barcode_beg == 'MPED') {
                                 prod_id = 549;
+                            } else if (barcode_beg == 'MPEG') {
+                                prod_id = 638;
                             }
                             customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
                         }

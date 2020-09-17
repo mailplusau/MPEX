@@ -7,6 +7,8 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 	function(task, email, runtime, search, record) {
 		function execute(context) {
 
+
+			//Search: MPEX Usage - Per Week (Update Customer)
 			var mpexUsagePerWeek = search.load({
 				id: 'customsearch_mpex_usage_per_week_2'
 			});
@@ -17,6 +19,7 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 			var data = '{';
 
 			mpexUsagePerWeek.run().each(function(result) {
+
 
 				var customerInternalID = result.getValue({
 					name: 'internalid',
@@ -96,6 +99,8 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 					});
 					var scriptTaskId = scriptTask.submit();
 
+					oldCustomerInternalID = null;
+
 					return false;
 
 				} else {
@@ -111,7 +116,9 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 				return true;
 
 			});
-			if (count > 0 && reschedule == false) {
+
+
+			if (count > 0 && oldCustomerInternalID != null) {
 				data = data.substring(0, data.length - 1);
 				data += ']}';
 				var customerRecord = record.load({
