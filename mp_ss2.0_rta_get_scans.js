@@ -3,43 +3,48 @@
  *@NScriptType ScheduledScript
  */
 
-define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N/http'],
-	function(task, email, runtime, search, record, format, http) {
+define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N/https'],
+	function(task, email, runtime, search, record, format, https) {
 		function execute(context) {
 
-			var todayDate = new Date('dd-mm-yyyy');
+			var todayDate = new Date();
 
 			log.audit({
-				title: 'today',
-				details: today
+				title: 'todayDate',
+				details: todayDate
 			});
 
 			//To get todays date
 			var today = format.format({
-				value: new Date('dd-mm-yyyy'),
+				value: todayDate,
 				type: format.Type.DATE
 			});
 
-			var tempTodayDate = todayDate.split('T');
+			log.audit({
+				title: 'today',
+				details: today
+			});
 
-			var temp = tempTodayDate.split('-');
-			var today = temp[2] + '-' + temp[1] + '-' + temp[0];
+			var tempTodayDate = today.split('/');
+
+			// var temp = tempTodayDate.split('-');
+			var today = tempTodayDate[0] + '-' + tempTodayDate[1] + '-' + tempTodayDate[2];
 
 			log.audit({
 				title: 'today',
 				details: today
 			});
 
-			log.audit({
-				title: 'today',
-				details: today
-			});
 
 			// var url = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=21-04-2020';
 			var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=' + today;
 
-			var response = http.get({
-				method: http.Method.GET,
+			log.audit({
+				title: 'mainURL',
+				details: mainURL
+			});
+
+			var response = https.get({
 				url: mainURL
 			});
 
@@ -48,18 +53,17 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 				details: response
 			});
 
-			// var response = nlapiRequestURL(url, null, null);
-			// var body = response.getBody();
-
-			log.audit({
-				title: 'Body length',
-				details: body.length
-			});
+			var body = response.body;
 
 			//Parse the body to JSON
 			var todays_scans = JSON.parse(body);
 			var scans = todays_scans.scans;
 			var scans_length = scans.length;
+
+			log.audit({
+				title: 'Scans length',
+				details: scans_length
+			});
 
 			if (body.length > 999999) {
 				var nb_records = parseInt(scans_length / 3500) + 1; // Number of records to create
