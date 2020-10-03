@@ -6,8 +6,8 @@
  *
  * Description: Create Product Orders for MPEX Weekly Invoicing     
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-08-07 09:03:34
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-10-04 07:41:02
  *
  */
 
@@ -131,8 +131,11 @@ function main() {
                 barcode_beg == 'MPEF' ||
                 barcode_beg == 'MPEB' ||
                 barcode_beg == 'MPEC' ||
-                barcode_beg == 'MPED') {
+                barcode_beg == 'MPED' ||
+                barcode_beg == 'MPEG') {
                 if (barcode_beg == 'MPEN') {
+                    nlapiLogExecution('DEBUG', 'Inside MPEN');
+                    nlapiLogExecution('DEBUG', 'cust_prod_stock_status', cust_prod_stock_status);
                     switch (mpex_1kg_price_point) {
                         case 1:
                             if (cust_prod_stock_status == 4) {
@@ -324,6 +327,44 @@ function main() {
                     }
                 } else if (barcode_beg == 'MPED') {
                     switch (mpex_DL_price_point) {
+                        case 1:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+                            }
+                            break;
+                        case 2:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
+                            }
+                            break;
+                        case 4:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                        default:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+                            }
+                            break;
+                    }
+                } else if (barcode_beg == 'MPEG') {
+                    switch (mpex_500g_price_point) {
                         case 1:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -423,8 +464,11 @@ function main() {
                 barcode_beg == 'MPEF' ||
                 barcode_beg == 'MPEB' ||
                 barcode_beg == 'MPEC' ||
-                barcode_beg == 'MPED') {
+                barcode_beg == 'MPED' ||
+                barcode_beg == 'MPEG') {
                 if (barcode_beg == 'MPEN') {
+                    nlapiLogExecution('DEBUG', 'Inside MPEN');
+                    nlapiLogExecution('DEBUG', 'cust_prod_stock_status', cust_prod_stock_status);
                     switch (mpex_1kg_price_point) {
                         case 1:
                             if (cust_prod_stock_status == 4) {
@@ -616,6 +660,44 @@ function main() {
                     }
                 } else if (barcode_beg == 'MPED') {
                     switch (mpex_DL_price_point) {
+                        case 1:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+                            }
+                            break;
+                        case 2:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
+                            }
+                            break;
+                        case 4:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_standard_toll);
+                            }
+                            break;
+                        case 5:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                        default:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
+                            }
+                            break;
+                    }
+                } else if (barcode_beg == 'MPEG') {
+                    switch (mpex_500g_price_point) {
                         case 1:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
