@@ -6,8 +6,8 @@
  *
  * Description: Update the Customer Stock Level        
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-29 15:03:28
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-10-06 10:43:22
  *
  */
 
@@ -17,8 +17,8 @@ var adhoc_inv_deploy = 'customdeploy2';
 var prev_inv_deploy = null;
 var ctx = nlapiGetContext();
 
-var barcodes_prefix = ['mpeb', 'mpec', 'mped', 'mpen', 'mpet', 'mpef'];
-var barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
+var barcodes_prefix = ['mpeb', 'mpec', 'mped', 'mpen', 'mpet', 'mpef', 'mpeg'];
+var barcodes_prefix_status = [0, 0, 0, 0, 0, 0, 0];
 
 function main() {
 
