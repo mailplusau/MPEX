@@ -27,7 +27,7 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 			var tempTodayDate = today.split('/');
 
 			// var temp = tempTodayDate.split('-');
-			var today = tempTodayDate[0] + '-' + tempTodayDate[1] + '-' + tempTodayDate[2];
+			var today = tempTodayDate[0] + '/' + tempTodayDate[1] + '/' + tempTodayDate[2];
 
 			log.audit({
 				title: 'today',

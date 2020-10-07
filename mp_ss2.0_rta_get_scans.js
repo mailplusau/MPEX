@@ -28,7 +28,7 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 			var tempTodayDate = today.split('/');
 
 			// var temp = tempTodayDate.split('-');
-			var today = tempTodayDate[0] + '-' + tempTodayDate[1] + '-' + tempTodayDate[2];
+			var today = tempTodayDate[0] + '/' + tempTodayDate[1] + '/' + tempTodayDate[2];
 
 			log.audit({
 				title: 'today',
@@ -68,7 +68,7 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 			if (body.length > 999999) {
 				var nb_records = parseInt(scans_length / 3500) + 1; // Number of records to create
 				for (var y = 0; y < nb_records; y++) {
-					nlapiLogExecution('AUDIT', 'y value', y);
+					// nlapiLogExecution('AUDIT', 'y value', y);
 
 					var nb_scans_in_record = 3500; // Number of barcodes in each page except the last one.
 					if (y == nb_records - 1) {
