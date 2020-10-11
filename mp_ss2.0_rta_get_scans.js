@@ -65,10 +65,24 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 				details: scans_length
 			});
 
+			log.audit({
+				title: 'body.length',
+				details: body.length
+			});
+
 			if (body.length > 999999) {
 				var nb_records = parseInt(scans_length / 3500) + 1; // Number of records to create
+				log.audit({
+					title: 'nb_records',
+					details: nb_records
+				});
 				for (var y = 0; y < nb_records; y++) {
 					// nlapiLogExecution('AUDIT', 'y value', y);
+					// 
+					log.audit({
+						title: 'y',
+						details: y
+					});
 
 					var nb_scans_in_record = 3500; // Number of barcodes in each page except the last one.
 					if (y == nb_records - 1) {
@@ -141,9 +155,11 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 					value: today
 				});
 
+				var scan_json_2 = '{ "scans": ' + JSON.stringify(scans) + '}';
+
 				scanJSONRecord.setValue({
 					fieldId: 'custrecord_json',
-					value: scan_json_3
+					value: scan_json_2
 				});
 
 				scanJSONRecord.setValue({
