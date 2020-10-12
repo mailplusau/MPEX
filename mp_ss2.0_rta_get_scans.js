@@ -84,7 +84,7 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 						details: y
 					});
 
-					var nb_scans_in_record = 3500; // Number of barcodes in each page except the last one.
+					var nb_scans_in_record = 3000; // Number of barcodes in each page except the last one.
 					if (y == nb_records - 1) {
 						var upper_bound = scans_length;
 					} else {
