@@ -172,6 +172,24 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 						var customer_prod_stock_id = searchResult.getValue({
 							name: 'internalid'
 						});
+
+						var customerProdStockRecord = record.load({
+							type: 'customrecord_customer_product_stock',
+							id: customer_prod_stock_id
+						});
+
+						var stockStatus = customerProdStockRecord.getValue({
+							fieldId: 'custrecord_cust_prod_stock_status'
+						});
+
+						var stock_status = customer_prod_stock.getFieldValue('custrecord_cust_prod_stock_status');
+
+						if (stock_status != 6 && stock_status != 7) {
+							if (!isNullorEmpty(deleted)) {} else if (scan_type == 'stockzee') {}
+						}
+
+
+						count++;
 						return true;
 					});
 
@@ -233,4 +251,13 @@ function convertTo24Hour(time) {
 		time = time.replace(hours_string, (hours + 12));
 	}
 	return time.replace(/( AM| PM)/, '');
+}
+
+/**
+ * Is Null or Empty.
+ * 
+ * @param {Object} strVal
+ */
+function isNullorEmpty(strVal) {
+	return (strVal == null || strVal == '' || strVal == 'null' || strVal == undefined || strVal == 'undefined' || strVal == '- None -');
 }

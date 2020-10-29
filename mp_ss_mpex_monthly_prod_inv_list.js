@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-10-08 07:34:48
+ * @Last Modified time: 2020-10-30 08:18:42
  *
  */
 
@@ -344,6 +344,12 @@ function main(type) {
                         recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
+
+                        var customer_po = searchResults[n].getValue('custentity11', 'CUSTRECORD_AP_ORDER_CUSTOMER', "GROUP");
+                        var mpex_po = searchResults[n].getValue('custentity_mpex_po', 'CUSTRECORD_AP_ORDER_CUSTOMER', "GROUP");
+                        var product_po = searchResults[n].getValue('custrecord_mp_ap_order_po', "GROUP");
+                        var ordered_by = searchResults[n].getValue('custrecord_mp_ap_order_ordered_by', "GROUP");
+
                         if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) && isNullorEmpty(customer_po))) {
                             recInvoice.setFieldValue('custbody6', mpex_po);
                         } else if (!isNullorEmpty(product_po)) {
