@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-10-30 08:18:42
+ * @Last Modified time: 2020-11-09 14:23:42
  *
  */
 
@@ -68,7 +68,10 @@ function main(type) {
     }
 
     todayDate = new Date();
-    todayDate.setHours(todayDate.getHours() + 17);
+    // var dateRange = monthFirstLastDay(todayDate);
+    // var start_date = dateRange[0];
+    // var end_date = dateRange[1];
+    // todayDate.setHours(todayDate.getHours() + 17);
 
     var lastSat = nlapiAddDays(todayDate, -2);
 
@@ -146,9 +149,13 @@ function main(type) {
                         recInvoice.setFieldValue('department', nlapiLoadRecord('partner', 435).getFieldValue('department'));
                         recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435).getFieldValue('location'));
                         //recInvoice.setFieldValue('trandate', tranDate);
-                        recInvoice.setFieldValue('trandate', '01/10/2020');
-                        recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-                        recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
+                        recInvoice.setFieldValue('trandate', '31/10/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/10/2020');
+                        // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
+                        // recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
+                        recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2020');
+                        // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
+                        // recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
                         if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) && isNullorEmpty(customer_po))) {
                             recInvoice.setFieldValue('custbody6', mpex_po);
@@ -340,9 +347,13 @@ function main(type) {
                         recInvoice.setFieldValue('department', nlapiLoadRecord('partner', 435).getFieldValue('department'));
                         recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435).getFieldValue('location'));
                         // recInvoice.setFieldValue('trandate', tranDate);
-                        recInvoice.setFieldValue('trandate', '01/10/2020');
-                        recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-                        recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
+                        recInvoice.setFieldValue('trandate', '31/10/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/10/2020');
+                        // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
+                        // recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
+                        recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2020');
+                        // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
+                        // recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
 
                         var customer_po = searchResults[n].getValue('custentity11', 'CUSTRECORD_AP_ORDER_CUSTOMER', "GROUP");
@@ -695,4 +706,21 @@ function removeDups(arr) {
         return index == self.indexOf(elem);
     });
     return unique_array;
+}
+
+function monthFirstLastDay(date_finalised) {
+
+    var split_date = date_finalised.split('/');
+
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), parseInt(split_date[1]) - 1, 1);
+    var lastDay = new Date(date.getFullYear(), split_date[1], 0);
+
+    var dateRange = [];
+
+    dateRange[0] = nlapiDateToString(firstDay);
+    dateRange[1] = nlapiDateToString(lastDay);
+
+    return dateRange;
+
 }
