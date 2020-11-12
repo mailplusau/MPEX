@@ -61,7 +61,7 @@ function listCustomerUsage(request, response) {
     list.addColumn("mpen", "text", "1kg", "right");
     list.addColumn("mpet", "text", "3kg", "right");
     list.addColumn("mpef", "text", "5kg", "right");
-    list.addColumn("mpeb", "text", "500g", "right");
+    list.addColumn("mpeg", "text", "500g", "right");
     list.addColumn("mpeb", "text", "B4", "right");
     list.addColumn("mpec", "text", "C5", "right");
     list.addColumn("mped", "text", "DL", "right");
@@ -99,19 +99,19 @@ function listCustomerUsage(request, response) {
 
       cRow["customer"] = res.getText(cols[6]);
 
-      if (res.getValue(cols[10]) == 561 || res.getValue(cols[10]) == 555)
+      if (res.getValue(cols[10]) == 561 || res.getValue(cols[10]) == 555 || res.getValue(cols[10]) == 608 || res.getValue(cols[10]) == 609 || res.getValue(cols[10]) == 607 || res.getValue(cols[10]) == 606 || res.getValue(cols[10]) == 584 || res.getValue(cols[10]) == 585 || res.getValue(cols[10]) == 569 || res.getValue(cols[10]) == 570 || res.getValue(cols[10]) == 582 || res.getValue(cols[10]) == 583)
         cRow["mpen"] += 1;
-      if (res.getValue(cols[10]) == 566 || res.getValue(cols[10]) == 556)
+      if (res.getValue(cols[10]) == 566 || res.getValue(cols[10]) == 556 || res.getValue(cols[10]) == 612 || res.getValue(cols[10]) == 613 || res.getValue(cols[10]) == 611 || res.getValue(cols[10]) == 610 || res.getValue(cols[10]) == 589 || res.getValue(cols[10]) == 588 || res.getValue(cols[10]) == 572 || res.getValue(cols[10]) == 571 || res.getValue(cols[10]) == 586 || res.getValue(cols[10]) == 587)
         cRow["mpet"] += 1;
-      if (res.getValue(cols[10]) == 562 || res.getValue(cols[10]) == 557)
+      if (res.getValue(cols[10]) == 557 || res.getValue(cols[10]) == 617 || res.getValue(cols[10]) == 616 || res.getValue(cols[10]) == 562 || res.getValue(cols[10]) == 615 || res.getValue(cols[10]) == 614 || res.getValue(cols[10]) == 592 || res.getValue(cols[10]) == 593 || res.getValue(cols[10]) == 573 || res.getValue(cols[10]) == 574 || res.getValue(cols[10]) == 590 || res.getValue(cols[10]) == 591)
         cRow["mpef"] += 1;
-      if (res.getValue(cols[10]) == 563 || res.getValue(cols[10]) == 560)
+      if (res.getValue(cols[10]) == 630 || res.getValue(cols[10]) == 631 || res.getValue(cols[10]) == 632 || res.getValue(cols[10]) == 633 || res.getValue(cols[10]) == 634 || res.getValue(cols[10]) == 635 || res.getValue(cols[10]) == 636 || res.getValue(cols[10]) == 637)
         cRow["mpeg"] += 1;
-      if (res.getValue(cols[10]) == 563 || res.getValue(cols[10]) == 560)
+      if (res.getValue(cols[10]) == 560 || res.getValue(cols[10]) == 620 || res.getValue(cols[10]) == 621 || res.getValue(cols[10]) == 563 || res.getValue(cols[10]) == 619 || res.getValue(cols[10]) == 618 || res.getValue(cols[10]) == 596 || res.getValue(cols[10]) == 597 || res.getValue(cols[10]) == 576 || res.getValue(cols[10]) == 575 || res.getValue(cols[10]) == 594 || res.getValue(cols[10]) == 595)
         cRow["mpeb"] += 1;
-      if (res.getValue(cols[10]) == 564 || res.getValue(cols[10]) == 559)
+      if (res.getValue(cols[10]) == 564 || res.getValue(cols[10]) == 559 || res.getValue(cols[10]) == 625 || res.getValue(cols[10]) == 624 || res.getValue(cols[10]) == 623 || res.getValue(cols[10]) == 622 || res.getValue(cols[10]) == 600 || res.getValue(cols[10]) == 601 || res.getValue(cols[10]) == 577 || res.getValue(cols[10]) == 578 || res.getValue(cols[10]) == 598 || res.getValue(cols[10]) == 599)
         cRow["mpec"] += 1;
-      if (res.getValue(cols[10]) == 565 || res.getValue(cols[10]) == 558)
+      if (res.getValue(cols[10]) == 565 || res.getValue(cols[10]) == 558 || res.getValue(cols[10]) == 629 || res.getValue(cols[10]) == 628 || res.getValue(cols[10]) == 627 || res.getValue(cols[10]) == 626 || res.getValue(cols[10]) == 604 || res.getValue(cols[10]) == 605 || res.getValue(cols[10]) == 568 || res.getValue(cols[10]) == 567 || res.getValue(cols[10]) == 602 || res.getValue(cols[10]) == 603)
         cRow["mped"] += 1;
 
       cRow["revenue"] += parseFloat(res.getValue(cols[13]));
@@ -130,6 +130,7 @@ function listCustomerUsage(request, response) {
       row["mpen"] = cRow["mpen"] > 0 ? "" + parseInt(cRow["mpen"]) : " ";
       row["mpet"] = cRow["mpet"] > 0 ? "" + parseInt(cRow["mpet"]) : " ";
       row["mpef"] = cRow["mpef"] > 0 ? "" + parseInt(cRow["mpef"]) : " ";
+      row["mpeg"] = cRow["mpeg"] > 0 ? "" + parseInt(cRow["mpe"]) : " ";
       row["mpeb"] = cRow["mpeb"] > 0 ? "" + parseInt(cRow["mpeb"]) : " ";
       row["mpec"] = cRow["mpec"] > 0 ? "" + parseInt(cRow["mpec"]) : " ";
       row["mped"] = cRow["mped"] > 0 ? "" + parseInt(cRow["mped"]) : " ";
