@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month       
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-11-09 14:23:42
+ * @Last Modified time: 2020-12-02 15:18:15
  *
  */
 
@@ -149,11 +149,11 @@ function main(type) {
                         recInvoice.setFieldValue('department', nlapiLoadRecord('partner', 435).getFieldValue('department'));
                         recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435).getFieldValue('location'));
                         //recInvoice.setFieldValue('trandate', tranDate);
-                        recInvoice.setFieldValue('trandate', '31/10/2020');
-                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/10/2020');
+                        recInvoice.setFieldValue('trandate', '30/11/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/11/2020');
                         // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
                         // recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-                        recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_to', '30/11/2020');
                         // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
                         // recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
@@ -347,11 +347,11 @@ function main(type) {
                         recInvoice.setFieldValue('department', nlapiLoadRecord('partner', 435).getFieldValue('department'));
                         recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435).getFieldValue('location'));
                         // recInvoice.setFieldValue('trandate', tranDate);
-                        recInvoice.setFieldValue('trandate', '31/10/2020');
-                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/10/2020');
+                        recInvoice.setFieldValue('trandate', '30/11/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_from', '01/11/2020');
                         // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
                         // recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-                        recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2020');
+                        recInvoice.setFieldValue('custbody_inv_date_range_to', '30/11/2020');
                         // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
                         // recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
                         // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
