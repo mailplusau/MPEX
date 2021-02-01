@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-11-02 14:47:38
+ * @Last Modified time: 2021-01-14 08:48:52
  *
  * @Description:
  *
@@ -21,14 +21,22 @@ function getLatestFiles() {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+    var todayDate = new Date();
+    var yesterdayDate = new Date(todayDate);
+
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1)
+
 
     //To get todays date
     var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
-    // var today = '1/7/2020';
+    var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
+    // var today = '12/1/2021';
+    // 
+    nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
     var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json', 'customsearch_scan_json');
     var newFilterExpression = [
-        ["name", "startswith", today], 'AND', ["isinactive", "is", "F"], 'AND', ["custrecord_scan_josn_sync", 'is', 2]
+        ["name", "startswith", yesterday], 'AND', ["isinactive", "is", "F"], 'AND', ["custrecord_scan_josn_sync", 'is', 2]
     ];
 
     scanJSONSearch.setFilterExpression(newFilterExpression);
@@ -77,6 +85,7 @@ function getLatestFiles() {
 
 
             nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
+            nlapiLogExecution('DEBUG', 'scans[x]', scans[x]);
 
 
             var barcode = scans[x].barcode.toUpperCase();

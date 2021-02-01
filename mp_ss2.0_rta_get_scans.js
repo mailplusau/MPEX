@@ -8,10 +8,18 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 		function execute(context) {
 
 			var todayDate = new Date();
+			var yesterdayDate = new Date(todayDate);
+
+			yesterdayDate.setDate(yesterdayDate.getDate() - 1)
 
 			log.audit({
 				title: 'todayDate',
 				details: todayDate
+			});
+
+			log.audit({
+				title: 'yesterdayDate',
+				details: yesterdayDate
 			});
 
 			//To get todays date
@@ -20,19 +28,31 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 				type: format.Type.DATE
 			});
 
+			var yesterday = format.format({
+				value: yesterdayDate,
+				type: format.Type.DATE
+			});
+
 			log.audit({
 				title: 'today',
 				details: today
 			});
 
-			var tempTodayDate = today.split('/');
+			log.audit({
+				title: 'yesterday',
+				details: yesterday
+			});
 
-			// var temp = tempTodayDate.split('-');
-			var today = tempTodayDate[0] + '/' + tempTodayDate[1] + '/' + tempTodayDate[2];
+			var tempTodayDate = today.split('/');
+			var tempYesterdayDate = yesterday.split('/');
+
+			// var temp = tempYesterdayDate.split('');
+			var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
+			// var today = '12/1/2021'
 
 			log.audit({
-				title: 'today',
-				details: today
+				title: 'yesterday',
+				details: yesterday
 			});
 
 

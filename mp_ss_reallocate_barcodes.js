@@ -7,8 +7,8 @@
  * Description: Scheduled script used to reallocate inactivate barcodes who were allocated to the wrong customer.
  *              The barcodes are then duplicated and allocated to another customer.
  * 
- * @Last Modified by:   Anesu Chakaingesu
- * @Last Modified time: 2020-08-20 11:51:00
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2021-01-21 13:58:21
  *
  */
 var adhoc_inv_deploy = 'customdeploy_ss_reallocate_barcodes';
@@ -91,6 +91,8 @@ function reallocateBarcodes() {
             var barcode_id = searchCustomerProductResult.getValue('internalid');
         }
 
+        nlapiLogExecution('DEBUG', 'barcode_id', barcode_id);
+
         /** -------------------------------------------------------------------------------------------------------------------------------
         *   Function to either remove line items or set product order void when barcodes have been selected
         *   Changes By: Anesu - 17/08/20
@@ -142,7 +144,12 @@ function reallocateBarcodes() {
         copyCustomerProductRecord.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
         copyCustomerProductRecord.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
         var final_delivery = copyCustomerProductRecord.getFieldValue('custrecord_cust_prod_stock_final_del');
-        copyCustomerProductRecord.setFieldValue('custrecord_cust_prod_stock_status', final_delivery);
+        if(isNullorEmpty(final_delivery)){
+            copyCustomerProductRecord.setFieldValue('custrecord_cust_prod_stock_status', 5);
+        } else {
+            copyCustomerProductRecord.setFieldValue('custrecord_cust_prod_stock_status', final_delivery);
+        }
+        
         copyCustomerProductRecord.setFieldValue('custrecord_prod_stock_prod_order', '');
         copyCustomerProductRecord.setFieldValue('custrecord_prod_stock_invoice', '');
         var new_barcode_id = nlapiSubmitRecord(copyCustomerProductRecord);

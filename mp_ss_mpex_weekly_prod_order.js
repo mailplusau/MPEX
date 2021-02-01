@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX Weekly Invoicing     
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-12-11 12:25:13
+ * @Last Modified time: 2020-12-20 08:07:21
  *
  */
 
@@ -40,12 +40,13 @@ function main() {
     resultCreateProdOrder.forEachResult(function(searchResult) {
 
         var usage_loopstart_cust = ctx.getRemainingUsage();
+        nlapiLogExecution('AUDIT', 'usage_loopstart_cust', usage_loopstart_cust)
         if ((usage_loopstart_cust < 200)) {
-            var params = {
-                custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
-            }
+            // var params = {
+            //     custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
+            // }
 
-            reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
+            reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, null);
             nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
             if (reschedule == false) {
 
