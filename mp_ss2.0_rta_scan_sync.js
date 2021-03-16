@@ -84,10 +84,10 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 
 				if (body_2 == "") {
 					var todays_scans = JSON.parse(body);
-					var scans = todays_scans.scans;
+					var scans = todays_scans.scans; //No. of barcodes
 				} else {
 					var todays_scans = JSON.parse(body_2);
-					var scans = todays_scans.scans;
+					var scans = todays_scans.scans; //No. of barcodes
 				}
 
 				do {
