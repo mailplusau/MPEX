@@ -47,8 +47,8 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 			var tempYesterdayDate = yesterday.split('/');
 
 			// var temp = tempYesterdayDate.split('');
-			var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
-			// var today = '12/1/2021'
+			// var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
+			var today = '31/03/2021'
 
 			log.audit({
 				title: 'yesterday',
@@ -56,8 +56,8 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 			});
 
 
-			// var url = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=21-04-2020';
-			var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=' + today;
+			var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=31-03-2021';
+			// var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=' + today;
 
 			log.audit({
 				title: 'mainURL',
