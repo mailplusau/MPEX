@@ -6,7 +6,7 @@
  * Description:
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2021-08-31 14:57:51
+ * @Last Modified time: 2021-09-01 06:09:28
  * 
  */
 
@@ -887,25 +887,25 @@ function pageInit() {
 							}
 
 							//Scheduled Price Change - 1Kg
-							if (data.mpex_1kg_mew == 1) {
+							if (data.mpex_1kg_new == 1) {
 								$('td', row).eq(8).css('background-color', '#999999');
-							} else if (data.mpex_1kg_mew == 2) {
+							} else if (data.mpex_1kg_new == 2) {
 								$('td', row).eq(8).css('background-color', '#999999');
-							} else if (data.mpex_1kg_mew == 4) {
+							} else if (data.mpex_1kg_new == 4) {
 								$('td', row).eq(8).css('background-color', '#999999');
-							} else if (data.mpex_1kg_mew == 6) {
+							} else if (data.mpex_1kg_new == 6) {
 								$('td', row).eq(8).css('background-color', '#999999');
-							} else if (data.mpex_1kg_mew == 7) {
+							} else if (data.mpex_1kg_new == 7) {
 								$('td', row).eq(8).css('background-color', '#999999');
-							} else if (data.mpex_1kg_mew == 8) { //Pro Standard
+							} else if (data.mpex_1kg_new == 8) { //Pro Standard
 								$('td', row).eq(8).css('background-color', '#7ABCF5');
-							} else if (data.mpex_1kg_mew == 9) { //Pro Plus
+							} else if (data.mpex_1kg_new == 9) { //Pro Plus
 								$('td', row).eq(8).css('background-color', '#379E8F');
-							} else if (data.mpex_1kg_mew == 10) { //Manual Platinum
+							} else if (data.mpex_1kg_new == 10) { //Manual Platinum
 								$('td', row).eq(8).css('background-color', '#a7a6a100');
-							} else if (data.mpex_1kg_mew == 11) { //Pro Platinum
+							} else if (data.mpex_1kg_new == 11) { //Pro Platinum
 								$('td', row).eq(8).css('background-color', '#287587');
-							} else if (data.mpex_1kg_mew == 12) { //Pro Gold
+							} else if (data.mpex_1kg_new == 12) { //Pro Gold
 								$('td', row).eq(8).css('background-color', '#FFFF00');
 							} else {
 								$('td', row).eq(8).removeAttr("style");
