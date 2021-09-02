@@ -7,7 +7,7 @@
  * Description: Create Monthly Product Orders for MPEX       
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-09-27 11:43:13
+ * @Last Modified time: 2021-09-02 13:02:51
  *
  */
 
@@ -72,6 +72,16 @@ function main() {
         var mpex_C5_price_point = parseInt(searchResult.getValue("custentity_mpex_c5_price_point", "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null));
         var mpex_DL_price_point = parseInt(searchResult.getValue("custentity_mpex_dl_price_point", "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null));
         var barcode = searchResult.getValue("name");
+        var manual_platinum_mp = searchResult.getValue("custrecord_mpex_manual_plat_mp");
+        var manual_platinum_toll = searchResult.getValue("custrecord_mpex_manual_plat_toll");
+        var pro_gold_mp = searchResult.getValue("custrecord_mpex_pro_gold_mp");
+        var pro_gold_toll = searchResult.getValue("custrecord_mpex_pro_gold_toll");
+        var pro_platinum_mp = searchResult.getValue("custrecord_mpex_pro_platinum_mp");
+        var pro_platinum_toll = searchResult.getValue("custrecord_mpex_platinum_toll");
+        var pro_plus_mp = searchResult.getValue("custrecord_mpex_pro_plus_mp");
+        var pro_plus_toll = searchResult.getValue("custrecord_mpex_pro_plus_toll");
+        var pro_standard_mp = searchResult.getValue("custrecord_mpex_pro_standard_mp");
+        var pro_standard_toll = searchResult.getValue("custrecord_mpex_pro_standard_toll");
 
         var z1 = cust_prod_date_stock_used.split('/');
         var date = (parseInt(z1[0]) < 10 ? '0' : '') + parseInt(z1[0]);
@@ -131,10 +141,10 @@ function main() {
             product_order_rec.setFieldValue('custrecord_ap_order_customer', cust_prod_customer);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_franchisee', cust_prod_zee);
             product_order_rec.setFieldValue('custrecord_mp_ap_order_order_status', 4);
-             product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
-//            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '15/08/2021');
-             product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
-//            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '15/08/2021');
+            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', getDate());
+            //            product_order_rec.setFieldValue('custrecord_mp_ap_order_date', '15/08/2021');
+            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', getDate());
+            //            product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '15/08/2021');
             product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
             product_order_id = nlapiSubmitRecord(product_order_rec);
 
@@ -150,12 +160,26 @@ function main() {
             nlapiLogExecution('DEBUG', 'barcode_beg', barcode_beg);
             nlapiLogExecution('DEBUG', 'barcode', barcode);
 
-            /**
-             * Pricing Points:
-                    Gold - Internal ID (1)
-                    Platinum - Internal ID (2)
-                    Standard - Internal ID (4)
+            /*
+                Old MPEX Pricing - 1st Nov 2021 Onwards
+                    Gold    1    
+                    Platinum    2    
+                    Same as AP  3   
+                    Standard    4    
+                    AP Match    5    
+                    Pro Platinum (Old)  6    
+                    Pro Gold (Old)  7
+            */
+
+            /*
+            New MPEX Price Points - 1st Sept 2021 Onwards
+                Pro Standard    8    
+                Pro Plus    9    
+                Manual Platinum 10   
+                Pro Platinum    11   
+                Pro Gold    12
              */
+
 
             /**
              * Creating line items for the product order based on the Barcode type and the item rate selected on the customer record. 
@@ -214,6 +238,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -266,6 +325,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -322,6 +416,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -360,6 +489,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -402,6 +566,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -440,6 +639,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -494,6 +728,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                        case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -551,6 +820,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -601,6 +905,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -655,6 +994,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -707,6 +1081,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -745,6 +1154,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -781,6 +1225,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -833,6 +1312,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -956,6 +1470,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1006,6 +1555,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1060,6 +1644,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1112,6 +1731,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1150,6 +1804,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1186,6 +1875,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1238,6 +1962,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1297,6 +2056,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1347,6 +2141,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1401,6 +2230,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1437,6 +2301,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1477,6 +2376,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
                             }
                             break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
+                            }
+                            break;
                         default:
                             if (cust_prod_stock_status == 4) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
@@ -1513,6 +2447,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_direct_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
@@ -1565,6 +2534,41 @@ function main() {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_mp);
                             } else if (cust_prod_stock_status == 5) {
                                 ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_pro_gold_toll);
+                            }
+                            break;
+                            case 8:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_standard_toll);
+                            }
+                            break;
+                        case 9:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_plus_toll);
+                            }
+                            break;
+                        case 10:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', manual_platinum_toll);
+                            }
+                            break;
+                        case 11:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_platinum_toll);
+                            }
+                            break;
+                        case 12:
+                            if (cust_prod_stock_status == 4) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_mp);
+                            } else if (cust_prod_stock_status == 5) {
+                                ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', pro_gold_toll);
                             }
                             break;
                         default:
