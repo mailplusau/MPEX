@@ -5,8 +5,8 @@
  * 
  * Description:
  * 
- * @Last Modified by:   ankit
- * @Last Modified time: 2021-09-15 16:46:08
+ * @Last Modified by:   ankithravindran
+ * @Last Modified time: 2021-09-16 09:31:25
  * 
  */
 
@@ -273,7 +273,7 @@ function pageInit() {
 		}
 
 		if (isNullorEmpty(mpex_start_date)) {
-			if(mpex_500g == 8 || mpex_500g == 9 || mpex_500g == 10 || mpex_500g == 11 || mpex_500g == 12){
+			if (mpex_500g == 8 || mpex_500g == 9 || mpex_500g == 10 || mpex_500g == 11 || mpex_500g == 12) {
 				mpex_start_date = '';
 			} else {
 				mpex_start_date = '1/11/2021';
@@ -891,7 +891,7 @@ function pageInit() {
 							} else if (data.mpex_5kg == 9) { //Pro Plus
 								$('td', row).eq(2).css('background-color', '#379E8F');
 							} else if (data.mpex_5kg == 10) { //Manual Platinum
-								$('td', row).eq(2).css('background-color', '#a7a6a100');
+								$('td', row).eq(2).css('background-color', '#A7A6A1');
 							} else if (data.mpex_5kg == 11) { //Pro Platinum
 								$('td', row).eq(2).css('background-color', '#287587');
 							} else if (data.mpex_5kg == 12) { //Pro Gold
@@ -916,7 +916,7 @@ function pageInit() {
 							} else if (data.mpex_5kg_new == 9) { //Pro Plus
 								$('td', row).eq(3).css('background-color', '#379E8F');
 							} else if (data.mpex_5kg_new == 10) { //Manual Platinum
-								$('td', row).eq(3).css('background-color', '#a7a6a100');
+								$('td', row).eq(3).css('background-color', '#A7A6A1');
 							} else if (data.mpex_5kg_new == 11) { //Pro Platinum
 								$('td', row).eq(3).css('background-color', '#287587');
 							} else if (data.mpex_5kg_new == 12) { //Pro Gold
@@ -941,7 +941,7 @@ function pageInit() {
 							} else if (data.mpex_3kg == 9) { //Pro Plus
 								$('td', row).eq(4).css('background-color', '#379E8F');
 							} else if (data.mpex_3kg == 10) { //Manual Platinum
-								$('td', row).eq(4).css('background-color', '#a7a6a100');
+								$('td', row).eq(4).css('background-color', '#A7A6A1');
 							} else if (data.mpex_3kg == 11) { //Pro Platinum
 								$('td', row).eq(4).css('background-color', '#287587');
 							} else if (data.mpex_3kg == 12) { //Pro Gold
@@ -966,7 +966,7 @@ function pageInit() {
 							} else if (data.mpex_3kg_new == 9) { //Pro Plus
 								$('td', row).eq(5).css('background-color', '#379E8F');
 							} else if (data.mpex_3kg_new == 10) { //Manual Platinum
-								$('td', row).eq(5).css('background-color', '#a7a6a100');
+								$('td', row).eq(5).css('background-color', '#A7A6A1');
 							} else if (data.mpex_3kg_new == 11) { //Pro Platinum
 								$('td', row).eq(5).css('background-color', '#287587');
 							} else if (data.mpex_3kg_new == 12) { //Pro Gold
@@ -991,7 +991,7 @@ function pageInit() {
 							} else if (data.mpex_1kg == 9) { //Pro Plus
 								$('td', row).eq(6).css('background-color', '#379E8F');
 							} else if (data.mpex_1kg == 10) { //Manual Platinum
-								$('td', row).eq(6).css('background-color', '#a7a6a100');
+								$('td', row).eq(6).css('background-color', '#A7A6A1');
 							} else if (data.mpex_1kg == 11) { //Pro Platinum
 								$('td', row).eq(6).css('background-color', '#287587');
 							} else if (data.mpex_1kg == 12) { //Pro Gold
@@ -1016,7 +1016,7 @@ function pageInit() {
 							} else if (data.mpex_1kg_new == 9) { //Pro Plus
 								$('td', row).eq(7).css('background-color', '#379E8F');
 							} else if (data.mpex_1kg_new == 10) { //Manual Platinum
-								$('td', row).eq(7).css('background-color', '#a7a6a100');
+								$('td', row).eq(7).css('background-color', '#A7A6A1');
 							} else if (data.mpex_1kg_new == 11) { //Pro Platinum
 								$('td', row).eq(7).css('background-color', '#287587');
 							} else if (data.mpex_1kg_new == 12) { //Pro Gold
@@ -1041,7 +1041,7 @@ function pageInit() {
 							} else if (data.mpex_500g == 9) { //Pro Plus
 								$('td', row).eq(8).css('background-color', '#379E8F');
 							} else if (data.mpex_500g == 10) { //Manual Platinum
-								$('td', row).eq(8).css('background-color', '#a7a6a100');
+								$('td', row).eq(8).css('background-color', '#A7A6A1');
 							} else if (data.mpex_500g == 11) { //Pro Platinum
 								$('td', row).eq(8).css('background-color', '#287587');
 							} else if (data.mpex_500g == 12) { //Pro Gold
@@ -1066,7 +1066,7 @@ function pageInit() {
 							} else if (data.mpex_500g_new == 9) { //Pro Plus
 								$('td', row).eq(9).css('background-color', '#379E8F');
 							} else if (data.mpex_500g_new == 10) { //Manual Platinum
-								$('td', row).eq(9).css('background-color', '#a7a6a100');
+								$('td', row).eq(9).css('background-color', '#A7A6A1');
 							} else if (data.mpex_500g_new == 11) { //Pro Platinum
 								$('td', row).eq(9).css('background-color', '#287587');
 							} else if (data.mpex_500g_new == 12) { //Pro Gold
@@ -1091,7 +1091,7 @@ function pageInit() {
 							} else if (data.mpex_b4 == 9) { //Pro Plus
 								$('td', row).eq(10).css('background-color', '#379E8F');
 							} else if (data.mpex_b4 == 10) { //Manual Platinum
-								$('td', row).eq(10).css('background-color', '#a7a6a100');
+								$('td', row).eq(10).css('background-color', '#A7A6A1');
 							} else if (data.mpex_b4 == 11) { //Pro Platinum
 								$('td', row).eq(10).css('background-color', '#287587');
 							} else if (data.mpex_b4 == 12) { //Pro Gold
@@ -1116,7 +1116,7 @@ function pageInit() {
 							} else if (data.mpex_b4_new == 9) { //Pro Plus
 								$('td', row).eq(11).css('background-color', '#379E8F');
 							} else if (data.mpex_b4_new == 10) { //Manual Platinum
-								$('td', row).eq(11).css('background-color', '#a7a6a100');
+								$('td', row).eq(11).css('background-color', '#A7A6A1');
 							} else if (data.mpex_b4_new == 11) { //Pro Platinum
 								$('td', row).eq(11).css('background-color', '#287587');
 							} else if (data.mpex_b4_new == 12) { //Pro Gold
@@ -1141,7 +1141,7 @@ function pageInit() {
 							} else if (data.mpex_c5 == 9) { //Pro Plus
 								$('td', row).eq(12).css('background-color', '#379E8F');
 							} else if (data.mpex_c5 == 10) { //Manual Platinum
-								$('td', row).eq(12).css('background-color', '#a7a6a100');
+								$('td', row).eq(12).css('background-color', '#A7A6A1');
 							} else if (data.mpex_c5 == 11) { //Pro Platinum
 								$('td', row).eq(12).css('background-color', '#287587');
 							} else if (data.mpex_c5 == 12) { //Pro Gold
@@ -1166,7 +1166,7 @@ function pageInit() {
 							} else if (data.mpex_c5_new == 9) { //Pro Plus
 								$('td', row).eq(13).css('background-color', '#379E8F');
 							} else if (data.mpex_c5_new == 10) { //Manual Platinum
-								$('td', row).eq(13).css('background-color', '#a7a6a100');
+								$('td', row).eq(13).css('background-color', '#A7A6A1');
 							} else if (data.mpex_c5_new == 11) { //Pro Platinum
 								$('td', row).eq(13).css('background-color', '#287587');
 							} else if (data.mpex_c5_new == 12) { //Pro Gold
@@ -1191,7 +1191,7 @@ function pageInit() {
 							} else if (data.mpex_dl == 9) { //Pro Plus
 								$('td', row).eq(14).css('background-color', '#379E8F');
 							} else if (data.mpex_dl == 10) { //Manual Platinum
-								$('td', row).eq(14).css('background-color', '#a7a6a100');
+								$('td', row).eq(14).css('background-color', '#A7A6A1');
 							} else if (data.mpex_dl == 11) { //Pro Platinum
 								$('td', row).eq(14).css('background-color', '#287587');
 							} else if (data.mpex_dl == 12) { //Pro Gold
@@ -1216,7 +1216,7 @@ function pageInit() {
 							} else if (data.mpex_dl_new == 9) { //Pro Plus
 								$('td', row).eq(15).css('background-color', '#379E8F');
 							} else if (data.mpex_dl_new == 10) { //Manual Platinum
-								$('td', row).eq(15).css('background-color', '#a7a6a100');
+								$('td', row).eq(15).css('background-color', '#A7A6A1');
 							} else if (data.mpex_dl_new == 11) { //Pro Platinum
 								$('td', row).eq(15).css('background-color', '#287587');
 							} else if (data.mpex_dl_new == 12) { //Pro Gold
@@ -1342,7 +1342,7 @@ $(document).on("change", ".1kg_new", function(e) {
 	} else if (mpex_1kg == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_1kg == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_1kg == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_1kg == 12) { //Pro Gold
@@ -1372,7 +1372,7 @@ $(document).on("change", ".3kg_new", function(e) {
 	} else if (mpex_3kg == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_3kg == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_3kg == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_3kg == 12) { //Pro Gold
@@ -1402,7 +1402,7 @@ $(document).on("change", ".5kg_new", function(e) {
 	} else if (mpex_5kg == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_5kg == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_5kg == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_5kg == 12) { //Pro Gold
@@ -1432,7 +1432,7 @@ $(document).on("change", ".500g_new", function(e) {
 	} else if (mpex_500g == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_500g == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_500g == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_500g == 12) { //Pro Gold
@@ -1462,7 +1462,7 @@ $(document).on("change", ".b4_new", function(e) {
 	} else if (mpex_b4 == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_b4 == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_b4 == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_b4 == 12) { //Pro Gold
@@ -1492,7 +1492,7 @@ $(document).on("change", ".c5_new", function(e) {
 	} else if (mpex_c5 == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_c5 == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_c5 == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_c5 == 12) { //Pro Gold
@@ -1522,7 +1522,7 @@ $(document).on("change", ".dl_new", function(e) {
 	} else if (mpex_dl == 9) { //Pro Plus
 		$(this).closest('td').css('background-color', '#379E8F');
 	} else if (mpex_dl == 10) { //Manual Platinum
-		$(this).closest('td').css('background-color', '#a7a6a100');
+		$(this).closest('td').css('background-color', '#A7A6A1');
 	} else if (mpex_dl == 11) { //Pro Platinum
 		$(this).closest('td').css('background-color', '#287587');
 	} else if (mpex_dl == 12) { //Pro Gold
@@ -1644,17 +1644,21 @@ function saveRecord() {
 				}
 
 			}
-			if (isNullorEmpty(mpex_invoicing) || mpex_invoicing == 1) {
-				customer_record.setFieldValue(
-					'custentity_mpex_price_point_start_date', nextMonth());
-			} else if (mpex_invoicing == 2) {
-				customer_record.setFieldValue(
-					'custentity_mpex_price_point_start_date', nextWeek());
-			}
+			// if (isNullorEmpty(mpex_invoicing) || mpex_invoicing == 1) {
+			// 	customer_record.setFieldValue(
+			// 		'custentity_mpex_price_point_start_date', nextMonth());
+			// } else if (mpex_invoicing == 2) {
+			// 	customer_record.setFieldValue(
+			// 		'custentity_mpex_price_point_start_date', nextWeek());
+			// }
+			// 
+
+			customer_record.setFieldValue(
+				'custentity_mpex_price_point_start_date', '01/11/2021');
 
 			customer_record.setFieldValue('custentity_mpex_price_date_update',
 				getDate());
-			nlapiSubmitRecord(customer_record)
+			nlapiSubmitRecord(customer_record);
 		}
 	}
 
