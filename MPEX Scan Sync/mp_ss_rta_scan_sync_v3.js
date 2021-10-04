@@ -3,8 +3,8 @@
  * NSVersion    Date            		Author         
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
- * @Last Modified by:   ankit
- * @Last Modified time: 2021-05-03 19:25:24
+ * @Last Modified by:   ankithravindran
+ * @Last Modified time: 2021-09-30 11:54:24
  *
  * @Description:
  *
@@ -30,7 +30,7 @@ function getLatestFiles() {
     // To get todays date
     var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
     var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-//     var today = '4/8/2021';
+    //     var today = '4/8/2021';
     // 
     nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
@@ -94,8 +94,8 @@ function getLatestFiles() {
                     var invoiceable = scans[y].invoiceable;
                     var scan_type = scans[y].scan_type.toLowerCase();
                     var operator_id = scans[y].operator_ns_id;
-                    if(operator_id == 909){
-                    	operator_id = 212;
+                    if (operator_id == 909) {
+                        operator_id = 212;
                     }
                     var updated_at = scans[y].updated_at;
                     var deleted = scans[y].deleted;
@@ -109,6 +109,9 @@ function getLatestFiles() {
                     var receiver_name = scans[y].receiver_name;
                     var receiver_email = scans[y].email;
                     var receiver_phone = scans[y].phone;
+                    var account = scans[y].account;
+                    var futile_reasons = scans[y].futile_reason;
+                    var futile_images = scans[y].futile_photos;
 
                     updated_at = updated_at.split("T");
                     var time_updated_at = updated_at[1];
@@ -116,11 +119,11 @@ function getLatestFiles() {
                     time_updated_at = onTimeChange(time_updated_at[0]);
                     var updated_at = updated_at[0];
 
-                    if(!isNullorEmpty(barcode)){
-                    	barcode = barcode.toUpperCase();
-                    	var barcode_beg = barcode.slice(0, 4);
+                    if (!isNullorEmpty(barcode)) {
+                        barcode = barcode.toUpperCase();
+                        var barcode_beg = barcode.slice(0, 4);
                     } else {
-                    	var barcode_beg = product_type;
+                        var barcode_beg = product_type;
                     }
 
                     updated_at = updated_at.split("-");
@@ -144,7 +147,7 @@ function getLatestFiles() {
                     var count = 0;
                     var prod_id;
 
-                    var  save_barcode = true;
+                    var save_barcode = true;
 
                     resultSetProductStock.forEachResult(function(searchResult) {
                         nlapiLogExecution('DEBUG', 'Barcode  exist', barcode)
@@ -154,7 +157,7 @@ function getLatestFiles() {
 
                         var stock_status = customer_prod_stock.getFieldValue('custrecord_cust_prod_stock_status');
                         // customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee',
-						// zee_id);
+                        // zee_id);
                         // 
                         nlapiLogExecution('DEBUG', 'scan_type', scan_type)
 
@@ -170,19 +173,19 @@ function getLatestFiles() {
                                     customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
 
                                 } else if (stock_status == 8) { // Status is Zee
-																// Stock
+                                    // Stock
                                     customer_prod_stock.setFieldValue('isinactive', 'T');
                                     customer_prod_stock.setFieldValue('custrecord_cust_time_deleted', time_updated_at);
 
                                 } else if (stock_status == 4 || stock_status == 5) { // Status
-																						// is
-																						// Delivered
-																						// to
-																						// receiver
-																						// /
-																						// Lodged
-																						// at
-																						// TOLL
+                                    // is
+                                    // Delivered
+                                    // to
+                                    // receiver
+                                    // /
+                                    // Lodged
+                                    // at
+                                    // TOLL
 
                                     // Change status to Allocated to customer
                                     customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 1);
@@ -317,14 +320,14 @@ function getLatestFiles() {
                                         prod_id = 638;
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
-                                } else if(
-                                	product_type == '5Kg' ||
-                                	product_type == '3Kg' ||
-                                	product_type == '1Kg' ||
-                                	product_type == '500g' ||
-                                	product_type == 'B4' ){
-                                	
-                                	if (product_type == '1Kg') {
+                                } else if (
+                                    product_type == '5Kg' ||
+                                    product_type == '3Kg' ||
+                                    product_type == '1Kg' ||
+                                    product_type == '500g' ||
+                                    product_type == 'B4') {
+
+                                    if (product_type == '1Kg') {
                                         prod_id = 552;
                                     } else if (product_type == '3Kg') {
                                         prod_id = 553;
@@ -336,10 +339,32 @@ function getLatestFiles() {
                                         prod_id = 638;
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
-                                    
+
                                 }
 
+                                if (account == 'sendle' && product_type == null) {
+                                    customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', 862);
+                                    customer_prod_stock.setFieldValue('custrecord_integration', 1);
+                                    if (!isNullorEmpty(futile_reasons)) {
+                                        if (futile_reasons.toUpperCase() == 'CANNOT ACCESS ADDRESS') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 1);
+                                        } else if (futile_reasons.toUpperCase() == 'NO GOODS TO COLLECT') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 2);
+                                        } else if (futile_reasons.toUpperCase() == 'DAMAGED PACKAGING') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 3);
+                                        } else if (futile_reasons.toUpperCase() == 'DANGEROUS GOODS') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 4);
+                                        } else {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 5);
+                                        }
+                                    }
+                                    customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
+                                }
+
+
                                 customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
+
+
 
                                 nlapiLogExecution('DEBUG', 'Customer Product Stock Update', customer_prod_stock_id)
                             }
@@ -494,27 +519,46 @@ function getLatestFiles() {
                                         prod_id = 638;
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
-                                } else if(
-                                    	product_type == '5Kg' ||
-                                    	product_type == '3Kg' ||
-                                    	product_type == '1Kg' ||
-                                    	product_type == '500g' ||
-                                    	product_type == 'B4' ){
-                                    	
-                                    	if (product_type == '1Kg') {
-                                            prod_id = 552;
-                                        } else if (product_type == '3Kg') {
-                                            prod_id = 553;
-                                        } else if (product_type == '5Kg') {
-                                            prod_id = 554;
-                                        } else if (product_type == 'B4') {
-                                            prod_id = 550;
-                                        } else if (product_type == '500g') {
-                                            prod_id = 638;
-                                        }
-                                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
-                                        
+                                } else if (
+                                    product_type == '5Kg' ||
+                                    product_type == '3Kg' ||
+                                    product_type == '1Kg' ||
+                                    product_type == '500g' ||
+                                    product_type == 'B4') {
+
+                                    if (product_type == '1Kg') {
+                                        prod_id = 552;
+                                    } else if (product_type == '3Kg') {
+                                        prod_id = 553;
+                                    } else if (product_type == '5Kg') {
+                                        prod_id = 554;
+                                    } else if (product_type == 'B4') {
+                                        prod_id = 550;
+                                    } else if (product_type == '500g') {
+                                        prod_id = 638;
                                     }
+                                    customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
+
+                                }
+
+                                if (account == 'sendle' && product_type == null) {
+                                    customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', 862);
+                                    customer_prod_stock.setFieldValue('custrecord_integration', 1);
+                                    if (!isNullorEmpty(futile_reasons)) {
+                                        if (futile_reasons.toUpperCase() == 'CANNOT ACCESS ADDRESS') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 1);
+                                        } else if (futile_reasons.toUpperCase() == 'NO GOODS TO COLLECT') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 2);
+                                        } else if (futile_reasons.toUpperCase() == 'DAMAGED PACKAGING') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 3);
+                                        } else if (futile_reasons.toUpperCase() == 'DANGEROUS GOODS') {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 4);
+                                        } else {
+                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 5);
+                                        }
+                                    }
+                                    customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
+                                }
 
                                 customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
 
