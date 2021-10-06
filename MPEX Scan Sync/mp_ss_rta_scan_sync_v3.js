@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   ankithravindran
- * @Last Modified time: 2021-10-06 12:25:22
+ * @Last Modified time: 2021-10-06 14:40:50
  *
  * @Description:
  *
@@ -164,31 +164,42 @@ function getLatestFiles() {
                         if (stock_status != 6 && stock_status != 7) {
                             if (!isNullorEmpty(deleted)) {
 
-                                // Status is Allocated to customer
-                                if (stock_status == 1) {
-                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', null);
-                                    customer_prod_stock.setFieldValue('custrecord_cust_date_stock_used', null);
-                                    customer_prod_stock.setFieldValue('custrecord_cust_time_stock_used', null);
-                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 8);
-                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
+                                if (account == 'sendle' && product_type == null) {
 
-                                } else if (stock_status == 8) { // Status is Zee
-                                    // Stock
-                                    customer_prod_stock.setFieldValue('isinactive', 'T');
-                                    customer_prod_stock.setFieldValue('custrecord_cust_time_deleted', time_updated_at);
+                                    if (stock_status == 2) { //Existing Status is Pickup
 
-                                } else if (stock_status == 4 || stock_status == 5) { // Status
-                                    // is
-                                    // Delivered
-                                    // to
-                                    // receiver
-                                    // /
-                                    // Lodged
-                                    // at
-                                    // TOLL
+                                    } else if (stock_status == 4 || stock_status == 5) { //Existing Status is Lodged or Delivered
 
-                                    // Change status to Allocated to customer
-                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 1);
+                                    }
+
+                                    
+                                } else {
+                                    // Status is Allocated to customer
+                                    if (stock_status == 1) {
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', null);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_date_stock_used', null);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_time_stock_used', null);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 8);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
+
+                                    } else if (stock_status == 8) { // Status is Zee
+                                        // Stock
+                                        customer_prod_stock.setFieldValue('isinactive', 'T');
+                                        customer_prod_stock.setFieldValue('custrecord_cust_time_deleted', time_updated_at);
+
+                                    } else if (stock_status == 4 || stock_status == 5) { // Status
+                                        // is
+                                        // Delivered
+                                        // to
+                                        // receiver
+                                        // /
+                                        // Lodged
+                                        // at
+                                        // TOLL
+
+                                        // Change status to Allocated to customer
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 1);
+                                    }
                                 }
 
                             } else if (scan_type == 'futile') {
@@ -579,7 +590,7 @@ function getLatestFiles() {
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
                                 }
-                                
+
                                 customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
 
                                 nlapiLogExecution('DEBUG', 'Customer Product Stock Created', customer_prod_stock_id)
