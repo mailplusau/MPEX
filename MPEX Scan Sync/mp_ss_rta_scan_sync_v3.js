@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   ankithravindran
- * @Last Modified time: 2021-09-30 11:54:24
+ * @Last Modified time: 2021-10-06 12:25:22
  *
  * @Description:
  *
@@ -191,6 +191,25 @@ function getLatestFiles() {
                                     customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 1);
                                 }
 
+                            } else if (scan_type == 'futile') {
+                                if (!isNullorEmpty(customer_id)) {
+                                    if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                                    }
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 11);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_time_stock_given', time_updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_date_stock_used', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_time_stock_used', time_updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_history_pickup_date', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_history_pickup_time', time_updated_at);
+                                } else {
+                                    nlapiSendEmail(409635, ['ankith.ravindran@mailplus.com.au'], 'MPEX Scan Sync', 'Barcode: ' + barcode + ' has empty Customer ID', null);
+                                    save_barcode = false;
+                                }
                             } else if (scan_type == 'stockzee') {
                                 if (!isNullorEmpty(zee_id)) {
                                     customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 8);
@@ -222,7 +241,8 @@ function getLatestFiles() {
                                     save_barcode = false;
                                 }
 
-                            } else if (scan_type == 'pickup') {
+                            } else
+                            if (scan_type == 'pickup') {
                                 if (!isNullorEmpty(customer_id)) {
                                     if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
@@ -346,17 +366,7 @@ function getLatestFiles() {
                                     customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', 862);
                                     customer_prod_stock.setFieldValue('custrecord_integration', 1);
                                     if (!isNullorEmpty(futile_reasons)) {
-                                        if (futile_reasons.toUpperCase() == 'CANNOT ACCESS ADDRESS') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 1);
-                                        } else if (futile_reasons.toUpperCase() == 'NO GOODS TO COLLECT') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 2);
-                                        } else if (futile_reasons.toUpperCase() == 'DAMAGED PACKAGING') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 3);
-                                        } else if (futile_reasons.toUpperCase() == 'DANGEROUS GOODS') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 4);
-                                        } else {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 5);
-                                        }
+                                        customer_prod_stock.setFieldValue('custrecord_futile_reasons', futile_reasons);
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
                                 }
@@ -391,7 +401,27 @@ function getLatestFiles() {
                             }
 
                             customer_prod_stock.setFieldValue('name', barcode);
-                            if (scan_type == 'stockzee') {
+                            if (scan_type == 'futile') {
+                                if (!isNullorEmpty(customer_id)) {
+                                    if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                                        customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
+                                    }
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_customer', customer_id);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_zee', zee_id);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 11);
+
+                                    customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_time_stock_given', time_updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_date_stock_used', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_cust_time_stock_used', time_updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_history_pickup_date', updated_at);
+                                    customer_prod_stock.setFieldValue('custrecord_history_pickup_time', time_updated_at);
+                                } else {
+                                    nlapiSendEmail(409635, ['ankith.ravindran@mailplus.com.au'], 'MPEX Scan Sync', 'Barcode: ' + barcode + ' has empty Customer ID', null);
+                                    save_barcode = false;
+                                }
+                            } else if (scan_type == 'stockzee') {
                                 if (!isNullorEmpty(zee_id)) {
                                     customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_status', 8);
                                     customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
@@ -545,21 +575,11 @@ function getLatestFiles() {
                                     customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', 862);
                                     customer_prod_stock.setFieldValue('custrecord_integration', 1);
                                     if (!isNullorEmpty(futile_reasons)) {
-                                        if (futile_reasons.toUpperCase() == 'CANNOT ACCESS ADDRESS') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 1);
-                                        } else if (futile_reasons.toUpperCase() == 'NO GOODS TO COLLECT') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 2);
-                                        } else if (futile_reasons.toUpperCase() == 'DAMAGED PACKAGING') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 3);
-                                        } else if (futile_reasons.toUpperCase() == 'DANGEROUS GOODS') {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 4);
-                                        } else {
-                                            customer_prod_stock.setFieldValue('custrecord_futile_reasons', 5);
-                                        }
+                                        customer_prod_stock.setFieldValue('custrecord_futile_reasons', futile_reasons);
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
                                 }
-
+                                
                                 customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
 
                                 nlapiLogExecution('DEBUG', 'Customer Product Stock Created', customer_prod_stock_id)
