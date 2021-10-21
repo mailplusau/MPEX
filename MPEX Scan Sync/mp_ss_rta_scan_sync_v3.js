@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
  * @Last Modified by:   ankithravindran
- * @Last Modified time: 2021-10-07 15:07:16
+ * @Last Modified time: 2021-10-21 15:13:54
  *
  * @Description:
  *
@@ -113,6 +113,7 @@ function getLatestFiles() {
                     var futile_reasons = scans[y].futile_reason;
                     var futile_images = scans[y].futile_photos;
                     var reference_id = scans[y].reference_id;
+                    var job_id = scans[y].job_id;
 
                     updated_at = updated_at.split("T");
                     var time_updated_at = updated_at[1];
@@ -382,6 +383,7 @@ function getLatestFiles() {
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
                                     customer_prod_stock.setFieldValue('custrecord_ext_reference_id', reference_id);
+                                    customer_prod_stock.setFieldValue('custrecord_job_id', job_id);
 
                                 }
 
@@ -593,6 +595,7 @@ function getLatestFiles() {
                                     }
                                     customer_prod_stock.setFieldValue('custrecord_futile_image', futile_images);
                                     customer_prod_stock.setFieldValue('custrecord_ext_reference_id', reference_id);
+                                    customer_prod_stock.setFieldValue('custrecord_job_id', job_id);
                                 }
 
                                 customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
