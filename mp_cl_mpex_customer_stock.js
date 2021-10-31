@@ -1,11 +1,12 @@
 /**
  * Module Description
- * 
- * NSVersion    Date            			Author         
+ TEST
+ *
+ * NSVersion    Date            			Author
  * 1.00       	2019-11-16 08:09:51   		Ankith
  *
- * Description:         
- * 
+ * Description:
+ *
  * @Last Modified by:   ankit
  * @Last Modified time: 2020-10-06 11:05:13
  *
@@ -39,7 +40,7 @@ $(window).load(function() {
 var table;
 
 /**
- * [pageInit description] - On page initialization, load the Dynatable CSS and sort the table based on the customer name and align the table to the center of the page. 
+ * [pageInit description] - On page initialization, load the Dynatable CSS and sort the table based on the customer name and align the table to the center of the page.
  */
 function pageInit() {
 
@@ -176,7 +177,7 @@ function pageInit() {
 
     // AddStyle('https://1048144.app.netsuite.com/core/media/media.nl?id=1988776&c=1048144&h=58352d0b4544df20b40f&_xt=.css', 'head');
 
-    //JQuery to sort table based on click of header. Attached library  
+    //JQuery to sort table based on click of header. Attached library
     $(document).ready(function() {
         table = $("#customer").DataTable({
             "data": parsedData.data,
@@ -186,7 +187,7 @@ function pageInit() {
                 // 	"render": function(data, type, row) {
                 // 		return '<button type="button" data-custid="' + data.cust_id + '" class="edit_customer form-control btn-xs btn-warning " ><span class="span_class glyphicon glyphicon-pencil"></span></button>';
                 // 	}
-                // }, 
+                // },
                 {
                     "data": null,
                     "render": function(data, type, row) {
