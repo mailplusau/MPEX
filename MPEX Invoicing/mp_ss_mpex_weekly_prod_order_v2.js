@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX Weekly Invoicing
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-29T10:47:42+11:00
+ * @Last modified time: 2022-03-01T15:10:17+11:00
  *
  */
 
@@ -35,7 +35,14 @@ function main() {
 
   var old_customer_id = null;
   var product_order_id;
+  var old_product_order_id = null;
   var count = 0;
+  var digital_label = 0;
+
+  var manual_surcharge_to_be_applied = false;
+  var fuel_surcharge_to_be_applied = false;
+
+
 
   /**
    * Go through each line item from the search.
@@ -55,6 +62,13 @@ function main() {
 
     var cust_prod_stock_id = searchResult.getValue("internalid");
     var connote_number = searchResult.getValue("custrecord_connote_number");
+    var barcode_source = searchResult.getValue("custrecord_barcode_source");
+    var manual_surcharge = searchResult.getValue(
+      "custentity_manual_surcharge",
+      "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
+    var fuel_surcharge = searchResult.getValue(
+      "custentity_fuel_surcharge",
+      "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
     var product_name = searchResult.getValue(
       "custrecord_cust_stock_prod_name");
     var product_name_text = searchResult.getText(
@@ -175,6 +189,19 @@ function main() {
        * Reschedule script after creating product order for each customer
        */
       if (count != 0) {
+        var productOrderRec = nlapiLoadRecord(
+          'customrecord_mp_ap_product_order', old_product_order_id);
+
+        if (manual_surcharge_to_be_applied == true) {
+          productOrderRec.setFieldValue(
+            'custrecord_manual_surcharge_applied', 1)
+        } else {
+          productOrderRec.setFieldValue(
+            'custrecord_manual_surcharge_applied', 2)
+        }
+
+        nlapiSubmitRecord(productOrderRec);
+
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
         }
@@ -196,6 +223,12 @@ function main() {
 
       var product_order_rec = nlapiCreateRecord(
         'customrecord_mp_ap_product_order');
+      nlapiLogExecution('DEBUG', 'fuel_surcharge', fuel_surcharge);
+      if (fuel_surcharge == 1 || fuel_surcharge == '1') {
+        product_order_rec.setFieldValue(
+          'custrecord_fuel_surcharge_applied',
+          1);
+      }
       product_order_rec.setFieldValue('custrecord_ap_order_customer',
         cust_prod_customer);
       product_order_rec.setFieldValue('custrecord_mp_ap_order_franchisee',
@@ -1738,6 +1771,18 @@ function main() {
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
+
+      if (manual_surcharge == 1) {
+        if (barcode_source == 1 && digital_label == 0) {
+          manual_surcharge_to_be_applied = true;
+        } else {
+          manual_surcharge_to_be_applied = false;
+          digital_label++;
+        }
+      }
+
+
+
       nlapiSubmitRecord(ap_stock_line_item);
 
 
@@ -3319,6 +3364,16 @@ function main() {
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
+
+      if (manual_surcharge == 1) {
+        if (barcode_source == 1 && digital_label == 0) {
+          manual_surcharge_to_be_applied = true;
+        } else {
+          manual_surcharge_to_be_applied = false;
+          digital_label++;
+        }
+      }
+
       nlapiSubmitRecord(ap_stock_line_item);
 
       /**
@@ -3337,7 +3392,20 @@ function main() {
        * Reschedule script after updating product order with AP Line Item an the count of line items created is 150
        */
       if (count > 450) {
-        nlapiLogExecution('DEBUG', 'Count', count)
+        nlapiLogExecution('DEBUG', 'Count', count);
+
+        var productOrderRec = nlapiLoadRecord(
+          'customrecord_mp_ap_product_order', old_product_order_id);
+        if (manual_surcharge_to_be_applied == true) {
+          productOrderRec.setFieldValue(
+            'custrecord_manual_surcharge_applied', 1)
+        } else {
+          productOrderRec.setFieldValue(
+            'custrecord_manual_surcharge_applied', 2)
+        }
+
+        nlapiSubmitRecord(productOrderRec);
+
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
         }
@@ -3354,11 +3422,25 @@ function main() {
 
 
     old_customer_id = cust_prod_customer;
+    old_product_order_id = product_order_id
     count++;
 
     return true;
   });
 
+  if (count > 0) {
+    var productOrderRec = nlapiLoadRecord(
+      'customrecord_mp_ap_product_order', old_product_order_id);
+    if (manual_surcharge_to_be_applied == true) {
+      productOrderRec.setFieldValue(
+        'custrecord_manual_surcharge_applied', 1)
+    } else {
+      productOrderRec.setFieldValue(
+        'custrecord_manual_surcharge_applied', 2)
+    }
+
+    nlapiSubmitRecord(productOrderRec);
+  }
 
 }
 
