@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-03-02T14:13:44+11:00
+ * @Last modified time: 2022-03-07T08:21:42+11:00
  *
  */
 
@@ -181,6 +181,14 @@ function main(type) {
             // recInvoice = nlapiCreateRecord('invoice', {
             //     recordmode: 'dynamic'
             // });
+
+            if ((manual_surcharge == 1 || manual_surcharge == '1') &&
+              digital_barcode_used_prod_order == false) {
+              manual_surcharge_to_be_applied = true;
+            } else {
+              digital_barcode_used_prod_order = true;
+            }
+
             if (fuel_surcharge == 1 || fuel_surcharge == '1') {
               fuel_surcharge_to_be_applied = true;
             }

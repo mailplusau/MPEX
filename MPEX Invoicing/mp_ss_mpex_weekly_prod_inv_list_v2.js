@@ -7,7 +7,7 @@
    * Description: Create MPEX Invoices at the end of every week
    *
    * @Last modified by:   ankithravindran
-   * @Last modified time: 2022-03-02T14:56:23+11:00
+   * @Last modified time: 2022-03-07T08:21:40+11:00
    *
    */
 
@@ -131,6 +131,10 @@
           "GROUP");
         var ordered_by = searchResults[n].getValue(
           'custrecord_mp_ap_order_ordered_by', "GROUP");
+        var manual_surcharge = searchResults[n].getValue(
+          'custrecord_manual_surcharge_applied', null, "GROUP");
+        var fuel_surcharge = searchResults[n].getValue(
+          'custrecord_fuel_surcharge_applied', null, "GROUP");
 
         try {
 
@@ -166,6 +170,12 @@
               // recInvoice = nlapiCreateRecord('invoice', {
               //     recordmode: 'dynamic'
               // });
+              if ((manual_surcharge == 1 || manual_surcharge == '1') &&
+                digital_barcode_used_prod_order == false) {
+                manual_surcharge_to_be_applied = true;
+              } else {
+                digital_barcode_used_prod_order = true;
+              }
 
               if (fuel_surcharge == 1 || fuel_surcharge == '1') {
                 fuel_surcharge_to_be_applied = true;
@@ -539,6 +549,8 @@
       }
 
       nlapiLogExecution('AUDIT', '---> END', ctx.getRemainingUsage());
+    } else {
+      nlapiLogExecution('DEBUG', 'NO RESULTS FROM SEARCH')
     }
   }
 
