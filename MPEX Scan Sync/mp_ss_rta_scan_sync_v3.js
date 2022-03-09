@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-12-03T15:14:36+11:00
+ * @Last modified time: 2022-03-09T09:20:14+11:00
  *
  * @Description:
  *
@@ -563,6 +563,380 @@ function getLatestFiles() {
               }
 
 
+            } else if (stock_status == 6 && account == 'sendle') {
+              if (!isNullorEmpty(deleted)) {
+
+                if (account == 'sendle' && product_type == null) {
+
+                  if (stock_status == 2) { //Existing Status is Pickup
+
+                  } else if (stock_status == 4 || stock_status == 5) { //Existing Status is Lodged or Delivered
+
+                  }
+
+
+                } else {
+                  // Status is Allocated to customer
+                  if (stock_status == 1) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_customer', null);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_date_stock_used', null);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_time_stock_used', null);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_status', 8);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_zee', zee_id);
+
+                  } else if (stock_status == 8) { // Status is Zee
+                    // Stock
+                    customer_prod_stock.setFieldValue('isinactive', 'T');
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_time_deleted', time_updated_at
+                    );
+
+                  } else if (stock_status == 4 || stock_status == 5) { // Status
+                    // is
+                    // Delivered
+                    // to
+                    // receiver
+                    // /
+                    // Lodged
+                    // at
+                    // TOLL
+
+                    // Change status to Allocated to customer
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_status', 1);
+                  }
+                }
+
+              } else if (scan_type == 'futile') {
+                if (!isNullorEmpty(customer_id)) {
+                  if (invoiceable === false || invoiceable == 'false' ||
+                    invoiceable === 'false' || invoiceable == false) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer',
+                    customer_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_zee', zee_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 11);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_given', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_given',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_used', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_used',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_pickup_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_pickup_time', time_updated_at
+                  );
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                  save_barcode = false;
+                }
+              } else if (scan_type == 'stockzee') {
+                if (!isNullorEmpty(zee_id)) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 8);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_given', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_given',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer', null);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_zee', zee_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_zee_stock_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_zee_stock_time',
+                    time_updated_at);
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Zee ID', null);
+                  save_barcode = false;
+                }
+
+              } else if (scan_type == 'allocate') {
+                if (!isNullorEmpty(customer_id)) {
+                  if (invoiceable === false || invoiceable == 'false' ||
+                    invoiceable === 'false' || invoiceable == false) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer',
+                    customer_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 1);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_given', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_given',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_allocate_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_allocate_time',
+                    time_updated_at);
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                  save_barcode = false;
+                }
+
+              } else
+              if (scan_type == 'pickup') {
+                if (!isNullorEmpty(customer_id)) {
+                  if (invoiceable === false || invoiceable == 'false' ||
+                    invoiceable === 'false' || invoiceable == false) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer',
+                    customer_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 2);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_used', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_used',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_pickup_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_pickup_time', time_updated_at
+                  );
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                  save_barcode = false;
+                }
+              } else if (scan_type == "delivery") {
+                if (!isNullorEmpty(customer_id)) {
+                  if (invoiceable === false || invoiceable == 'false' ||
+                    invoiceable === 'false' || invoiceable == false) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 4);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer',
+                    customer_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_final_del', 4);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_used', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_used',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_delivery_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_delivery_time',
+                    time_updated_at);
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                  save_barcode = false;
+                }
+              } else if (scan_type == "lodgement") {
+                if (!isNullorEmpty(customer_id)) {
+                  if (invoiceable === false || invoiceable == 'false' ||
+                    invoiceable === 'false' || invoiceable == false) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_status', 5);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer',
+                    customer_id);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_final_del', 5);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_date_stock_used', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_time_stock_used',
+                    time_updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_lodge_date', updated_at);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_history_lodge_time', time_updated_at);
+                } else {
+                  nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                  save_barcode = false;
+                }
+              }
+
+              if (save_barcode == true) {
+                customer_prod_stock.setFieldValue(
+                  'custrecord_cust_prod_stock_source', 6);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_connote_number', connote_number);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_cust_prod_stock_operator', operator_id);
+                if (invoiceable === false || invoiceable == 'false' ||
+                  invoiceable === 'false' || invoiceable == false) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_invoiceable', 2);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_prepaid', 1);
+                }
+
+                var sourceId = getSourceID(source);
+
+
+                customer_prod_stock.setFieldValue(
+                  'custrecord_mpdl_number', external_barcode);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_barcode_source', sourceId);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_suburb', receiver_suburb);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_postcode', receiver_postcode);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_state', receiver_state);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_addr1', receiver_addr1);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_addr2', receiver_addr2);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_name', receiver_name);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_email', receiver_email);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_receiver_phone', receiver_phone);
+
+                if (barcode_beg == 'MPEN' ||
+                  barcode_beg == 'MPET' ||
+                  barcode_beg == 'MPEF' ||
+                  barcode_beg == 'MPEB' ||
+                  barcode_beg == 'MPEC' ||
+                  barcode_beg == 'MPED' ||
+                  barcode_beg == 'MPEG') {
+                  if (barcode_beg == 'MPEN') {
+                    prod_id = 552;
+                  } else if (barcode_beg == 'MPET') {
+                    prod_id = 553;
+                  } else if (barcode_beg == 'MPEF') {
+                    prod_id = 554;
+                  } else if (barcode_beg == 'MPEB') {
+                    prod_id = 550;
+                  } else if (barcode_beg == 'MPEC') {
+                    prod_id = 551;
+                  } else if (barcode_beg == 'MPED') {
+                    prod_id = 549;
+                  } else if (barcode_beg == 'MPEG') {
+                    prod_id = 638;
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_stock_prod_name', prod_id);
+                } else if (
+                  product_type == '5Kg' ||
+                  product_type == '3Kg' ||
+                  product_type == '1Kg' ||
+                  product_type == '500g' ||
+                  product_type == 'B4') {
+
+                  if (product_type == '1Kg') {
+                    prod_id = 552;
+                  } else if (product_type == '3Kg') {
+                    prod_id = 553;
+                  } else if (product_type == '5Kg') {
+                    prod_id = 554;
+                  } else if (product_type == 'B4') {
+                    prod_id = 550;
+                  } else if (product_type == '500g') {
+                    prod_id = 638;
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_stock_prod_name', prod_id);
+
+                }
+
+                if (account == 'sendle' && product_type == null) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_stock_prod_name', 862);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_integration', 1);
+                  if (!isNullorEmpty(futile_reasons)) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_reasons', futile_reasons);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_futile_image', futile_images);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_ext_reference_id', reference_id);
+                  customer_prod_stock.setFieldValue('custrecord_job_id',
+                    job_id);
+
+                } else if (account == 'global_express' && product_type ==
+                  null) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_stock_prod_name', 863);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_integration', 2);
+                  if (!isNullorEmpty(futile_reasons)) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_reasons', futile_reasons);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_futile_image', futile_images);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_ext_reference_id', reference_id);
+                  customer_prod_stock.setFieldValue('custrecord_job_id',
+                    job_id);
+                }
+
+
+                customer_prod_stock_id = nlapiSubmitRecord(
+                  customer_prod_stock);
+
+
+
+                nlapiLogExecution('DEBUG',
+                  'Customer Product Stock Update',
+                  customer_prod_stock_id)
+              }
             }
             count++;
             return true;
