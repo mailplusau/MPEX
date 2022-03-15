@@ -7,7 +7,7 @@
  * Description: Create Monthly Product Orders for MPEX
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-03-01T14:30:39+11:00
+ * @Last modified time: 2022-03-15T17:08:56+11:00
  *
  */
 
@@ -217,8 +217,7 @@ function main() {
         'customrecord_mp_ap_product_order');
       nlapiLogExecution('DEBUG', 'fuel_surcharge', fuel_surcharge);
       if (fuel_surcharge == 1 || fuel_surcharge == '1') {
-        product_order_rec.setFieldValue(
-          'custrecord_fuel_surcharge_applied',
+        product_order_rec.setFieldValue('custrecord_fuel_surcharge_applied',
           1);
       }
       product_order_rec.setFieldValue('custrecord_ap_order_customer',
