@@ -7,7 +7,7 @@
  * Description: Create Product Orders for MPEX Weekly Invoicing
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-03-15T17:05:27+11:00
+ * @Last modified time: 2022-05-02T11:23:38+10:00
  *
  */
 
@@ -68,6 +68,9 @@ function main() {
       "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
     var fuel_surcharge = searchResult.getValue(
       "custentity_fuel_surcharge",
+      "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
+    var mpex_fuel_surcharge = searchResult.getValue(
+      "custentity_mpex_surcharge",
       "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER", null);
     var product_name = searchResult.getValue(
       "custrecord_cust_stock_prod_name");
@@ -224,7 +227,9 @@ function main() {
       var product_order_rec = nlapiCreateRecord(
         'customrecord_mp_ap_product_order');
       nlapiLogExecution('DEBUG', 'fuel_surcharge', fuel_surcharge);
-      if (fuel_surcharge == 1 || fuel_surcharge == '1') {
+      nlapiLogExecution('DEBUG', 'mpex_fuel_surcharge', mpex_fuel_surcharge);
+      if (fuel_surcharge == 1 || fuel_surcharge == '1' ||
+        mpex_fuel_surcharge == 1 || mpex_fuel_surcharge == '1') {
         product_order_rec.setFieldValue('custrecord_fuel_surcharge_applied',
           1);
       }
@@ -1771,7 +1776,7 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-      if (manual_surcharge == 1) {
+      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {
         if (barcode_source == 1 && digital_label == 0) {
           manual_surcharge_to_be_applied = true;
         } else {
@@ -3364,7 +3369,7 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-      if (manual_surcharge == 1) {
+      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {
         if (barcode_source == 1 && digital_label == 0) {
           manual_surcharge_to_be_applied = true;
         } else {
