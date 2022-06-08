@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-04-27T12:56:49+10:00
+ * @Last modified time: 2022-06-09T09:08:33+10:00
  *
  * @Description:
  *
@@ -32,7 +32,7 @@ function getLatestFiles() {
   // To get todays date
   var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
   var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  // var today = '17/3/2022';
+  //var today = '23/5/2022';
   //
   nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
@@ -107,6 +107,10 @@ function getLatestFiles() {
             operator_id = 212;
           } else if (operator_id == 122) {
             operator_id = 907;
+          }
+          if (operator_id == 487 || operator_id == 172 || operator_id ==
+            1171 || operator_id == 927) {
+            operator_id = 884;
           }
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
