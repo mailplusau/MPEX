@@ -4,7 +4,7 @@
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-06-09T09:08:33+10:00
+ * @Last modified time: 2022-06-09T15:50:30+10:00
  *
  * @Description:
  *
@@ -111,6 +111,9 @@ function getLatestFiles() {
           if (operator_id == 487 || operator_id == 172 || operator_id ==
             1171 || operator_id == 927) {
             operator_id = 884;
+          }
+          if (operator_id == 611) {
+            operator_id = 503;
           }
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
