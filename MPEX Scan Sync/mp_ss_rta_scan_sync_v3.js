@@ -119,6 +119,9 @@ function getLatestFiles() {
           if (operator_id == 611) {
             operator_id = 503;
           }
+          if (operator_id == 684) {
+            operator_id = 528;
+          }
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
           var external_barcode = scans[y].external_barcode;
