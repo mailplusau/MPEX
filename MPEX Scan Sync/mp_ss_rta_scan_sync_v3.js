@@ -396,6 +396,34 @@ function getLatestFiles() {
                   }
                 } else if (scan_type == "delivery") {
                   if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = search.load({
+                      id: 'customsearch_prod_pricing_customer_level',
+                      type: 'customrecord_product_pricing'
+                    });
+  
+                    searchProductPricing.filters.push(search.createFilter({
+                      name: 'custrecord_prod_pricing_customer',
+                      join: null,
+                      operator: 'anyof',
+                      values: customer_id,
+                    }));
+  
+                    searchProductPricing.filters.push(search.createFilter({
+                      name: 'custrecord_prod_pricing_carrier_last_mil',
+                      join: null,
+                      operator: 'anyof',
+                      values: 1,
+                    }));
+  
+                    var result_set = searchProductPricing.run().getRange({ start: 0, end: 1 });
+                    if (result_set.length > 0) {
+                      var prodPricingInternalID = result_set[0].id;
+  
+                      customer_prod_stock.setValue({
+                        fieldId: 'custrecord_cust_prod_pricing',
+                        value: prodPricingInternalID
+                      });
+                    }
                     if (invoiceable === false || invoiceable == 'false' ||
                       invoiceable === 'false' || invoiceable == false) {
                       customer_prod_stock.setFieldValue(
@@ -429,6 +457,34 @@ function getLatestFiles() {
                   }
                 } else if (scan_type == "lodgement") {
                   if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = search.load({
+                      id: 'customsearch_prod_pricing_customer_level',
+                      type: 'customrecord_product_pricing'
+                    });
+
+                    searchProductPricing.filters.push(search.createFilter({
+                      name: 'custrecord_prod_pricing_customer',
+                      join: null,
+                      operator: 'anyof',
+                      values: customer_id,
+                    }));
+
+                    searchProductPricing.filters.push(search.createFilter({
+                      name: 'custrecord_prod_pricing_carrier_last_mil',
+                      join: null,
+                      operator: 'anyof',
+                      values: 2,
+                    }));
+
+                    var result_set = searchProductPricing.run().getRange({ start: 0, end: 1 });
+                    if (result_set.length > 0) {
+                      var prodPricingInternalID = result_set[0].id;
+
+                      customer_prod_stock.setValue({
+                        fieldId: 'custrecord_cust_prod_pricing',
+                        value: prodPricingInternalID
+                      });
+                    }
                     if (invoiceable === false || invoiceable == 'false' ||
                       invoiceable === 'false' || invoiceable == false) {
                       customer_prod_stock.setFieldValue(
@@ -1155,6 +1211,36 @@ function getLatestFiles() {
                 }
               } else if (scan_type == "delivery") {
                 if (!isNullorEmpty(customer_id)) {
+
+                  var searchProductPricing = search.load({
+                    id: 'customsearch_prod_pricing_customer_level',
+                    type: 'customrecord_product_pricing'
+                  });
+
+                  searchProductPricing.filters.push(search.createFilter({
+                    name: 'custrecord_prod_pricing_customer',
+                    join: null,
+                    operator: 'anyof',
+                    values: customer_id,
+                  }));
+
+                  searchProductPricing.filters.push(search.createFilter({
+                    name: 'custrecord_prod_pricing_carrier_last_mil',
+                    join: null,
+                    operator: 'anyof',
+                    values: 1,
+                  }));
+
+                  var result_set = searchProductPricing.run().getRange({ start: 0, end: 1 });
+                  if (result_set.length > 0) {
+                    var prodPricingInternalID = result_set[0].id;
+
+                    customer_prod_stock.setValue({
+                      fieldId: 'custrecord_cust_prod_pricing',
+                      value: prodPricingInternalID
+                    });
+                  }
+
                   if (invoiceable === false || invoiceable == 'false' ||
                     invoiceable === 'false' || invoiceable == false) {
                     customer_prod_stock.setFieldValue(
@@ -1185,6 +1271,34 @@ function getLatestFiles() {
                 }
               } else if (scan_type == "lodgement") {
                 if (!isNullorEmpty(customer_id)) {
+                  var searchProductPricing = search.load({
+                    id: 'customsearch_prod_pricing_customer_level',
+                    type: 'customrecord_product_pricing'
+                  });
+
+                  searchProductPricing.filters.push(search.createFilter({
+                    name: 'custrecord_prod_pricing_customer',
+                    join: null,
+                    operator: 'anyof',
+                    values: customer_id,
+                  }));
+
+                  searchProductPricing.filters.push(search.createFilter({
+                    name: 'custrecord_prod_pricing_carrier_last_mil',
+                    join: null,
+                    operator: 'anyof',
+                    values: 2,
+                  }));
+
+                  var result_set = searchProductPricing.run().getRange({ start: 0, end: 1 });
+                  if (result_set.length > 0) {
+                    var prodPricingInternalID = result_set[0].id;
+
+                    customer_prod_stock.setValue({
+                      fieldId: 'custrecord_cust_prod_pricing',
+                      value: prodPricingInternalID
+                    });
+                  }
                   if (invoiceable === false || invoiceable == 'false' ||
                     invoiceable === 'false' || invoiceable == false) {
                     customer_prod_stock.setFieldValue(
