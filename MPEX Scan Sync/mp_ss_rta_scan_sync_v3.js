@@ -1347,6 +1347,22 @@ function getLatestFiles() {
                     'custrecord_ext_reference_id', reference_id);
                   customer_prod_stock.setFieldValue('custrecord_job_id',
                     job_id);
+                } else if (product_type ==
+                  null && customer_id == 1676937) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_stock_prod_name', 554);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_integration', 3);
+                  if (!isNullorEmpty(futile_reasons)) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_reasons', futile_reasons);
+                  }
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_futile_image', futile_images);
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_ext_reference_id', reference_id);
+                  customer_prod_stock.setFieldValue('custrecord_job_id',
+                    job_id);
                 }
 
                 customer_prod_stock_id = nlapiSubmitRecord(
