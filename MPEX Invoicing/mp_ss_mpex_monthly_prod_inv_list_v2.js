@@ -7,7 +7,7 @@
  * Description: Create MPEX Invoices at the end of the month
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-03-31T13:00:48+11:00
+ * @Last modified time: 2022-03-07T08:21:42+11:00
  *
  */
 
@@ -147,7 +147,7 @@ function main(type) {
           "T") {
 
           if (customer_ids == searchResults[n].getValue(
-              'custrecord_ap_order_customer', null, "GROUP")) {
+            'custrecord_ap_order_customer', null, "GROUP")) {
             new_invoice = false;
             if ((manual_surcharge == 1 || manual_surcharge == '1') &&
               digital_barcode_used_prod_order == false) {
@@ -206,17 +206,17 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '31/03/2022');
+            recInvoice.setFieldValue('trandate', '30/06/2022');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/03/2022');
+              '01/06/2022');
             //recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/03/2022');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
-                isNullorEmpty(customer_po))) {
+              isNullorEmpty(customer_po))) {
               recInvoice.setFieldValue('custbody6', mpex_po);
             } else if (!isNullorEmpty(product_po)) {
               var final_po_text = product_po;
@@ -287,7 +287,7 @@ function main(type) {
 
                     //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
                     if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                        ordered_by)) {
+                      ordered_by)) {
                       var inv_details_rec = nlapiCreateRecord('customrecord62');
                       if (!isNullorEmpty(ordered_by)) {
                         var new_inv_details = 'Order By - ' + ordered_by + '. ' +
@@ -312,7 +312,7 @@ function main(type) {
                       total_line_item_qty);
 
                     if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                        ordered_by)) {
+                      ordered_by)) {
                       item_desc = nlapiLoadRecord('customrecord62',
                         inv_details_rec_id);
                       recInvoice.setCurrentLineItemValue('item', 'custcol1',
@@ -479,12 +479,12 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '31/03/2022');
+            recInvoice.setFieldValue('trandate', '30/06/2022');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/03/2022');
+              '01/06/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/03/2022');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
@@ -499,7 +499,7 @@ function main(type) {
               'custrecord_mp_ap_order_ordered_by', "GROUP");
 
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
-                isNullorEmpty(customer_po))) {
+              isNullorEmpty(customer_po))) {
               recInvoice.setFieldValue('custbody6', mpex_po);
             } else if (!isNullorEmpty(product_po)) {
               var final_po_text = product_po;
@@ -590,7 +590,7 @@ function main(type) {
 
                       //Create Cusotm record - Custom Item Description List to store Invoice Details from the Product Order
                       if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                          ordered_by)) {
+                        ordered_by)) {
                         var inv_details_rec = nlapiCreateRecord(
                           'customrecord62');
                         if (!isNullorEmpty(ordered_by)) {
@@ -616,7 +616,7 @@ function main(type) {
                         total_line_item_qty);
 
                       if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                          ordered_by)) {
+                        ordered_by)) {
                         item_desc = nlapiLoadRecord('customrecord62',
                           inv_details_rec_id);
                         recInvoice.setCurrentLineItemValue('item', 'custcol1',
@@ -658,7 +658,7 @@ function main(type) {
                       1)];
 
                     if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                        ordered_by)) {
+                      ordered_by)) {
                       var inv_details_rec = nlapiCreateRecord('customrecord62');
                       if (!isNullorEmpty(ordered_by)) {
                         var new_inv_details = 'Order By - ' + ordered_by + '. ' +
@@ -682,7 +682,7 @@ function main(type) {
                       total_line_item_qty);
 
                     if (!isNullorEmpty(inv_details) || !isNullorEmpty(
-                        ordered_by)) {
+                      ordered_by)) {
                       item_desc = nlapiLoadRecord('customrecord62',
                         inv_details_rec_id);
                       recInvoice.setCurrentLineItemValue('item', 'custcol1',
@@ -932,7 +932,7 @@ function main(type) {
 }
 
 function removeDups(arr) {
-  var unique_array = arr.filter(function(elem, index, self) {
+  var unique_array = arr.filter(function (elem, index, self) {
     return index == self.indexOf(elem);
   });
   return unique_array;

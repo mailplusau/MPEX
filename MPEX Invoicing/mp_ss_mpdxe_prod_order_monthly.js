@@ -287,60 +287,60 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_1kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -401,60 +401,60 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_3kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -515,60 +515,60 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_5kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -629,42 +629,42 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_B4_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -725,42 +725,42 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_C5_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -821,42 +821,42 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_DL_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -917,60 +917,60 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_500g_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1031,60 +1031,60 @@ function main() {
         nlapiLogExecution('DEBUG', 'Inside Connote');
         if (product_type == '1K') {
           switch (mpex_1kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1142,60 +1142,60 @@ function main() {
           }
         } else if (product_type == '3K') {
           switch (mpex_3kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1253,60 +1253,60 @@ function main() {
           }
         } else if (product_type == '5K') {
           switch (mpex_5kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1364,60 +1364,60 @@ function main() {
           }
         } else if (product_type == 'B4') {
           switch (mpex_B4_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1475,42 +1475,42 @@ function main() {
           }
         } else if (product_type == 'C5') {
           switch (mpex_C5_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1568,42 +1568,42 @@ function main() {
           }
         } else if (product_type == 'DL') {
           switch (mpex_DL_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1661,60 +1661,60 @@ function main() {
           }
         } else if (product_type == '50') {
           switch (mpex_500g_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1860,60 +1860,60 @@ function main() {
           'Inside MPEG|MPEN|MPET|MPEF|MPEB|MPEC|MPED')
         if (barcode_beg == 'MPEN') {
           switch (mpex_1kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -1971,60 +1971,60 @@ function main() {
           }
         } else if (barcode_beg == 'MPET') {
           switch (mpex_3kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2082,60 +2082,60 @@ function main() {
           }
         } else if (barcode_beg == 'MPEF') {
           switch (mpex_5kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2193,60 +2193,60 @@ function main() {
           }
         } else if (barcode_beg == 'MPEB') {
           switch (mpex_B4_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2304,42 +2304,42 @@ function main() {
           }
         } else if (barcode_beg == 'MPEC') {
           switch (mpex_C5_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2397,42 +2397,42 @@ function main() {
           }
         } else if (barcode_beg == 'MPED') {
           switch (mpex_DL_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2490,60 +2490,60 @@ function main() {
           }
         } else if (barcode_beg == 'MPEG') {
           switch (mpex_500g_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2607,60 +2607,60 @@ function main() {
           nlapiLogExecution('DEBUG', 'cust_prod_stock_status',
             cust_prod_stock_status);
           switch (mpex_1kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2718,60 +2718,60 @@ function main() {
           }
         } else if (product_type == '3K') {
           switch (mpex_3kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2829,60 +2829,60 @@ function main() {
           }
         } else if (product_type == '5K') {
           switch (mpex_5kg_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -2940,42 +2940,42 @@ function main() {
           }
         } else if (product_type == 'B4') {
           switch (mpex_B4_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -3033,42 +3033,42 @@ function main() {
           }
         } else if (product_type == 'C5') {
           switch (mpex_C5_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -3126,42 +3126,42 @@ function main() {
           }
         } else if (product_type == 'DL') {
           switch (mpex_DL_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
@@ -3219,60 +3219,60 @@ function main() {
           }
         } else if (product_type == '50') {
           switch (mpex_500g_price_point) {
-            case 1:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_gold_toll);
-              }
-              break;
-            case 2:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_platinum_toll);
-              }
-              break;
-            case 4:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_standard_toll);
-              }
-              break;
-            case 5:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_direct_toll);
-              }
-              break;
-            case 6:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_toll);
-              }
-              break;
-            case 7:
-              if (cust_prod_stock_status == 4) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_mp);
-              } else if (cust_prod_stock_status == 5) {
-                ap_stock_line_item.setFieldValue(
-                  'custrecord_ap_stock_line_item', single_pro_gold_toll);
-              }
-              break;
+            // case 1:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_gold_toll);
+            //   }
+            //   break;
+            // case 2:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_platinum_toll);
+            //   }
+            //   break;
+            // case 4:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_standard_toll);
+            //   }
+            //   break;
+            // case 5:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_direct_toll);
+            //   }
+            //   break;
+            // case 6:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_toll);
+            //   }
+            //   break;
+            // case 7:
+            //   if (cust_prod_stock_status == 4) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_mp);
+            //   } else if (cust_prod_stock_status == 5) {
+            //     ap_stock_line_item.setFieldValue(
+            //       'custrecord_ap_stock_line_item', single_pro_gold_toll);
+            //   }
+            //   break;
             case 8:
               if (cust_prod_stock_status == 4) {
                 ap_stock_line_item.setFieldValue(
