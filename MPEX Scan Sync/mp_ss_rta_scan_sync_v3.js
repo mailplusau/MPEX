@@ -32,7 +32,7 @@ function getLatestFiles() {
   // To get todays date
   var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
   var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  //var today = '23/5/2022';
+  var today = '2/8/2022';
   //
   nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
@@ -121,6 +121,12 @@ function getLatestFiles() {
           }
           if (operator_id == 684) {
             operator_id = 528;
+          }
+          if (operator_id == 417) {
+            operator_id = 789;
+          }
+          if (operator_id == 1094 || operator_id == 1116 || operator_id == 885) {
+            operator_id = 20;
           }
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
