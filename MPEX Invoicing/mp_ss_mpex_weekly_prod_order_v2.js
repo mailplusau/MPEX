@@ -613,7 +613,7 @@ function main() {
         } else if (barcode_beg == 'MPEB') {
           if (!isNullorEmpty(cust_prod_pricing_b4_ns_item)) {
             ap_stock_line_item.setFieldText(
-              'custrecord_ap_stock_line_item', cust_prod_pricing_1b4_ns_item_text);
+              'custrecord_ap_stock_line_item', cust_prod_pricing_b4_ns_item_text);
           } else {
             switch (mpex_B4_price_point) {
               // case 1:
@@ -2170,7 +2170,7 @@ function main() {
         } else if (barcode_beg == 'MPEB') {
           if (!isNullorEmpty(cust_prod_pricing_b4_ns_item)) {
             ap_stock_line_item.setFieldText(
-              'custrecord_ap_stock_line_item', cust_prod_pricing_1b4_ns_item_text);
+              'custrecord_ap_stock_line_item', cust_prod_pricing_b4_ns_item_text);
           } else {
             switch (mpex_B4_price_point) {
               // case 1:

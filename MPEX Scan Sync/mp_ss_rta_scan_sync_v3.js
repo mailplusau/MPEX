@@ -125,7 +125,7 @@ function getLatestFiles() {
           if (operator_id == 417) {
             operator_id = 789;
           }
-          if (operator_id == 1094 || operator_id == 1116 || operator_id == 885) {
+          if (operator_id == 1094 || operator_id == 1116 || operator_id == 885 || operator_id == 224 || operator_id == 905 || operator_id == 926 || operator_id == 922 || operator_id == 23) {
             operator_id = 20;
           }
           var updated_at = scans[y].updated_at;
