@@ -32,7 +32,7 @@ function getLatestFiles() {
   // To get todays date
   var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
   var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  var today = '2/8/2022';
+  //var today = '2/8/2022';
   //
   nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
@@ -1495,6 +1495,9 @@ function getSourceID(source) {
       break;
     case 'portal':
       return 3;
+      break;
+    case 'threepl':
+      return 5;
       break;
     default:
       return null;
