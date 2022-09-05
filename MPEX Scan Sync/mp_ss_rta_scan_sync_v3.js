@@ -89,6 +89,13 @@ function getLatestFiles() {
         var length = barcodes[x].length;
         var width = barcodes[x].width;
 
+        var order_number = barcodes[x].order_number;
+        var order_date = barcodes[x].order_date;
+        var delivery_speed = barcodes[x].delivery_speed;
+        var depot_id = barcodes[x].depot_id;
+        var order_total_price = barcodes[x].order_total_price;
+        var item_price = barcodes[x].item_price;
+
         nlapiLogExecution('DEBUG', 'scans length', scans.length);
         nlapiLogExecution('DEBUG', 'scans', scans);
         nlapiLogExecution('DEBUG', 'scans stringify', JSON.stringify(scans));
@@ -406,7 +413,7 @@ function getLatestFiles() {
                       'customsearch_prod_pricing_customer_level');
 
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1]
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
 
                     searchProductPricing.setFilterExpression(newFilterExpression);
@@ -456,7 +463,7 @@ function getLatestFiles() {
                       'customsearch_prod_pricing_customer_level');
 
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2]
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
 
                     searchProductPricing.setFilterExpression(newFilterExpression);
@@ -1200,7 +1207,7 @@ function getLatestFiles() {
                     'customsearch_prod_pricing_customer_level');
 
                   var newFilterExpression = [
-                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1]
+                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                   ];
 
                   searchProductPricing.setFilterExpression(newFilterExpression);
@@ -1248,7 +1255,7 @@ function getLatestFiles() {
                     'customsearch_prod_pricing_customer_level');
 
                   var newFilterExpression = [
-                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2]
+                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                   ];
 
                   searchProductPricing.setFilterExpression(newFilterExpression);
