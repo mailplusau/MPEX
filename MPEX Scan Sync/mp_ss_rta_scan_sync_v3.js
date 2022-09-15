@@ -410,7 +410,7 @@ function getLatestFiles() {
                 } else if (scan_type == "delivery") {
                   if (!isNullorEmpty(customer_id)) {
                     var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                      'customsearch_prod_pricing_customer_level');
+                      'customsearch_prod_pricing_customer_lev_3');
 
                     var newFilterExpression = [
                       ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
@@ -460,7 +460,7 @@ function getLatestFiles() {
                 } else if (scan_type == "lodgement") {
                   if (!isNullorEmpty(customer_id)) {
                     var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                      'customsearch_prod_pricing_customer_level');
+                      'customsearch_prod_pricing_customer_lev_3');
 
                     var newFilterExpression = [
                       ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
@@ -1204,7 +1204,7 @@ function getLatestFiles() {
                 if (!isNullorEmpty(customer_id)) {
 
                   var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                    'customsearch_prod_pricing_customer_level');
+                    'customsearch_prod_pricing_customer_lev_3');
 
                   var newFilterExpression = [
                     ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
@@ -1217,6 +1217,8 @@ function getLatestFiles() {
 
                   if (firstResult.length > 0) {
                     var prodPricingInternalID = firstResult[0].getValue('internalid');
+                    var prodPricingStatus = firstResult[0].get
+
 
                     customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
                   }
@@ -1252,7 +1254,7 @@ function getLatestFiles() {
               } else if (scan_type == "lodgement") {
                 if (!isNullorEmpty(customer_id)) {
                   var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                    'customsearch_prod_pricing_customer_level');
+                    'customsearch_prod_pricing_customer_lev_3');
 
                   var newFilterExpression = [
                     ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
