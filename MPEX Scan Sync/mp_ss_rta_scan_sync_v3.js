@@ -134,6 +134,8 @@ function getLatestFiles() {
           }
           if (operator_id == 1094 || operator_id == 1116 || operator_id == 885 || operator_id == 224 || operator_id == 905 || operator_id == 926 || operator_id == 922 || operator_id == 23) {
             operator_id = 20;
+          } if (operator_id == 895) {
+            operator_id = 1123;
           }
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
@@ -161,6 +163,26 @@ function getLatestFiles() {
           var sender_address2 = scans[y].sender_address2;
           var sender_phone = scans[y].sender_phone;
 
+          var delivery_speed = scans[y].delivery_speed;
+          var order_number = scans[y].order_number;
+          var order_date = scans[y].order_date;
+
+          if (isNullorEmpty(scans[y].order_total_price)) {
+            var order_total_price = null;
+          } else {
+            var order_total_price = scans[y].order_total_price.price;
+            order_total_price = order_total_price / 100;
+          }
+
+          if (isNullorEmpty(scans[y].item_price)) {
+            var item_price = null;
+          } else {
+            var item_price = scans[y].item_price.price;
+          }
+
+          var courier = scans[y].courier;
+          var depot_id = scans[y].depot_id;
+
           updated_at = updated_at.split("T");
           var time_updated_at = updated_at[1];
           time_updated_at = time_updated_at.split(".");
@@ -182,9 +204,16 @@ function getLatestFiles() {
           }
 
           updated_at = updated_at.split("-");
+          if (!isNullorEmpty(order_date)) {
+            order_date = order_date.split("-");
+            order_date = nlapiStringToDate(order_date[2] + '/' + order_date[1] +
+              '/' + order_date[0]);
+          }
+
 
           updated_at = nlapiStringToDate(updated_at[2] + '/' + updated_at[1] +
             '/' + updated_at[0]);
+
 
 
           var productStockSearch = nlapiLoadSearch(
@@ -378,6 +407,69 @@ function getLatestFiles() {
               } else
                 if (scan_type == 'pickup') {
                   if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                      'customsearch_prod_pricing_customer_lev_3');
+
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
+                    searchProductPricing.setFilterExpression(newFilterExpression);
+                    var resultSetProductPricing = searchProductPricing.runSearch();
+
+                    var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                    if (firstResult.length > 0) {
+                      var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText)
+
+                      }
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
+
+                      customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                    }
                     if (invoiceable === false || invoiceable == 'false' ||
                       invoiceable === 'false' || invoiceable == false) {
                       customer_prod_stock.setFieldValue(
@@ -412,9 +504,17 @@ function getLatestFiles() {
                     var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
                       'customsearch_prod_pricing_customer_lev_3');
 
-                    var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
-                    ];
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
+
 
                     searchProductPricing.setFilterExpression(newFilterExpression);
                     var resultSetProductPricing = searchProductPricing.runSearch();
@@ -423,6 +523,46 @@ function getLatestFiles() {
 
                     if (firstResult.length > 0) {
                       var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText)
+
+                      }
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
 
                       customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
                     }
@@ -462,9 +602,16 @@ function getLatestFiles() {
                     var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
                       'customsearch_prod_pricing_customer_lev_3');
 
-                    var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
-                    ];
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
 
                     searchProductPricing.setFilterExpression(newFilterExpression);
                     var resultSetProductPricing = searchProductPricing.runSearch();
@@ -473,6 +620,46 @@ function getLatestFiles() {
 
                     if (firstResult.length > 0) {
                       var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText)
+
+                      }
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
 
                       customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
                     }
@@ -588,45 +775,96 @@ function getLatestFiles() {
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
-                } else if (
-                  product_type == '5Kg' ||
-                  product_type == '3Kg' ||
-                  product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == 'B4') {
+                } else if ((product_type == '25Kg' || product_type == '10Kg' ||
+                product_type == '5Kg' ||
+                product_type == '3Kg' ||
+                product_type == '1Kg' ||
+                product_type == '500g' || product_type == '250g' ||
+                product_type == 'B4') && delivery_speed == 'Express') {
 
                   if (product_type == '1Kg') {
-                    prod_id = 552;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 552;
+                    }
+
                   } else if (product_type == '3Kg') {
-                    prod_id = 553;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 553;
+                    }
+
                   } else if (product_type == '5Kg') {
-                    prod_id = 554;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 554;
+                    }
+
                   } else if (product_type == 'B4') {
-                    prod_id = 550;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 550;
+                    }
+
                   } else if (product_type == '500g') {
-                    prod_id = 638;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 638;
+                    }
+
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
 
                 }
 
-                if (account == 'sendle' && product_type == null) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', 862);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_integration', 1);
-                  if (!isNullorEmpty(futile_reasons)) {
+                if (account == 'sendle') {
+                  if (product_type == null) {
                     customer_prod_stock.setFieldValue(
-                      'custrecord_futile_reasons', futile_reasons);
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_futile_image', futile_images);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_ext_reference_id', reference_id);
-                  customer_prod_stock.setFieldValue('custrecord_job_id',
-                    job_id);
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
 
+                  }
                 } else if (account == 'global_express' && product_type ==
                   null) {
                   customer_prod_stock.setFieldValue(
@@ -981,44 +1219,96 @@ function getLatestFiles() {
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
-                } else if (
-                  product_type == '5Kg' ||
-                  product_type == '3Kg' ||
-                  product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == 'B4') {
+                } else if ((product_type == '25Kg' || product_type == '10Kg' ||
+                product_type == '5Kg' ||
+                product_type == '3Kg' ||
+                product_type == '1Kg' ||
+                product_type == '500g' || product_type == '250g' ||
+                product_type == 'B4') && delivery_speed == 'Express') {
 
                   if (product_type == '1Kg') {
-                    prod_id = 552;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 552;
+                    }
+
                   } else if (product_type == '3Kg') {
-                    prod_id = 553;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 553;
+                    }
+
                   } else if (product_type == '5Kg') {
-                    prod_id = 554;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 554;
+                    }
+
                   } else if (product_type == 'B4') {
-                    prod_id = 550;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 550;
+                    }
+
                   } else if (product_type == '500g') {
-                    prod_id = 638;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 638;
+                    }
+
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
 
                 }
 
-                if (account == 'sendle' && product_type == null) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', 862);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_integration', 1);
-                  if (!isNullorEmpty(futile_reasons)) {
+                if (account == 'sendle') {
+                  if (product_type == null) {
                     customer_prod_stock.setFieldValue(
-                      'custrecord_futile_reasons', futile_reasons);
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_futile_image', futile_images);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_ext_reference_id', reference_id);
-                  customer_prod_stock.setFieldValue('custrecord_job_id',
-                    job_id);
 
                 } else if (account == 'global_express' && product_type ==
                   null) {
@@ -1084,6 +1374,9 @@ function getLatestFiles() {
               }
 
               customer_prod_stock.setFieldValue('name', barcode);
+
+              nlapiLogExecution('DEBUG', 'scan_type', scan_type)
+
               if (scan_type == 'futile') {
                 if (!isNullorEmpty(customer_id)) {
                   if (invoiceable === false || invoiceable == 'false' ||
@@ -1172,137 +1465,307 @@ function getLatestFiles() {
                   save_barcode = false;
                 }
 
-              } else if (scan_type == 'pickup') {
-                if (!isNullorEmpty(customer_id)) {
-                  if (invoiceable === false || invoiceable == 'false' ||
-                    invoiceable === 'false' || invoiceable == false) {
+              } else
+                if (scan_type == 'pickup') {
+                  if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                      'customsearch_prod_pricing_customer_lev_3');
+
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
+                    searchProductPricing.setFilterExpression(newFilterExpression);
+                    var resultSetProductPricing = searchProductPricing.runSearch();
+
+                    var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                    if (firstResult.length > 0) {
+                      var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText);
+
+                      }
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
+
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                          nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID);
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
+
+                      customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                    }
+                    if (invoiceable === false || invoiceable == 'false' ||
+                      invoiceable === 'false' || invoiceable == false) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_prepaid', 1);
+                    }
                     customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
+                      'custrecord_cust_prod_stock_customer',
+                      customer_id);
                     customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_prepaid', 1);
+                      'custrecord_cust_prod_stock_status', 2);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_date_stock_used', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_time_stock_used',
+                      time_updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_pickup_date', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_pickup_time', time_updated_at
+                    );
+                  } else {
+                    nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                    save_barcode = false;
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_status', 2);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_date_stock_used', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_time_stock_used', time_updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_pickup_date', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_pickup_time', time_updated_at);
-                } else {
-                  nlapiSendEmail(409635, [
-                    'ankith.ravindran@mailplus.com.au'
-                  ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
-                  ' has empty Customer ID', null);
-                  save_barcode = false;
+                } else if (scan_type == "delivery") {
+                  if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                      'customsearch_prod_pricing_customer_lev_3');
+
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
+
+
+                    searchProductPricing.setFilterExpression(newFilterExpression);
+                    var resultSetProductPricing = searchProductPricing.runSearch();
+
+                    var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                    if (firstResult.length > 0) {
+                      var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText)
+
+                      }
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
+
+                      customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                    }
+                    if (invoiceable === false || invoiceable == 'false' ||
+                      invoiceable === 'false' || invoiceable == false) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_prepaid', 1);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_status', 4);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_customer',
+                      customer_id);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_final_del', 4);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_date_stock_used', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_time_stock_used',
+                      time_updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_delivery_date', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_delivery_time',
+                      time_updated_at);
+                  } else {
+                    nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                    save_barcode = false;
+                  }
+                } else if (scan_type == "lodgement") {
+                  if (!isNullorEmpty(customer_id)) {
+                    var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                      'customsearch_prod_pricing_customer_lev_3');
+
+                    if (delivery_speed == 'Express') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Standard') {
+                      var newFilterExpression = [
+                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    }
+
+
+                    searchProductPricing.setFilterExpression(newFilterExpression);
+                    var resultSetProductPricing = searchProductPricing.runSearch();
+
+                    var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                    if (firstResult.length > 0) {
+                      var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                      var prodItemText = null;
+
+                      if ((product_type == '25Kg' ||
+                        product_type == '10Kg' ||
+                        product_type == '5Kg' ||
+                        product_type == '3Kg' ||
+                        product_type == '1Kg' ||
+                        product_type == '500g' ||
+                        product_type == '250g' ||
+                        product_type == 'B4') && account == 'sendle') {
+
+                        product_type_lowercase = product_type.toLowerCase();
+
+                        var itemText = 'custrecord_prod_pricing_';
+
+                        itemText = itemText + product_type_lowercase;
+
+                        prodItemText = firstResult[0].getText(itemText)
+
+                      }
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
+                      if (!isNullorEmpty(prodItemText)) {
+                        var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                          'customsearch6413');
+                        
+                        var newFilterExpressionAPItem = [
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ];
+
+
+                        searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                        var resultSetAPItem = searchAPItems.runSearch();
+
+                        var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+                        if (firstResultAPItem.length > 0) {
+                          var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                        }
+
+                        customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                      }
+
+                      customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                    }
+                    if (invoiceable === false || invoiceable == 'false' ||
+                      invoiceable === 'false' || invoiceable == false) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_prepaid', 1);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_status', 5);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_customer',
+                      customer_id);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_final_del', 5);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_date_stock_used', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_time_stock_used',
+                      time_updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_lodge_date', updated_at);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_history_lodge_time', time_updated_at);
+                  } else {
+                    nlapiSendEmail(409635, [
+                      'ankith.ravindran@mailplus.com.au'
+                    ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
+                    ' has empty Customer ID', null);
+                    save_barcode = false;
+                  }
                 }
-              } else if (scan_type == "delivery") {
-                if (!isNullorEmpty(customer_id)) {
-
-                  var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                    'customsearch_prod_pricing_customer_lev_3');
-
-                  var newFilterExpression = [
-                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
-                  ];
-
-                  searchProductPricing.setFilterExpression(newFilterExpression);
-                  var resultSetProductPricing = searchProductPricing.runSearch();
-
-                  var firstResult = resultSetProductPricing.getResults(0, 1);
-
-                  if (firstResult.length > 0) {
-                    var prodPricingInternalID = firstResult[0].getValue('internalid');
-                    var prodPricingStatus = firstResult[0].get
-
-
-                    customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
-                  }
-
-                  if (invoiceable === false || invoiceable == 'false' ||
-                    invoiceable === 'false' || invoiceable == false) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_prepaid', 1);
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_status', 4);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_final_del', 4);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_date_stock_used', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_time_stock_used', time_updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_delivery_date', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_delivery_time', time_updated_at);
-                } else {
-                  nlapiSendEmail(409635, [
-                    'ankith.ravindran@mailplus.com.au'
-                  ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
-                  ' has empty Customer ID', null);
-                  save_barcode = false;
-                }
-              } else if (scan_type == "lodgement") {
-                if (!isNullorEmpty(customer_id)) {
-                  var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
-                    'customsearch_prod_pricing_customer_lev_3');
-
-                  var newFilterExpression = [
-                    ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
-                  ];
-
-                  searchProductPricing.setFilterExpression(newFilterExpression);
-                  var resultSetProductPricing = searchProductPricing.runSearch();
-
-                  var firstResult = resultSetProductPricing.getResults(0, 1);
-
-                  if (firstResult.length > 0) {
-                    var prodPricingInternalID = firstResult[0].getValue('internalid');
-
-                    customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
-                  }
-                  if (invoiceable === false || invoiceable == 'false' ||
-                    invoiceable === 'false' || invoiceable == false) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_prepaid', 1);
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_status', 5);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_final_del', 5);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_date_stock_used', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_time_stock_used', time_updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_lodge_date', updated_at);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_history_lodge_time', time_updated_at);
-                } else {
-                  nlapiSendEmail(409635, [
-                    'ankith.ravindran@mailplus.com.au'
-                  ], 'MPEX Scan Sync', 'Barcode: ' + barcode +
-                  ' has empty Customer ID', null);
-                  save_barcode = false;
-                }
-              }
 
               if (save_barcode == true) {
                 customer_prod_stock.setFieldValue(
                   'custrecord_cust_prod_stock_source', 6);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_connote_number', connote_number);
                 customer_prod_stock.setFieldValue(
                   'custrecord_cust_prod_stock_operator', operator_id);
                 if (invoiceable === false || invoiceable == 'false' ||
@@ -1316,8 +1779,8 @@ function getLatestFiles() {
                 var sourceId = getSourceID(source);
 
 
-                customer_prod_stock.setFieldValue('custrecord_mpdl_number',
-                  external_barcode);
+                customer_prod_stock.setFieldValue(
+                  'custrecord_mpdl_number', external_barcode);
                 customer_prod_stock.setFieldValue(
                   'custrecord_barcode_source', sourceId);
                 customer_prod_stock.setFieldValue(
@@ -1378,44 +1841,96 @@ function getLatestFiles() {
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
-                } else if (
+                } else if ((product_type == '25Kg' || product_type == '10Kg' ||
                   product_type == '5Kg' ||
                   product_type == '3Kg' ||
                   product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == 'B4') {
+                  product_type == '500g' || product_type == '250g' ||
+                  product_type == 'B4') && delivery_speed == 'Express') {
 
                   if (product_type == '1Kg') {
-                    prod_id = 552;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 552;
+                    }
+
                   } else if (product_type == '3Kg') {
-                    prod_id = 553;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 553;
+                    }
+
                   } else if (product_type == '5Kg') {
-                    prod_id = 554;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 554;
+                    }
+
                   } else if (product_type == 'B4') {
-                    prod_id = 550;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 550;
+                    }
+
                   } else if (product_type == '500g') {
-                    prod_id = 638;
+                    if (delivery_speed == 'Standard') {
+
+                    } else if (delivery_speed == "Express") {
+                      prod_id = 638;
+                    }
+
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_stock_prod_name', prod_id);
 
                 }
 
-                if (account == 'sendle' && product_type == null) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', 862);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_integration', 1);
-                  if (!isNullorEmpty(futile_reasons)) {
+                if (account == 'sendle') {
+                  if (product_type == null) {
                     customer_prod_stock.setFieldValue(
-                      'custrecord_futile_reasons', futile_reasons);
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_futile_image', futile_images);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_ext_reference_id', reference_id);
-                  customer_prod_stock.setFieldValue('custrecord_job_id',
-                    job_id);
                 } else if (account == 'global_express' && product_type ==
                   null) {
                   customer_prod_stock.setFieldValue(
@@ -1432,28 +1947,13 @@ function getLatestFiles() {
                     'custrecord_ext_reference_id', reference_id);
                   customer_prod_stock.setFieldValue('custrecord_job_id',
                     job_id);
-                } else if (product_type ==
-                  null && customer_id == 1676937) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', 554);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_integration', 3);
-                  if (!isNullorEmpty(futile_reasons)) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_futile_reasons', futile_reasons);
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_futile_image', futile_images);
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_ext_reference_id', reference_id);
-                  customer_prod_stock.setFieldValue('custrecord_job_id',
-                    job_id);
                 }
 
                 customer_prod_stock_id = nlapiSubmitRecord(
                   customer_prod_stock);
 
-                nlapiLogExecution('DEBUG', 'Customer Product Stock Created',
+                nlapiLogExecution('DEBUG',
+                  'Customer Product Stock Update',
                   customer_prod_stock_id)
               }
             }
