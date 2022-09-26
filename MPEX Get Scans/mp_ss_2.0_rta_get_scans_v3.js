@@ -4,7 +4,7 @@
  */
 
 define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N/https'],
-	function(task, email, runtime, search, record, format, https) {
+	function (task, email, runtime, search, record, format, https) {
 
 
 		var main_JSON = '';
@@ -53,17 +53,18 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 
 			// var temp = tempYesterdayDate.split('');
 			var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
-			// var today = '3/5/2021'
+			var today = '23/9/2022'
 
 			log.audit({
 				title: 'yesterday',
 				details: yesterday
 			});
 
-			// var urlDate = '02-05-2021'
+
+			// var jsonName = '04-10-2021';
 			var jsonName = today;
 
-			// var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=02-05-2021';
+			// var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=04-10-2021';
 			var mainURL = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=' + today;
 
 			log.audit({
@@ -104,16 +105,16 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 				details: no_of_barcodes
 			});
 
-			//300 barcodes per record created. 
-			var nb_records = parseInt(no_of_barcodes / 300) + 1;
+			//100 barcodes per record created. 
+			var nb_records = parseInt(no_of_barcodes / 100) + 1;
 
 			for (var y = 0; y < nb_records; y++) {
 
 				//Set the upper bound for loop based on number of barcodes
-				if (no_of_barcodes > 300) {
-					var nb_scans_in_record = 300; // Number of barcodes in each page except the last one.
+				if (no_of_barcodes > 100) {
+					var nb_scans_in_record = 100; // Number of barcodes in each page except the last one.
 					// if (y == nb_records - 1) {
-					// 	var upper_bound = 300;
+					// 	var upper_bound = 100;
 					// } else {
 					var upper_bound = nb_scans_in_record * (y + 1);
 					// }
@@ -208,10 +209,10 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/format', 'N
 );
 
 /**
- * Is Null or Empty.
- * 
- * @param {Object} strVal
- */
+* Is Null or Empty.
+* 
+* @param {Object} strVal
+*/
 function isNullorEmpty(strVal) {
 	return (strVal == null || strVal == '' || strVal == 'null' || strVal == undefined || strVal == 'undefined' || strVal == '- None -');
 }
