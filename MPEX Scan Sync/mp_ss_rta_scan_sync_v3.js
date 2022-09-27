@@ -167,6 +167,10 @@ function getLatestFiles() {
           var order_number = scans[y].order_number;
           var order_date = scans[y].order_date;
 
+          var eta_delivery_date_min = scans[y].estimated_delivery_date_minimum;
+          var eta_delivery_date_max = scans[y].estimated_delivery_date_maximum;
+          var delivery_zone = scans[y].delivery_zone;
+
           if (isNullorEmpty(scans[y].order_total_price)) {
             var order_total_price = null;
           } else {
@@ -209,6 +213,16 @@ function getLatestFiles() {
             order_date = order_date.split("-");
             order_date = nlapiStringToDate(order_date[2] + '/' + order_date[1] +
               '/' + order_date[0]);
+          }
+
+          if (!isNullorEmpty(eta_delivery_date_min) && !isNullorEmpty(eta_delivery_date_max)) {
+            eta_delivery_date_min = eta_delivery_date_min.split("-");
+            eta_delivery_date_min = nlapiStringToDate(eta_delivery_date_min[2] + '/' + eta_delivery_date_min[1] +
+              '/' + eta_delivery_date_min[0]);
+
+            eta_delivery_date_max = eta_delivery_date_max.split("-");
+            eta_delivery_date_max = nlapiStringToDate(eta_delivery_date_max[2] + '/' + eta_delivery_date_max[1] +
+              '/' + eta_delivery_date_max[0]);
           }
 
 
@@ -452,6 +466,10 @@ function getLatestFiles() {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
 
+                      if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      }
+
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
                       ];
@@ -547,6 +565,10 @@ function getLatestFiles() {
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
+
+                      if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      }
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
@@ -644,6 +666,10 @@ function getLatestFiles() {
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
+
+                      if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      }
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
@@ -865,6 +891,15 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
                     customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
                     customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                    } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                    }
+
 
                   }
                 } else if (account == 'global_express' && product_type ==
@@ -1309,6 +1344,14 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
                     customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
                     customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                    } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                    }
 
                   }
 
