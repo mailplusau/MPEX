@@ -421,6 +421,7 @@ function getLatestFiles() {
 
               } else if (scan_type == 'pickup') {
                 if (!isNullorEmpty(customer_id)) {
+
                   var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
                     'customsearch_prod_pricing_customer_lev_3');
 
@@ -451,7 +452,9 @@ function getLatestFiles() {
                       product_type == '1Kg' ||
                       product_type == '500g' ||
                       product_type == '250g' ||
-                      product_type == 'B4') && account == 'sendle') {
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
 
                       product_type_lowercase = product_type.toLowerCase();
 
@@ -459,30 +462,42 @@ function getLatestFiles() {
 
                       itemText = itemText + product_type_lowercase;
 
-                      prodItemText = firstResult[0].getText(itemText)
+                      prodItemText = firstResult[0].getText(itemText);
+
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
 
-                      if (delivery_zone.toUpperCase() == 'REMOTE') {
-                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
                       }
 
+
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
                       searchAPItems.setFilterExpression(newFilterExpressionAPItem);
                       var resultSetAPItem = searchAPItems.runSearch();
 
+                      
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+
+
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -551,7 +566,9 @@ function getLatestFiles() {
                       product_type == '1Kg' ||
                       product_type == '500g' ||
                       product_type == '250g' ||
-                      product_type == 'B4') && account == 'sendle') {
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
 
                       product_type_lowercase = product_type.toLowerCase();
 
@@ -559,19 +576,24 @@ function getLatestFiles() {
 
                       itemText = itemText + product_type_lowercase;
 
-                      prodItemText = firstResult[0].getText(itemText)
+                      prodItemText = firstResult[0].getText(itemText);
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
 
-                      if (delivery_zone.toUpperCase() == 'REMOTE') {
-                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
                       }
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -582,6 +604,8 @@ function getLatestFiles() {
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
+
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
 
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
@@ -652,7 +676,9 @@ function getLatestFiles() {
                       product_type == '1Kg' ||
                       product_type == '500g' ||
                       product_type == '250g' ||
-                      product_type == 'B4') && account == 'sendle') {
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
 
                       product_type_lowercase = product_type.toLowerCase();
 
@@ -660,19 +686,24 @@ function getLatestFiles() {
 
                       itemText = itemText + product_type_lowercase;
 
-                      prodItemText = firstResult[0].getText(itemText)
+                      prodItemText = firstResult[0].getText(itemText);
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
 
-                      if (delivery_zone.toUpperCase() == 'REMOTE') {
-                        prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
                       }
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -683,7 +714,7 @@ function getLatestFiles() {
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -777,77 +808,62 @@ function getLatestFiles() {
                 customer_prod_stock.setFieldValue(
                   'custrecord_senders_phone', sender_phone);
 
-                if (barcode_beg == 'MPEN' ||
-                  barcode_beg == 'MPET' ||
-                  barcode_beg == 'MPEF' ||
-                  barcode_beg == 'MPEB' ||
-                  barcode_beg == 'MPEC' ||
-                  barcode_beg == 'MPED' ||
-                  barcode_beg == 'MPEG') {
-                  if (barcode_beg == 'MPEN') {
-                    prod_id = 552;
-                  } else if (barcode_beg == 'MPET') {
-                    prod_id = 553;
-                  } else if (barcode_beg == 'MPEF') {
-                    prod_id = 554;
-                  } else if (barcode_beg == 'MPEB') {
-                    prod_id = 550;
-                  } else if (barcode_beg == 'MPEC') {
-                    prod_id = 551;
-                  } else if (barcode_beg == 'MPED') {
-                    prod_id = 549;
-                  } else if (barcode_beg == 'MPEG') {
-                    prod_id = 638;
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
-                } else if ((product_type == '25Kg' ||
+                // if (barcode_beg == 'MPEN' ||
+                //   barcode_beg == 'MPET' ||
+                //   barcode_beg == 'MPEF' ||
+                //   barcode_beg == 'MPEB' ||
+                //   barcode_beg == 'MPEC' ||
+                //   barcode_beg == 'MPED' ||
+                //   barcode_beg == 'MPEG') {
+                //   if (barcode_beg == 'MPEN') {
+                //     prod_id = 552;
+                //   } else if (barcode_beg == 'MPET') {
+                //     prod_id = 553;
+                //   } else if (barcode_beg == 'MPEF') {
+                //     prod_id = 554;
+                //   } else if (barcode_beg == 'MPEB') {
+                //     prod_id = 550;
+                //   } else if (barcode_beg == 'MPEC') {
+                //     prod_id = 551;
+                //   } else if (barcode_beg == 'MPED') {
+                //     prod_id = 549;
+                //   } else if (barcode_beg == 'MPEG') {
+                //     prod_id = 638;
+                //   }
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_stock_prod_name', prod_id);
+                // } else
+
+                nlapiLogExecution('DEBUG', 'product_type', product_type)
+
+                if ((product_type == '25Kg' ||
                   product_type == '10Kg' ||
                   product_type == '5Kg' ||
                   product_type == '3Kg' ||
                   product_type == '1Kg' ||
                   product_type == '500g' ||
                   product_type == '250g' ||
-                  product_type == 'B4') && delivery_speed == 'Express') {
+                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (product_type == '1Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                    if (product_type == '1Kg') {
                       prod_id = 552;
-                    }
-
-                  } else if (product_type == '3Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '3Kg') {
                       prod_id = 553;
-                    }
-
-                  } else if (product_type == '5Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '5Kg') {
                       prod_id = 554;
-                    }
-
-                  } else if (product_type == 'B4') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == 'B4') {
                       prod_id = 550;
-                    }
-
-                  } else if (product_type == '500g') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '500g') {
+                      prod_id = 638;
+                    } else if (product_type == 'C5') {
+                      prod_id = 638;
+                    } else if (product_type == 'DL') {
                       prod_id = 638;
                     }
-
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', prod_id);
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
 
                 }
 
@@ -1232,75 +1248,61 @@ function getLatestFiles() {
                 customer_prod_stock.setFieldValue(
                   'custrecord_senders_phone', sender_phone);
 
-                if (barcode_beg == 'MPEN' ||
-                  barcode_beg == 'MPET' ||
-                  barcode_beg == 'MPEF' ||
-                  barcode_beg == 'MPEB' ||
-                  barcode_beg == 'MPEC' ||
-                  barcode_beg == 'MPED' ||
-                  barcode_beg == 'MPEG') {
-                  if (barcode_beg == 'MPEN') {
-                    prod_id = 552;
-                  } else if (barcode_beg == 'MPET') {
-                    prod_id = 553;
-                  } else if (barcode_beg == 'MPEF') {
-                    prod_id = 554;
-                  } else if (barcode_beg == 'MPEB') {
-                    prod_id = 550;
-                  } else if (barcode_beg == 'MPEC') {
-                    prod_id = 551;
-                  } else if (barcode_beg == 'MPED') {
-                    prod_id = 549;
-                  } else if (barcode_beg == 'MPEG') {
-                    prod_id = 638;
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
-                } else if ((product_type == '25Kg' || product_type == '10Kg' ||
+                // if (barcode_beg == 'MPEN' ||
+                //   barcode_beg == 'MPET' ||
+                //   barcode_beg == 'MPEF' ||
+                //   barcode_beg == 'MPEB' ||
+                //   barcode_beg == 'MPEC' ||
+                //   barcode_beg == 'MPED' ||
+                //   barcode_beg == 'MPEG') {
+                //   if (barcode_beg == 'MPEN') {
+                //     prod_id = 552;
+                //   } else if (barcode_beg == 'MPET') {
+                //     prod_id = 553;
+                //   } else if (barcode_beg == 'MPEF') {
+                //     prod_id = 554;
+                //   } else if (barcode_beg == 'MPEB') {
+                //     prod_id = 550;
+                //   } else if (barcode_beg == 'MPEC') {
+                //     prod_id = 551;
+                //   } else if (barcode_beg == 'MPED') {
+                //     prod_id = 549;
+                //   } else if (barcode_beg == 'MPEG') {
+                //     prod_id = 638;
+                //   }
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_stock_prod_name', prod_id);
+                // } else
+
+
+                if ((product_type == '25Kg' ||
+                  product_type == '10Kg' ||
                   product_type == '5Kg' ||
                   product_type == '3Kg' ||
                   product_type == '1Kg' ||
-                  product_type == '500g' || product_type == '250g' ||
-                  product_type == 'B4') && delivery_speed == 'Express') {
+                  product_type == '500g' ||
+                  product_type == '250g' ||
+                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (product_type == '1Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                    if (product_type == '1Kg') {
                       prod_id = 552;
-                    }
-
-                  } else if (product_type == '3Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '3Kg') {
                       prod_id = 553;
-                    }
-
-                  } else if (product_type == '5Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '5Kg') {
                       prod_id = 554;
-                    }
-
-                  } else if (product_type == 'B4') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == 'B4') {
                       prod_id = 550;
-                    }
-
-                  } else if (product_type == '500g') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '500g') {
+                      prod_id = 638;
+                    } else if (product_type == 'C5') {
+                      prod_id = 638;
+                    } else if (product_type == 'DL') {
                       prod_id = 638;
                     }
-
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', prod_id);
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
 
                 }
 
@@ -1543,7 +1545,9 @@ function getLatestFiles() {
                         product_type == '1Kg' ||
                         product_type == '500g' ||
                         product_type == '250g' ||
-                        product_type == 'B4') && account == 'sendle') {
+                        product_type == 'B4' ||
+                        product_type == 'DL' ||
+                        product_type == 'C5')) {
 
                         product_type_lowercase = product_type.toLowerCase();
 
@@ -1552,6 +1556,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
+                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
@@ -1561,7 +1566,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -1569,11 +1574,13 @@ function getLatestFiles() {
                         var resultSetAPItem = searchAPItems.runSearch();
 
                         var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+
+                        nlapiLogExecution('AUDIT', 'firstResultAPItem.length 2', firstResultAPItem.length)
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                           nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID);
                         }
-
+                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -1642,7 +1649,9 @@ function getLatestFiles() {
                         product_type == '1Kg' ||
                         product_type == '500g' ||
                         product_type == '250g' ||
-                        product_type == 'B4') && account == 'sendle') {
+                        product_type == 'B4' ||
+                        product_type == 'DL' ||
+                        product_type == 'C5')) {
 
                         product_type_lowercase = product_type.toLowerCase();
 
@@ -1650,7 +1659,8 @@ function getLatestFiles() {
 
                         itemText = itemText + product_type_lowercase;
 
-                        prodItemText = firstResult[0].getText(itemText)
+                        prodItemText = firstResult[0].getText(itemText);
+                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
@@ -1659,7 +1669,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -1670,7 +1680,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-
+                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -1740,7 +1750,9 @@ function getLatestFiles() {
                         product_type == '1Kg' ||
                         product_type == '500g' ||
                         product_type == '250g' ||
-                        product_type == 'B4') && account == 'sendle') {
+                        product_type == 'B4' ||
+                        product_type == 'DL' ||
+                        product_type == 'C5')) {
 
                         product_type_lowercase = product_type.toLowerCase();
 
@@ -1748,7 +1760,8 @@ function getLatestFiles() {
 
                         itemText = itemText + product_type_lowercase;
 
-                        prodItemText = firstResult[0].getText(itemText)
+                        prodItemText = firstResult[0].getText(itemText);
+                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
@@ -1757,7 +1770,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -1768,7 +1781,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-
+                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -1862,76 +1875,61 @@ function getLatestFiles() {
                 customer_prod_stock.setFieldValue(
                   'custrecord_senders_phone', sender_phone);
 
-                if (barcode_beg == 'MPEN' ||
-                  barcode_beg == 'MPET' ||
-                  barcode_beg == 'MPEF' ||
-                  barcode_beg == 'MPEB' ||
-                  barcode_beg == 'MPEC' ||
-                  barcode_beg == 'MPED' ||
-                  barcode_beg == 'MPEG') {
-                  if (barcode_beg == 'MPEN') {
-                    prod_id = 552;
-                  } else if (barcode_beg == 'MPET') {
-                    prod_id = 553;
-                  } else if (barcode_beg == 'MPEF') {
-                    prod_id = 554;
-                  } else if (barcode_beg == 'MPEB') {
-                    prod_id = 550;
-                  } else if (barcode_beg == 'MPEC') {
-                    prod_id = 551;
-                  } else if (barcode_beg == 'MPED') {
-                    prod_id = 549;
-                  } else if (barcode_beg == 'MPEG') {
-                    prod_id = 638;
-                  }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
-                } else if ((product_type == '25Kg' || product_type == '10Kg' ||
+                // if (barcode_beg == 'MPEN' ||
+                //   barcode_beg == 'MPET' ||
+                //   barcode_beg == 'MPEF' ||
+                //   barcode_beg == 'MPEB' ||
+                //   barcode_beg == 'MPEC' ||
+                //   barcode_beg == 'MPED' ||
+                //   barcode_beg == 'MPEG') {
+                //   if (barcode_beg == 'MPEN') {
+                //     prod_id = 552;
+                //   } else if (barcode_beg == 'MPET') {
+                //     prod_id = 553;
+                //   } else if (barcode_beg == 'MPEF') {
+                //     prod_id = 554;
+                //   } else if (barcode_beg == 'MPEB') {
+                //     prod_id = 550;
+                //   } else if (barcode_beg == 'MPEC') {
+                //     prod_id = 551;
+                //   } else if (barcode_beg == 'MPED') {
+                //     prod_id = 549;
+                //   } else if (barcode_beg == 'MPEG') {
+                //     prod_id = 638;
+                //   }
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_stock_prod_name', prod_id);
+                // } else
+
+
+                if ((product_type == '25Kg' ||
+                  product_type == '10Kg' ||
                   product_type == '5Kg' ||
                   product_type == '3Kg' ||
                   product_type == '1Kg' ||
-                  product_type == '500g' || product_type == '250g' ||
-                  product_type == 'B4') && delivery_speed == 'Express') {
+                  product_type == '500g' ||
+                  product_type == '250g' ||
+                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (product_type == '1Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                    if (product_type == '1Kg') {
                       prod_id = 552;
-                    }
-
-                  } else if (product_type == '3Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '3Kg') {
                       prod_id = 553;
-                    }
-
-                  } else if (product_type == '5Kg') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '5Kg') {
                       prod_id = 554;
-                    }
-
-                  } else if (product_type == 'B4') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == 'B4') {
                       prod_id = 550;
-                    }
-
-                  } else if (product_type == '500g') {
-                    if (delivery_speed == 'Standard') {
-
-                    } else if (delivery_speed == "Express") {
+                    } else if (product_type == '500g') {
+                      prod_id = 638;
+                    } else if (product_type == 'C5') {
+                      prod_id = 638;
+                    } else if (product_type == 'DL') {
                       prod_id = 638;
                     }
-
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', prod_id);
                   }
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_stock_prod_name', prod_id);
-
                 }
 
                 if (account == 'sendle') {
