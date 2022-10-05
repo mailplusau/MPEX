@@ -6,9 +6,10 @@
  * @Last modified by:   ankithravindran
  * @Last modified time: 2022-06-09T15:50:30+10:00
  *
- * @Description:
+ * @Description: Daily Scan Sync
  *
  */
+
 var adhoc_inv_deploy = 'customdeploy2';
 var prev_inv_deploy = null;
 var ctx = nlapiGetContext();
@@ -28,12 +29,11 @@ function getLatestFiles() {
 
   yesterdayDate.setDate(yesterdayDate.getDate() - 1)
 
-
   // To get todays date
   var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
   var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
   //var today = '2/8/2022';
-  //
+
   nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
@@ -325,6 +325,107 @@ function getLatestFiles() {
 
               } else if (scan_type == 'futile') {
                 if (!isNullorEmpty(customer_id)) {
+
+                  var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                    'customsearch_prod_pricing_customer_lev_3');
+
+                  if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  } else if (delivery_speed == 'Standard') {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  }
+
+                  searchProductPricing.setFilterExpression(newFilterExpression);
+                  var resultSetProductPricing = searchProductPricing.runSearch();
+
+                  var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                  if (firstResult.length > 0) {
+                    var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                    var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
+
+                    if ((product_type == '25Kg' ||
+                      product_type == '10Kg' ||
+                      product_type == '5Kg' ||
+                      product_type == '3Kg' ||
+                      product_type == '1Kg' ||
+                      product_type == '500g' ||
+                      product_type == '250g' ||
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
+
+                      product_type_lowercase = product_type.toLowerCase();
+
+                      var itemText = 'custrecord_prod_pricing_';
+
+                      itemText = itemText + product_type_lowercase;
+
+                      prodItemText = firstResult[0].getText(itemText);
+
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+
+
+                    }
+                    if (!isNullorEmpty(prodItemText)) {
+                      var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                        'customsearch6413');
+
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
+                      }
+
+
+                      var newFilterExpressionAPItem = [
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                      ];
+
+
+                      searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                      var resultSetAPItem = searchAPItems.runSearch();
+
+
+                      var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+
+
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      if (firstResultAPItem.length > 0) {
+                        var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                      }
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                    }
+
+                    customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                  }
+
                   if (invoiceable === false || invoiceable == 'false' ||
                     invoiceable === 'false' || invoiceable == false) {
                     customer_prod_stock.setFieldValue(
@@ -425,7 +526,7 @@ function getLatestFiles() {
                   var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
                     'customsearch_prod_pricing_customer_lev_3');
 
-                  if (delivery_speed == 'Express') {
+                  if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
                       ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
@@ -444,6 +545,24 @@ function getLatestFiles() {
                     var prodPricingInternalID = firstResult[0].getValue('internalid');
 
                     var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
 
                     if ((product_type == '25Kg' ||
                       product_type == '10Kg' ||
@@ -489,7 +608,7 @@ function getLatestFiles() {
                       searchAPItems.setFilterExpression(newFilterExpressionAPItem);
                       var resultSetAPItem = searchAPItems.runSearch();
 
-                      
+
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
@@ -537,7 +656,7 @@ function getLatestFiles() {
                   var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
                     'customsearch_prod_pricing_customer_lev_3');
 
-                  if (delivery_speed == 'Express') {
+                  if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
                       ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
@@ -558,6 +677,24 @@ function getLatestFiles() {
                     var prodPricingInternalID = firstResult[0].getValue('internalid');
 
                     var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
 
                     if ((product_type == '25Kg' ||
                       product_type == '10Kg' ||
@@ -668,6 +805,24 @@ function getLatestFiles() {
                     var prodPricingInternalID = firstResult[0].getValue('internalid');
 
                     var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
 
                     if ((product_type == '25Kg' ||
                       product_type == '10Kg' ||
@@ -999,6 +1154,107 @@ function getLatestFiles() {
 
               } else if (scan_type == 'futile') {
                 if (!isNullorEmpty(customer_id)) {
+
+                  var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                    'customsearch_prod_pricing_customer_lev_3');
+
+                  if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  } else if (delivery_speed == 'Standard') {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  }
+
+                  searchProductPricing.setFilterExpression(newFilterExpression);
+                  var resultSetProductPricing = searchProductPricing.runSearch();
+
+                  var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                  if (firstResult.length > 0) {
+                    var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                    var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
+
+                    if ((product_type == '25Kg' ||
+                      product_type == '10Kg' ||
+                      product_type == '5Kg' ||
+                      product_type == '3Kg' ||
+                      product_type == '1Kg' ||
+                      product_type == '500g' ||
+                      product_type == '250g' ||
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
+
+                      product_type_lowercase = product_type.toLowerCase();
+
+                      var itemText = 'custrecord_prod_pricing_';
+
+                      itemText = itemText + product_type_lowercase;
+
+                      prodItemText = firstResult[0].getText(itemText);
+
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+
+
+                    }
+                    if (!isNullorEmpty(prodItemText)) {
+                      var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                        'customsearch6413');
+
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
+                      }
+
+
+                      var newFilterExpressionAPItem = [
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                      ];
+
+
+                      searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                      var resultSetAPItem = searchAPItems.runSearch();
+
+
+                      var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+
+
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      if (firstResultAPItem.length > 0) {
+                        var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                      }
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                    }
+
+                    customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                  }
+
                   if (invoiceable === false || invoiceable == 'false' ||
                     invoiceable === 'false' || invoiceable == false) {
                     customer_prod_stock.setFieldValue(
@@ -1426,6 +1682,107 @@ function getLatestFiles() {
 
               if (scan_type == 'futile') {
                 if (!isNullorEmpty(customer_id)) {
+
+                  var searchProductPricing = nlapiLoadSearch('customrecord_product_pricing',
+                    'customsearch_prod_pricing_customer_lev_3');
+
+                  if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  } else if (delivery_speed == 'Standard') {
+                    var newFilterExpression = [
+                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  }
+
+                  searchProductPricing.setFilterExpression(newFilterExpression);
+                  var resultSetProductPricing = searchProductPricing.runSearch();
+
+                  var firstResult = resultSetProductPricing.getResults(0, 1);
+
+                  if (firstResult.length > 0) {
+                    var prodPricingInternalID = firstResult[0].getValue('internalid');
+
+                    var prodItemText = null;
+
+                    if (isNullorEmpty(product_type)) {
+                      if (barcode_beg == 'MPEN') {
+                        product_type = '1Kg';
+                      } else if (barcode_beg == 'MPET') {
+                        product_type = '3Kg';
+                      } else if (barcode_beg == 'MPEF') {
+                        product_type = '5Kg';
+                      } else if (barcode_beg == 'MPEB') {
+                        product_type = 'B4';
+                      } else if (barcode_beg == 'MPEC') {
+                        product_type = 'C5';
+                      } else if (barcode_beg == 'MPED') {
+                        product_type = 'DL';
+                      } else if (barcode_beg == 'MPEG') {
+                        product_type = '500g';
+                      }
+                    }
+
+                    if ((product_type == '25Kg' ||
+                      product_type == '10Kg' ||
+                      product_type == '5Kg' ||
+                      product_type == '3Kg' ||
+                      product_type == '1Kg' ||
+                      product_type == '500g' ||
+                      product_type == '250g' ||
+                      product_type == 'B4' ||
+                      product_type == 'DL' ||
+                      product_type == 'C5')) {
+
+                      product_type_lowercase = product_type.toLowerCase();
+
+                      var itemText = 'custrecord_prod_pricing_';
+
+                      itemText = itemText + product_type_lowercase;
+
+                      prodItemText = firstResult[0].getText(itemText);
+
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+
+
+                    }
+                    if (!isNullorEmpty(prodItemText)) {
+                      var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
+                        'customsearch6413');
+
+                      if (delivery_speed == 'Standard') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          }
+                        }
+                      }
+
+
+                      var newFilterExpressionAPItem = [
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                      ];
+
+
+                      searchAPItems.setFilterExpression(newFilterExpressionAPItem);
+                      var resultSetAPItem = searchAPItems.runSearch();
+
+
+                      var firstResultAPItem = resultSetAPItem.getResults(0, 1);
+
+
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      if (firstResultAPItem.length > 0) {
+                        var apItemInternalID = firstResultAPItem[0].getValue('internalid');
+                      }
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
+                    }
+
+                    customer_prod_stock.setFieldValue('custrecord_cust_prod_pricing', prodPricingInternalID);
+                  }
+
                   if (invoiceable === false || invoiceable == 'false' ||
                     invoiceable === 'false' || invoiceable == false) {
                     customer_prod_stock.setFieldValue(
@@ -1538,6 +1895,24 @@ function getLatestFiles() {
 
                       var prodItemText = null;
 
+                      if (isNullorEmpty(product_type)) {
+                        if (barcode_beg == 'MPEN') {
+                          product_type = '1Kg';
+                        } else if (barcode_beg == 'MPET') {
+                          product_type = '3Kg';
+                        } else if (barcode_beg == 'MPEF') {
+                          product_type = '5Kg';
+                        } else if (barcode_beg == 'MPEB') {
+                          product_type = 'B4';
+                        } else if (barcode_beg == 'MPEC') {
+                          product_type = 'C5';
+                        } else if (barcode_beg == 'MPED') {
+                          product_type = 'DL';
+                        } else if (barcode_beg == 'MPEG') {
+                          product_type = '500g';
+                        }
+                      }
+
                       if ((product_type == '25Kg' ||
                         product_type == '10Kg' ||
                         product_type == '5Kg' ||
@@ -1642,6 +2017,24 @@ function getLatestFiles() {
 
                       var prodItemText = null;
 
+                      if (isNullorEmpty(product_type)) {
+                        if (barcode_beg == 'MPEN') {
+                          product_type = '1Kg';
+                        } else if (barcode_beg == 'MPET') {
+                          product_type = '3Kg';
+                        } else if (barcode_beg == 'MPEF') {
+                          product_type = '5Kg';
+                        } else if (barcode_beg == 'MPEB') {
+                          product_type = 'B4';
+                        } else if (barcode_beg == 'MPEC') {
+                          product_type = 'C5';
+                        } else if (barcode_beg == 'MPED') {
+                          product_type = 'DL';
+                        } else if (barcode_beg == 'MPEG') {
+                          product_type = '500g';
+                        }
+                      }
+
                       if ((product_type == '25Kg' ||
                         product_type == '10Kg' ||
                         product_type == '5Kg' ||
@@ -1742,6 +2135,24 @@ function getLatestFiles() {
                       var prodPricingInternalID = firstResult[0].getValue('internalid');
 
                       var prodItemText = null;
+
+                      if (isNullorEmpty(product_type)) {
+                        if (barcode_beg == 'MPEN') {
+                          product_type = '1Kg';
+                        } else if (barcode_beg == 'MPET') {
+                          product_type = '3Kg';
+                        } else if (barcode_beg == 'MPEF') {
+                          product_type = '5Kg';
+                        } else if (barcode_beg == 'MPEB') {
+                          product_type = 'B4';
+                        } else if (barcode_beg == 'MPEC') {
+                          product_type = 'C5';
+                        } else if (barcode_beg == 'MPED') {
+                          product_type = 'DL';
+                        } else if (barcode_beg == 'MPEG') {
+                          product_type = '500g';
+                        }
+                      }
 
                       if ((product_type == '25Kg' ||
                         product_type == '10Kg' ||
