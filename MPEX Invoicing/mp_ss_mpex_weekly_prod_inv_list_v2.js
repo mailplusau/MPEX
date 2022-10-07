@@ -162,6 +162,9 @@ function main(type) {
 
             nlapiLogExecution('AUDIT', 'Init New Invoice ', '');
 
+            var setMpExpItems = false;
+            var setMpStdItems = false;
+
             //--------------- Init New Invoice ---------------//
             usage_per_inv = ctx.getRemainingUsage();
 
@@ -289,6 +292,11 @@ function main(type) {
             // internal_id[internal_id.length] = parseInt(searchResults[n].getValue('internalid', null, "GROUP"));
             customer_ids = searchResults[n].getValue(
               'custrecord_ap_order_customer', null, "GROUP");
+
+
+            var setMpExpItems = false;
+            var setMpStdItems = false;
+
             recInvoice = nlapiCreateRecord('invoice', {
               recordmode: 'dynamic'
             });
@@ -387,12 +395,14 @@ function main(type) {
               var mpStdIncluded = 2;
               var mpExpIncluded = 2;
 
-              if (apItemDeliverySpeed == 1) {
-                mpStdIncluded = 1
+              if (apItemDeliverySpeed == 1 || setMpStdItems == true) {
+                mpStdIncluded = 1;
+                setMpStdItems = true;
               }
 
-              if (apItemDeliverySpeed == 2) {
+              if (apItemDeliverySpeed == 2 || setMpExpItems == true) {
                 mpExpIncluded = 1;
+                setMpExpItems = true;
               }
 
               if (y != '') {
