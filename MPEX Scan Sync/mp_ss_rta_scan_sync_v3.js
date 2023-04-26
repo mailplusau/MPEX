@@ -32,7 +32,7 @@ function getLatestFiles() {
   // To get todays date
   var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
   var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  //var today = '2/8/2022';
+  //var today = '1/3/2023';
 
   nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
@@ -114,6 +114,8 @@ function getLatestFiles() {
           var invoiceable = scans[y].invoiceable;
           var scan_type = scans[y].scan_type.toLowerCase();
           var operator_id = scans[y].operator_ns_id;
+
+          //* Replace the inactivated or deleted operators.
           if (operator_id == 909) {
             operator_id = 212;
           } else if (operator_id == 122) {
@@ -137,6 +139,35 @@ function getLatestFiles() {
           } if (operator_id == 895) {
             operator_id = 1123;
           }
+
+          if (operator_id == 851) {
+            operator_id = 1167;
+          }
+
+          if (operator_id == 837 || operator_id == 731 || operator_id == 930) {
+            operator_id = 941;
+          }
+
+          if (operator_id == 690) {
+            operator_id = 686;
+          }
+
+          if (operator_id == 1232) {
+            operator_id = 354;
+          }
+
+          if (operator_id == 1071) {
+            operator_id = 1218;
+          }
+
+          if (operator_id == 748) {
+            operator_id = 1236;
+          }
+
+          if (operator_id == 443) {
+            operator_id = 1077;
+          }
+
           var updated_at = scans[y].updated_at;
           var deleted = scans[y].deleted;
           var external_barcode = scans[y].external_barcode;
@@ -200,7 +231,9 @@ function getLatestFiles() {
 
             if (barcode_length == 12) {
               connote_number = barcode;
-              account = 'global_express'
+              if (account != 'sendle') {
+                account = 'global_express'
+              }
             }
 
             var barcode_beg = barcode.slice(0, 4);
@@ -229,7 +262,7 @@ function getLatestFiles() {
           updated_at = nlapiStringToDate(updated_at[2] + '/' + updated_at[1] +
             '/' + updated_at[0]);
 
-
+          nlapiLogExecution('DEBUG', 'account', account);
 
           var productStockSearch = nlapiLoadSearch(
             'customrecord_customer_product_stock',
@@ -240,8 +273,8 @@ function getLatestFiles() {
             ["name", "is", barcode], 'AND', ["isinactive", "is", "F"]
           ];
 
-          nlapiLogExecution('AUDIT', 'newFilterExpression',
-            newFilterExpression);
+          // nlapiLogExecution('AUDIT', 'newFilterExpression',
+          //   newFilterExpression);
 
           productStockSearch.setFilterExpression(newFilterExpression);
 
@@ -331,11 +364,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -386,7 +419,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
 
                     }
@@ -398,13 +431,16 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -415,11 +451,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -528,11 +564,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -564,7 +600,7 @@ function getLatestFiles() {
                       }
                     }
 
-                    if ((product_type == '25Kg' ||
+                    if ((product_type == '20Kg' || product_type == '25Kg' ||
                       product_type == '10Kg' ||
                       product_type == '5Kg' ||
                       product_type == '3Kg' ||
@@ -583,7 +619,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
 
                     }
@@ -595,13 +631,16 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -612,11 +651,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -658,11 +697,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -696,7 +735,7 @@ function getLatestFiles() {
                       }
                     }
 
-                    if ((product_type == '25Kg' ||
+                    if ((product_type == '20Kg' || product_type == '25Kg' ||
                       product_type == '10Kg' ||
                       product_type == '5Kg' ||
                       product_type == '3Kg' ||
@@ -714,7 +753,7 @@ function getLatestFiles() {
                       itemText = itemText + product_type_lowercase;
 
                       prodItemText = firstResult[0].getText(itemText);
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
@@ -725,12 +764,15 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -742,7 +784,7 @@ function getLatestFiles() {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
 
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
 
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
@@ -787,11 +829,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -824,7 +866,7 @@ function getLatestFiles() {
                       }
                     }
 
-                    if ((product_type == '25Kg' ||
+                    if ((product_type == '20Kg' || product_type == '25Kg' ||
                       product_type == '10Kg' ||
                       product_type == '5Kg' ||
                       product_type == '3Kg' ||
@@ -842,7 +884,7 @@ function getLatestFiles() {
                       itemText = itemText + product_type_lowercase;
 
                       prodItemText = firstResult[0].getText(itemText);
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
@@ -853,12 +895,15 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -869,7 +914,7 @@ function getLatestFiles() {
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -991,36 +1036,36 @@ function getLatestFiles() {
 
                 nlapiLogExecution('DEBUG', 'product_type', product_type)
 
-                if ((product_type == '25Kg' ||
-                  product_type == '10Kg' ||
-                  product_type == '5Kg' ||
-                  product_type == '3Kg' ||
-                  product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == '250g' ||
-                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
+                // if ((product_type == '25Kg' ||
+                //   product_type == '10Kg' ||
+                //   product_type == '5Kg' ||
+                //   product_type == '3Kg' ||
+                //   product_type == '1Kg' ||
+                //   product_type == '500g' ||
+                //   product_type == '250g' ||
+                //   product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
-                    if (product_type == '1Kg') {
-                      prod_id = 552;
-                    } else if (product_type == '3Kg') {
-                      prod_id = 553;
-                    } else if (product_type == '5Kg') {
-                      prod_id = 554;
-                    } else if (product_type == 'B4') {
-                      prod_id = 550;
-                    } else if (product_type == '500g') {
-                      prod_id = 638;
-                    } else if (product_type == 'C5') {
-                      prod_id = 638;
-                    } else if (product_type == 'DL') {
-                      prod_id = 638;
-                    }
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_stock_prod_name', prod_id);
-                  }
+                //   if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                //     if (product_type == '1Kg') {
+                //       prod_id = 552;
+                //     } else if (product_type == '3Kg') {
+                //       prod_id = 553;
+                //     } else if (product_type == '5Kg') {
+                //       prod_id = 554;
+                //     } else if (product_type == 'B4') {
+                //       prod_id = 550;
+                //     } else if (product_type == '500g') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'C5') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'DL') {
+                //       prod_id = 638;
+                //     }
+                //     customer_prod_stock.setFieldValue(
+                //       'custrecord_cust_stock_prod_name', prod_id);
+                //   }
 
-                }
+                // }
 
                 if (account == 'sendle') {
                   if (product_type == null) {
@@ -1065,11 +1110,16 @@ function getLatestFiles() {
 
                     customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
                     customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
-                    if (delivery_zone.toUpperCase() == 'NATIONAL') {
-                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
-                    } else if (delivery_zone.toUpperCase() == 'REMOTE') {
-                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
                     }
+
 
 
                   }
@@ -1160,11 +1210,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -1215,7 +1265,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
 
                     }
@@ -1227,13 +1277,16 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -1244,11 +1297,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -1531,36 +1584,36 @@ function getLatestFiles() {
                 // } else
 
 
-                if ((product_type == '25Kg' ||
-                  product_type == '10Kg' ||
-                  product_type == '5Kg' ||
-                  product_type == '3Kg' ||
-                  product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == '250g' ||
-                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
+                // if ((product_type == '25Kg' ||
+                //   product_type == '10Kg' ||
+                //   product_type == '5Kg' ||
+                //   product_type == '3Kg' ||
+                //   product_type == '1Kg' ||
+                //   product_type == '500g' ||
+                //   product_type == '250g' ||
+                //   product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
-                    if (product_type == '1Kg') {
-                      prod_id = 552;
-                    } else if (product_type == '3Kg') {
-                      prod_id = 553;
-                    } else if (product_type == '5Kg') {
-                      prod_id = 554;
-                    } else if (product_type == 'B4') {
-                      prod_id = 550;
-                    } else if (product_type == '500g') {
-                      prod_id = 638;
-                    } else if (product_type == 'C5') {
-                      prod_id = 638;
-                    } else if (product_type == 'DL') {
-                      prod_id = 638;
-                    }
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_stock_prod_name', prod_id);
-                  }
+                //   if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                //     if (product_type == '1Kg') {
+                //       prod_id = 552;
+                //     } else if (product_type == '3Kg') {
+                //       prod_id = 553;
+                //     } else if (product_type == '5Kg') {
+                //       prod_id = 554;
+                //     } else if (product_type == 'B4') {
+                //       prod_id = 550;
+                //     } else if (product_type == '500g') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'C5') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'DL') {
+                //       prod_id = 638;
+                //     }
+                //     customer_prod_stock.setFieldValue(
+                //       'custrecord_cust_stock_prod_name', prod_id);
+                //   }
 
-                }
+                // }
 
                 if (account == 'sendle') {
                   if (product_type == null) {
@@ -1605,10 +1658,14 @@ function getLatestFiles() {
 
                     customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
                     customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
-                    if (delivery_zone.toUpperCase() == 'NATIONAL') {
-                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
-                    } else if (delivery_zone.toUpperCase() == 'REMOTE') {
-                      customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
                     }
 
                   }
@@ -1646,7 +1703,7 @@ function getLatestFiles() {
             return true;
           });
 
-          nlapiLogExecution('AUDIT', 'count', count);
+          // nlapiLogExecution('AUDIT', 'count', count);
 
           if (count == 0) {
             nlapiLogExecution('DEBUG', 'Barcode doesnt exist', barcode)
@@ -1688,11 +1745,11 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -1743,7 +1800,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
 
                     }
@@ -1755,13 +1812,16 @@ function getLatestFiles() {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
+                          } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                            prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
                       }
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
 
@@ -1772,11 +1832,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -1877,11 +1937,11 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     }
 
@@ -1913,7 +1973,7 @@ function getLatestFiles() {
                         }
                       }
 
-                      if ((product_type == '25Kg' ||
+                      if ((product_type == '20Kg' || product_type == '25Kg' ||
                         product_type == '10Kg' ||
                         product_type == '5Kg' ||
                         product_type == '3Kg' ||
@@ -1931,7 +1991,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
@@ -1941,7 +2001,8 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -1950,12 +2011,12 @@ function getLatestFiles() {
 
                         var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
-                        nlapiLogExecution('AUDIT', 'firstResultAPItem.length 2', firstResultAPItem.length)
+                        // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 2', firstResultAPItem.length)
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                           nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID);
                         }
-                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -1997,11 +2058,11 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     }
 
@@ -2035,7 +2096,7 @@ function getLatestFiles() {
                         }
                       }
 
-                      if ((product_type == '25Kg' ||
+                      if ((product_type == '20Kg' || product_type == '25Kg' ||
                         product_type == '10Kg' ||
                         product_type == '5Kg' ||
                         product_type == '3Kg' ||
@@ -2053,16 +2114,17 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
-                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
                       if (!isNullorEmpty(prodItemText)) {
                         var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -2073,7 +2135,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -2117,11 +2179,11 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     }
 
@@ -2154,7 +2216,7 @@ function getLatestFiles() {
                         }
                       }
 
-                      if ((product_type == '25Kg' ||
+                      if ((product_type == '20Kg' || product_type == '25Kg' ||
                         product_type == '10Kg' ||
                         product_type == '5Kg' ||
                         product_type == '3Kg' ||
@@ -2172,7 +2234,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
@@ -2181,7 +2243,8 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], 'AND', ["name", "is", prodItemText]
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
 
@@ -2192,7 +2255,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-                        nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -2313,35 +2376,35 @@ function getLatestFiles() {
                 // } else
 
 
-                if ((product_type == '25Kg' ||
-                  product_type == '10Kg' ||
-                  product_type == '5Kg' ||
-                  product_type == '3Kg' ||
-                  product_type == '1Kg' ||
-                  product_type == '500g' ||
-                  product_type == '250g' ||
-                  product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
+                // if ((product_type == '25Kg' ||
+                //   product_type == '10Kg' ||
+                //   product_type == '5Kg' ||
+                //   product_type == '3Kg' ||
+                //   product_type == '1Kg' ||
+                //   product_type == '500g' ||
+                //   product_type == '250g' ||
+                //   product_type == 'B4' || product_type == 'C5' || product_type == 'DL') && delivery_speed == 'Express') {
 
-                  if (scan_type == 'stockzee' || scan_type == 'allocate') {
-                    if (product_type == '1Kg') {
-                      prod_id = 552;
-                    } else if (product_type == '3Kg') {
-                      prod_id = 553;
-                    } else if (product_type == '5Kg') {
-                      prod_id = 554;
-                    } else if (product_type == 'B4') {
-                      prod_id = 550;
-                    } else if (product_type == '500g') {
-                      prod_id = 638;
-                    } else if (product_type == 'C5') {
-                      prod_id = 638;
-                    } else if (product_type == 'DL') {
-                      prod_id = 638;
-                    }
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_stock_prod_name', prod_id);
-                  }
-                }
+                //   if (scan_type == 'stockzee' || scan_type == 'allocate') {
+                //     if (product_type == '1Kg') {
+                //       prod_id = 552;
+                //     } else if (product_type == '3Kg') {
+                //       prod_id = 553;
+                //     } else if (product_type == '5Kg') {
+                //       prod_id = 554;
+                //     } else if (product_type == 'B4') {
+                //       prod_id = 550;
+                //     } else if (product_type == '500g') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'C5') {
+                //       prod_id = 638;
+                //     } else if (product_type == 'DL') {
+                //       prod_id = 638;
+                //     }
+                //     customer_prod_stock.setFieldValue(
+                //       'custrecord_cust_stock_prod_name', prod_id);
+                //   }
+                // }
 
                 if (account == 'sendle') {
                   if (product_type == null) {
@@ -2383,6 +2446,18 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
                     customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
                     customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
+                    }
 
                   }
                 } else if (account == 'global_express' && product_type ==
