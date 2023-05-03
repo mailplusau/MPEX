@@ -23,20 +23,15 @@ function getScansV4() {
 
     var jsonName = formatDate(todayDate);
 
-    nlapiLogExecution("DEBUG", "todayDate", formatDate(todayDate));
-
-    // var tempYesterdayDate = yesterday.split('/');
-
-    // // var temp = tempYesterdayDate.split('');
-    // var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
+    nlapiLogExecution("DEBUG", "jsonName", jsonName);
 
     var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
 
     var response = nlapiRequestURL(mainURL, null, headers);
 
-    nlapiLogExecution('DEBUG', 'response2', response.body);
-
     var body = response.body;
+
+    nlapiLogExecution('DEBUG', 'body', body);
 
     var todays_scans = JSON.parse(body);
     var barcodes = todays_scans.barcodes;
