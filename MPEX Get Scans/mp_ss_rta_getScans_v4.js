@@ -17,7 +17,7 @@ function getScansV4() {
     var headers = {};
     headers['Content-Type'] = 'application/json';
     headers['Accept'] = 'application/json';
-    headers['x-api-key'] = 'XAZkNK8dVs463EtP7WXWhcUQ0z8Xce47XklzpcBj';
+    headers['GENERAL-API-KEY'] = '708aa067-d67d-73e6-8967-66786247f5d7';
 
     var todayDate = new Date();
 
@@ -25,11 +25,69 @@ function getScansV4() {
 
     nlapiLogExecution("DEBUG", "todayDate", formatDate(todayDate));
 
-    // var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + todayDate;
+    // var tempYesterdayDate = yesterday.split('/');
 
-    // var response = nlapiRequestURL(mainURL, null, headers);
+    // // var temp = tempYesterdayDate.split('');
+    // var yesterday = tempYesterdayDate[0] + '/' + tempYesterdayDate[1] + '/' + tempYesterdayDate[2];
 
-    // nlapiLogExecution('DEBUG', 'response2', response.body);
+    var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
+
+    var response = nlapiRequestURL(mainURL, null, headers);
+
+    nlapiLogExecution('DEBUG', 'response2', response.body);
+
+    var body = response.body;
+
+    var todays_scans = JSON.parse(body);
+    var barcodes = todays_scans.barcodes;
+    var no_of_barcodes = barcodes.length; //No. of barcodes
+
+    //100 barcodes per record created. 
+    var nb_records = parseInt(no_of_barcodes / 100) + 1;
+
+    for (var y = 0; y < nb_records; y++) {
+
+        //Set the upper bound for loop based on number of barcodes
+        if (no_of_barcodes > 100) {
+            var nb_scans_in_record = 100; // Number of barcodes in each page except the last one.
+            // if (y == nb_records - 1) {
+            // 	var upper_bound = 100;
+            // } else {
+            var upper_bound = nb_scans_in_record * (y + 1);
+            // }
+        } else {
+            var nb_scans_in_record = no_of_barcodes;
+            var upper_bound = no_of_barcodes;
+        }
+
+        var scans_1 = '';
+
+        //Iterate through each of the barcode
+        for (var barcode_count = nb_scans_in_record * y; barcode_count < upper_bound; barcode_count++) {
+
+            // var scans_length = JSON.parse(barcodes[barcode_count])
+            var scans_string = JSON.stringify(barcodes[barcode_count]);
+            if (!isNullorEmpty(scans_string)) {
+                var scans_string_length = scans_string.length;
+                var barcode = barcodes[barcode_count].code;
+                var barcodes_scans = barcodes[barcode_count].scans; //barcode scans
+
+                scans_1 += scans_string + ',';
+                var scans_per_barcode = barcodes_scans.length; //No. of scans per barcode
+            }
+        }
+
+        scans_1 = scans_1.substring(0, scans_1.length - 1);
+
+        var scan_json_record = nlapiCreateRecord('customrecord_scan_json');
+        scan_json_record.setFieldValue('name', jsonName + '_Part_' + (y + 1));
+        var scan_json_2 = '{ "scans": [' + scans_1 + ']}';
+        scan_json_record.setFieldValue('custrecord_json', scan_json_2);
+        scan_json_record.setFieldValue('custrecord_scan_josn_sync', 2);
+        nlapiSubmitRecord(scan_json_record);
+    }
+
+
 
     // var scanDetails = JSON.parse(response.body);
 

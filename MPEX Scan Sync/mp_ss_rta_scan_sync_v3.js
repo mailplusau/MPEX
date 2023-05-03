@@ -24,22 +24,27 @@ function getLatestFiles() {
     prev_inv_deploy = ctx.getDeploymentId();
   }
 
+  // var todayDate = new Date();
+  // var yesterdayDate = new Date(todayDate);
+
+  // yesterdayDate.setDate(yesterdayDate.getDate() - 1)
+
+  // // To get todays date
+  // var today = nlapiDateToString(new Date(), 'dd/mm/yyyy');
+  // var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
+  // // var today = '02/05/2023';
+
+  // nlapiLogExecution('DEBUG', 'yesterday', yesterday);
+
   var todayDate = new Date();
-  var yesterdayDate = new Date(todayDate);
 
-  yesterdayDate.setDate(yesterdayDate.getDate() - 1)
-
-  // To get todays date
-  var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
-  var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  //var today = '1/3/2023';
-
-  nlapiLogExecution('DEBUG', 'yesterday', yesterday);
+  var jsonName = formatDate(todayDate);
+  // var jsonName = '02/05/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
   var newFilterExpression = [
-    ["name", "startswith", today], 'AND', ["isinactive", "is", "F"], 'AND', [
+    ["name", "startswith", jsonName], 'AND', ["isinactive", "is", "F"], 'AND', [
       "custrecord_scan_josn_sync", 'is', 2
     ]
   ];
@@ -166,6 +171,9 @@ function getLatestFiles() {
 
           if (operator_id == 443) {
             operator_id = 1077;
+          }
+          if (operator_id == 896) {
+            operator_id = null;
           }
 
           var updated_at = scans[y].updated_at;
@@ -2581,4 +2589,21 @@ function convertTo24Hour(time) {
     time = time.replace(hours_string, (hours + 12));
   }
   return time.replace(/( AM| PM)/, '');
+}
+
+function formatDate(inputDate) {
+
+  var date = inputDate.getDate();
+  var month = inputDate.getMonth() + 1;
+  var year = inputDate.getFullYear();
+
+  if (date < 10) {
+    date = '0' + date;
+  }
+
+  if (month < 10) {
+    month = '0' + month;
+  }
+
+  return date + '/' + month + '/' + year;
 }
