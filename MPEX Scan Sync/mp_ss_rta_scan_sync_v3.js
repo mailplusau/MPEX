@@ -24,18 +24,6 @@ function getLatestFiles() {
     prev_inv_deploy = ctx.getDeploymentId();
   }
 
-  // var todayDate = new Date();
-  // var yesterdayDate = new Date(todayDate);
-
-  // yesterdayDate.setDate(yesterdayDate.getDate() - 1)
-
-  // // To get todays date
-  // var today = nlapiDateToString(new Date(), 'dd/mm/yyyy');
-  // var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
-  // // var today = '02/05/2023';
-
-  // nlapiLogExecution('DEBUG', 'yesterday', yesterday);
-
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
