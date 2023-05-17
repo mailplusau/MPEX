@@ -20,7 +20,7 @@ function getScansV4() {
     headers['GENERAL-API-KEY'] = '708aa067-d67d-73e6-8967-66786247f5d7';
 
     var todayDate = new Date();
-    var adhocDate = '03/05/2023'
+    var adhocDate = '14/05/2023'
 
     var jsonName = formatDate(todayDate);
     // var jsonName = adhocDate;
@@ -37,7 +37,9 @@ function getScansV4() {
     nlapiLogExecution('DEBUG', 'body', body);
 
     var todays_scans = JSON.parse(body);
-    if (isNullorEmpty(todays_scans)) {
+
+    if (isNullorEmpty(todays_scans.barcodes)) {
+        // if (("message" in todays_scans) == true) {
         reschedule = rescheduleScript('customdeploy1', 'customdeploy2',
             null);
         nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
@@ -45,10 +47,12 @@ function getScansV4() {
 
             return false;
         }
-    } else {
+        // }
+    }
+    else {
+        var todays_scans = JSON.parse(body);
         var barcodes = todays_scans.barcodes;
         var no_of_barcodes = barcodes.length; //No. of barcodes
-
         //100 barcodes per record created. 
         var nb_records = parseInt(no_of_barcodes / 100) + 1;
 
