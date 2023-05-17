@@ -172,6 +172,10 @@ function main(type) {
           //--------------- Submit/Init Invoice ---------------//
           if (n == 0) {
 
+            var setMpExpItems = false;
+            var setMpStdItems = false;
+
+
             //--------------- Init New Invoice ---------------//
             usage_per_inv = ctx.getRemainingUsage();
 
@@ -206,12 +210,12 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '31/07/2022');
+            recInvoice.setFieldValue('trandate', '31/10/2022');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/07/2022');
+              '01/10/2022');
             //recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/07/2022');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
@@ -269,17 +273,39 @@ function main(type) {
             col_po[col_po.length] = new nlobjSearchColumn(
               'custrecord_ap_item_f');
 
+            col_po[col_po.length] = new nlobjSearchColumn(
+              'custrecord_ap_item_price_plan');
+            col_po[col_po.length] = new nlobjSearchColumn(
+              'custrecord_ap_item_delivery_speed');
+
             var poSearch = nlapiSearchRecord('customrecord_ap_item', null,
               fil_po, col_po);
 
             //--------------- Apply AP Item Pricing Algorithm ---------------//
             if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') ==
-              1) { //IF PRICING ALGORITHM: PRICE LISTS
+              1 || isNullorEmpty(poSearch[0].getValue('custrecord_ap_item_pricing_algorithm'))) { //IF PRICING ALGORITHM: PRICE LISTS
 
               for (var x = 0; x < item_rates.length; x++) {
                 // uses dynamic column values from search (ie. custrecord_ap_qty_a)
                 var temp = text + item_rates[x];
                 var y = poSearch[0].getValue(temp);
+
+                var apItemDeliverySpeed = poSearch[0].getValue('custrecord_ap_item_delivery_speed');
+
+                var mpStdIncluded = 2;
+                var mpExpIncluded = 2;
+
+                if (apItemDeliverySpeed == 1 || setMpStdItems == true) {
+                  mpStdIncluded = 1;
+                  setMpStdItems = true;
+                }
+
+                if (apItemDeliverySpeed == 2 || setMpExpItems == true) {
+                  mpExpIncluded = 1;
+                  setMpExpItems = true;
+                }
+
+
                 if (y != '') {
                   if (parseInt(line_qty) < y) {
 
@@ -322,6 +348,8 @@ function main(type) {
                     }
 
                     recInvoice.commitLineItem('item');
+                    recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
+                    recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
                     break;
                   }
                   // else if(x >= 1 && parseInt(line_qty) >= y){
@@ -383,6 +411,8 @@ function main(type) {
                   }
 
                   recInvoice.commitLineItem('item');
+                  recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
+                  recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
                   break;
                 }
               }
@@ -457,6 +487,9 @@ function main(type) {
               digital_barcode_used_prod_order = true;
             }
 
+            var setMpExpItems = false;
+            var setMpStdItems = false;
+
 
             //--------------- Init New Invoice ---------------//
             usage_per_inv = ctx.getRemainingUsage();
@@ -479,12 +512,12 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '31/07/2022');
+            recInvoice.setFieldValue('trandate', '31/10/2022');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/07/2022');
+              '01/10/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/07/2022');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/10/2022');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
@@ -572,17 +605,38 @@ function main(type) {
               col_po[col_po.length] = new nlobjSearchColumn(
                 'custrecord_ap_item_f');
 
+              col_po[col_po.length] = new nlobjSearchColumn(
+                'custrecord_ap_item_price_plan');
+              col_po[col_po.length] = new nlobjSearchColumn(
+                'custrecord_ap_item_delivery_speed');
+
               var poSearch = nlapiSearchRecord('customrecord_ap_item', null,
                 fil_po, col_po);
 
               //--------------- Apply AP Item Pricing Algorithm ---------------//
               if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') ==
-                1) { //IF PRICING ALGORITHM: PRICE LISTS
+                1 || isNullorEmpty(poSearch[0].getValue('custrecord_ap_item_pricing_algorithm'))) { //IF PRICING ALGORITHM: PRICE LISTS
 
                 for (var x = 0; x < item_rates.length; x++) {
                   // uses dynamic column values from search (ie. custrecord_ap_qty_a)
                   var temp = text + item_rates[x];
                   var y = poSearch[0].getValue(temp);
+
+                  var apItemDeliverySpeed = poSearch[0].getValue('custrecord_ap_item_delivery_speed');
+
+                  var mpStdIncluded = 2;
+                  var mpExpIncluded = 2;
+
+                  if (apItemDeliverySpeed == 1 || setMpStdItems == true) {
+                    mpStdIncluded = 1;
+                    setMpStdItems = true;
+                  }
+
+                  if (apItemDeliverySpeed == 2 || setMpExpItems == true) {
+                    mpExpIncluded = 1;
+                    setMpExpItems = true;
+                  }
+
                   if (y != '') {
                     if (parseInt(line_qty) < y) {
 
@@ -627,6 +681,8 @@ function main(type) {
                       }
 
                       recInvoice.commitLineItem('item');
+                      recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
+                      recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
                       break;
                     }
                     // else if(x >= 1 && parseInt(line_qty) >= y){
@@ -692,6 +748,8 @@ function main(type) {
                     }
 
                     recInvoice.commitLineItem('item');
+                    recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
+                    recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
                     break;
                   }
                 }
@@ -773,7 +831,7 @@ function main(type) {
       col_po);
 
     //--------------- Apply AP Item Pricing Algorithm ---------------//
-    if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1) { //IF PRICING ALGORITHM: PRICE LISTS
+    if (poSearch[0].getValue('custrecord_ap_item_pricing_algorithm') == 1 || isNullorEmpty(poSearch[0].getValue('custrecord_ap_item_pricing_algorithm'))) { //IF PRICING ALGORITHM: PRICE LISTS
 
       for (var x = 0; x < item_rates.length; x++) {
         // uses dynamic column values from search (ie. custrecord_ap_qty_a)
