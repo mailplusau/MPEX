@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  // var jsonName = '02/05/2023';
+  // var jsonName = '14/05/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -69,6 +69,9 @@ function getLatestFiles() {
     nlapiLogExecution('DEBUG', 'beginning barcodes ', JSON.stringify(
       barcodes));
 
+    var order_total_price = 0
+    var item_price = 0
+
     if (barcodes.length > 0) {
       // //Loop through each of the barcodes
       do {
@@ -86,8 +89,46 @@ function getLatestFiles() {
         var order_date = barcodes[x].order_date;
         var delivery_speed = barcodes[x].delivery_speed;
         var depot_id = barcodes[x].depot_id;
-        var order_total_price = barcodes[x].order_total_price;
-        var item_price = barcodes[x].item_price;
+
+        if (("order_total_price" in barcodes[x])) {
+          nlapiLogExecution('DEBUG', 'order_total_price exists', barcodes[x].order_total_price);
+          order_total_price = barcodes[x].order_total_price;
+        }
+
+        if (("package_price" in barcodes[x])) {
+          nlapiLogExecution('DEBUG', 'package_price exists', barcodes[x].package_price);
+          item_price = barcodes[x].package_price;
+        }
+
+
+
+        var paymentTotalAmount = 0.0;
+        var paymentSurcharge = 0.0;
+        var courierSurcharge = 0.0;
+        var transactionID = null;
+        var lastFourDigits = null;
+        var cardType = null;
+        var ccPaymentDate = null;
+        var timeCCPayment = null;
+
+        if (("payment" in barcodes[x])) {
+          nlapiLogExecution('DEBUG', 'payment exists', barcodes[x].payment);
+          if (!isNullorEmpty(barcodes[x].payment)) {
+            ccPaymentDate = barcodes[x].payment.date
+            ccPaymentDate = ccPaymentDate.split("T");
+            timeCCPayment = ccPaymentDate[1];
+            timeCCPayment = timeCCPayment.split(".");
+            timeCCPayment = onTimeChange(timeCCPayment[0]);
+            ccPaymentDate = ccPaymentDate[0];
+
+            paymentTotalAmount = barcodes[x].payment.total_amount;
+            paymentSurcharge = barcodes[x].payment.payment_surcharge;
+            courierSurcharge = barcodes[x].payment.courier_surcharge;
+            transactionID = barcodes[x].payment.transaction_id;
+            lastFourDigits = barcodes[x].payment.last_four_digits;
+            cardType = barcodes[x].payment.card_type;
+          }
+        }
 
         nlapiLogExecution('DEBUG', 'scans length', scans.length);
         nlapiLogExecution('DEBUG', 'scans', scans);
@@ -198,19 +239,19 @@ function getLatestFiles() {
           var eta_delivery_date_max = scans[y].estimated_delivery_date_maximum;
           var delivery_zone = scans[y].delivery_zone;
 
-          if (isNullorEmpty(scans[y].order_total_price)) {
-            var order_total_price = null;
-          } else {
-            var order_total_price = scans[y].order_total_price.price;
-            order_total_price = order_total_price / 100;
-          }
+          // if (isNullorEmpty(scans[y].order_total_price)) {
+          //   var order_total_price = null;
+          // } else {
+          //   var order_total_price = scans[y].order_total_price.price;
+          //   order_total_price = order_total_price / 100;
+          // }
 
-          if (isNullorEmpty(scans[y].item_price)) {
-            var item_price = null;
-          } else {
-            var item_price = scans[y].item_price.price;
-            item_price = item_price / 100;
-          }
+          // if (isNullorEmpty(scans[y].item_price)) {
+          //   var item_price = null;
+          // } else {
+          //   var item_price = scans[y].item_price.price;
+          //   item_price = item_price / 100;
+          // }
 
           var courier = scans[y].courier;
           var depot_id = scans[y].depot_id;
@@ -259,6 +300,9 @@ function getLatestFiles() {
             '/' + updated_at[0]);
 
           nlapiLogExecution('DEBUG', 'account', account);
+          nlapiLogExecution('DEBUG', 'item_price', item_price);
+          nlapiLogExecution('DEBUG', 'order_number', order_number);
+          nlapiLogExecution('DEBUG', 'order_total_price', order_total_price);
 
           var productStockSearch = nlapiLoadSearch(
             'customrecord_customer_product_stock',
@@ -286,8 +330,7 @@ function getLatestFiles() {
             var customer_prod_stock_id = searchResult.getValue(
               'internalid');
 
-            var customer_prod_stock = nlapiLoadRecord(
-              'customrecord_customer_product_stock',
+            var customer_prod_stock = nlapiLoadRecord('customrecord_customer_product_stock',
               customer_prod_stock_id);
 
             var stock_status = customer_prod_stock.getFieldValue(
@@ -300,6 +343,28 @@ function getLatestFiles() {
               length);
             customer_prod_stock.setFieldValue('custrecord_width',
               width);
+            customer_prod_stock.setFieldValue(
+              'custrecord_ext_reference_id', reference_id);
+            customer_prod_stock.setFieldValue('custrecord_job_id',
+              job_id);
+            customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+            customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+            customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+            customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+
+            if (!isNullorEmpty(transactionID)) {
+              customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+              customer_prod_stock.setFieldValue('custrecord_credit_card_payment', 1);
+              customer_prod_stock.setFieldValue('custrecord_cc_transaction_payment_price', paymentTotalAmount);
+              customer_prod_stock.setFieldValue('custrecord_cc_payment_surcharge', paymentSurcharge);
+              customer_prod_stock.setFieldValue('custrecord_cc_courier_surcharge', courierSurcharge);
+              customer_prod_stock.setFieldValue('custrecord_credit_card_type', cardType);
+              customer_prod_stock.setFieldValue('custrecord_cc_payment_date', ccPaymentDate);
+              customer_prod_stock.setFieldValue('custrecord_cc_payment_time', timeCCPayment);
+              customer_prod_stock.setFieldValue('custrecord_transaction_id', transactionID);
+              customer_prod_stock.setFieldValue('custrecord_cc_last_4_digits', lastFourDigits);
+            }
+
 
             nlapiLogExecution('DEBUG', 'scan_type', scan_type)
 
@@ -1716,7 +1781,30 @@ function getLatestFiles() {
               customer_prod_stock.setFieldValue('custrecord_width',
                 width);
               customer_prod_stock.setFieldValue(
+                'custrecord_ext_reference_id', reference_id);
+              customer_prod_stock.setFieldValue('custrecord_job_id',
+                job_id);
+              customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+              customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+              customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+              customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+              customer_prod_stock.setFieldValue(
                 'custrecord_cust_date_stock_given', updated_at);
+
+
+              if (!isNullorEmpty(transactionID)) {
+                customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
+                customer_prod_stock.setFieldValue('custrecord_credit_card_payment', 1);
+                customer_prod_stock.setFieldValue('custrecord_cc_transaction_payment_price', paymentTotalAmount);
+                customer_prod_stock.setFieldValue('custrecord_cc_payment_surcharge', paymentSurcharge);
+                customer_prod_stock.setFieldValue('custrecord_cc_courier_surcharge', courierSurcharge);
+                customer_prod_stock.setFieldValue('custrecord_credit_card_type', cardType);
+                customer_prod_stock.setFieldValue('custrecord_cc_payment_date', ccPaymentDate);
+                customer_prod_stock.setFieldValue('custrecord_cc_payment_time', timeCCPayment);
+                customer_prod_stock.setFieldValue('custrecord_transaction_id', transactionID);
+                customer_prod_stock.setFieldValue('custrecord_cc_last_4_digits', lastFourDigits);
+              }
+
               customer_prod_stock.setFieldValue(
                 'custrecord_cust_time_stock_given', time_updated_at);
               customer_prod_stock.setFieldValue('custrecord_connote_number',
