@@ -93,11 +93,13 @@ function getLatestFiles() {
         if (("order_total_price" in barcodes[x])) {
           nlapiLogExecution('DEBUG', 'order_total_price exists', barcodes[x].order_total_price);
           order_total_price = barcodes[x].order_total_price;
+          order_total_price = order_total_price / 100
         }
 
         if (("package_price" in barcodes[x])) {
           nlapiLogExecution('DEBUG', 'package_price exists', barcodes[x].package_price);
           item_price = barcodes[x].package_price;
+          item_price = item_price / 100
         }
 
 
@@ -121,9 +123,19 @@ function getLatestFiles() {
             timeCCPayment = onTimeChange(timeCCPayment[0]);
             ccPaymentDate = ccPaymentDate[0];
 
+            ccPaymentDate = ccPaymentDate.split("-");
+            ccPaymentDate = nlapiStringToDate(ccPaymentDate[2] + '/' + ccPaymentDate[1] +
+              '/' + ccPaymentDate[0]);
+
             paymentTotalAmount = barcodes[x].payment.total_amount;
+            paymentTotalAmount = paymentTotalAmount / 100
+
             paymentSurcharge = barcodes[x].payment.payment_surcharge;
+            paymentSurcharge = paymentSurcharge / 100
+
             courierSurcharge = barcodes[x].payment.courier_surcharge;
+            courierSurcharge = courierSurcharge / 100
+            
             transactionID = barcodes[x].payment.transaction_id;
             lastFourDigits = barcodes[x].payment.last_four_digits;
             cardType = barcodes[x].payment.card_type;
