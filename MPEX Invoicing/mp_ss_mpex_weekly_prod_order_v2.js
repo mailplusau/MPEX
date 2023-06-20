@@ -39,6 +39,10 @@ function main() {
   var count = 0;
   var digital_label = 0;
 
+  var rasTeir1Count = 0;
+  var rasTeir2Count = 0;
+  var rasTeir3Count = 0;
+
   var manual_surcharge_to_be_applied = false;
   var fuel_surcharge_to_be_applied = false;
 
@@ -154,6 +158,41 @@ function main() {
     var pro_standard_toll = searchResult.getValue(
       "custrecord_mpex_pro_standard_toll");
 
+
+    var receiverSuburb = searchResult.getValue(
+      "custrecord_receiver_suburb");
+    var receiverPostcode = searchResult.getValue(
+      "custrecord_receiver_postcode");
+    var receiverState = searchResult.getValue(
+      "custrecord_receiver_state");
+
+
+    var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
+      'customsearch_tge_ras_suburb_list'); // MP Express - Manual Usage - Contact List
+
+    var newFilters = new Array();
+    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
+      receiverSuburb);
+    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
+      receiverPostcode);
+
+    tgeRASSuburbListSearch.addFilter(newFilters);
+    var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
+    var teirType = 0;
+    tgeRASSuburbListSearch.forEachResult(function (searchResult) {
+
+      teirType = searchResult.getValue('custrecord_ras_teir');
+      return true;
+    });
+
+    if (teirType == 1) {
+      rasTeir1Count++;
+    } else if (teirType == 2) {
+      rasTeir2Count++;
+    } else if (teirType == 3) {
+      rasTeir3Count++;
+    }
+
     var cust_prod_pricing_dl_ns_item = searchResult.getValue("custrecord_prod_pricing_dl", "CUSTRECORD_CUST_PROD_PRICING", null);
     var cust_prod_pricing_c5_ns_item = searchResult.getValue("custrecord_prod_pricing_c5", "CUSTRECORD_CUST_PROD_PRICING", null);
     var cust_prod_pricing_b4_ns_item = searchResult.getValue("custrecord_prod_pricing_b4", "CUSTRECORD_CUST_PROD_PRICING", null);
@@ -197,7 +236,14 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
         nlapiSubmitRecord(productOrderRec);
+
+        rasTeir1Count = 0;
+        rasTeir2Count = 0;
+        rasTeir3Count = 0;
 
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
@@ -240,6 +286,7 @@ function main() {
         'custrecord_ap_order_fulfillment_date', getDate());
       //             product_order_rec.setFieldValue('custrecord_ap_order_fulfillment_date', '22/08/2021');
       product_order_rec.setFieldValue('custrecord_mp_ap_order_source', 6);
+
       product_order_id = nlapiSubmitRecord(product_order_rec);
 
 
@@ -406,7 +453,14 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
         nlapiSubmitRecord(productOrderRec);
+
+        rasTeir1Count = 0;
+        rasTeir2Count = 0;
+        rasTeir3Count = 0;
 
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
@@ -441,6 +495,9 @@ function main() {
         'custrecord_manual_surcharge_applied', 2)
     }
 
+    productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+    productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+    productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
     nlapiSubmitRecord(productOrderRec);
   }
 
