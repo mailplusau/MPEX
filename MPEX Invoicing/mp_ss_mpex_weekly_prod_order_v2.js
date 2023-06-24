@@ -168,9 +168,9 @@ function main() {
     var receiverState = searchResult.getValue(
       "custrecord_receiver_state");
 
-
+      // MP Express - Manual Usage - Contact List
     var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
-      'customsearch_tge_ras_suburb_list'); // MP Express - Manual Usage - Contact List
+      'customsearch_tge_ras_suburb_list'); 
 
     var newFilters = new Array();
     newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
@@ -178,7 +178,8 @@ function main() {
     newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
       receiverPostcode);
 
-    tgeRASSuburbListSearch.addFilter(newFilters);
+    tgeRASSuburbListSearch.addFilters(newFilters);
+
     var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
     var teirType = 0;
     tgeRASSuburbListSearch.forEachResult(function (searchResult) {
@@ -215,10 +216,11 @@ function main() {
     var prod_name = product_name_text.split(" - ");
     var product_type = prod_name[1].substring(0, 2);
 
-    nlapiLogExecution('DEBUG', 'product_type', product_type);
-    nlapiLogExecution('DEBUG', 'Barcode', barcode);
-    nlapiLogExecution('DEBUG', 'Prod Name', product_name);
-    nlapiLogExecution('DEBUG', 'Prod Order ID', product_order_id);
+    nlapiLogExecution('AUDIT', 'product_type', product_type);
+    nlapiLogExecution('AUDIT', 'Barcode', barcode);
+    nlapiLogExecution('AUDIT', 'Prod Name', product_name);
+    nlapiLogExecution('AUDIT', 'Prod Order ID', product_order_id);
+    nlapiLogExecution('AUDIT', 'Barcode Source', barcode_source);
 
 
     if (cust_prod_customer != old_customer_id) {
@@ -345,7 +347,7 @@ function main() {
         manualBarcodesCount++;
       }
 
-      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {
+      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {  
         if (barcode_source == 1 && digital_label == 0) {
           manual_surcharge_to_be_applied = true;
 
