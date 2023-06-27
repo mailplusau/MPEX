@@ -44,6 +44,12 @@ function main() {
   var count = 0;
   var digital_label = 0;
 
+  var rasTeir1Count = 0;
+  var rasTeir2Count = 0;
+  var rasTeir3Count = 0;
+
+  var manualBarcodesCount = 0;
+
   var manual_surcharge_to_be_applied = false;
   var fuel_surcharge_to_be_applied = false;
 
@@ -143,6 +149,50 @@ function main() {
     var pro_standard_toll = searchResult.getValue(
       "custrecord_mpex_pro_standard_toll");
 
+    var receiverSuburb = searchResult.getValue(
+      "custrecord_receiver_suburb");
+    var receiverPostcode = searchResult.getValue(
+      "custrecord_receiver_postcode");
+    var receiverState = searchResult.getValue(
+      "custrecord_receiver_state");
+
+    nlapiLogExecution('AUDIT', 'receiverSuburb', receiverSuburb);
+    nlapiLogExecution('AUDIT', 'receiverPostcode', receiverPostcode);
+
+    // MP Express - Manual Usage - Contact List
+    var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
+      'customsearch_tge_ras_suburb_list');
+
+    var newFilters = new Array();
+    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
+      receiverSuburb);
+    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
+      receiverPostcode);
+
+    tgeRASSuburbListSearch.addFilters(newFilters);
+
+    var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
+    var teirType = 0;
+    tgeRASSuburbListSearch.forEachResult(function (searchResult) {
+
+      teirType = searchResult.getValue('custrecord_ras_teir');
+      return true;
+    });
+
+    nlapiLogExecution('AUDIT', 'teirType', teirType);
+
+    if (teirType == 1) {
+      rasTeir1Count++;
+    } else if (teirType == 2) {
+      rasTeir2Count++;
+    } else if (teirType == 3) {
+      rasTeir3Count++;
+    }
+
+    nlapiLogExecution('AUDIT', 'rasTeir1Count', rasTeir1Count);
+    nlapiLogExecution('AUDIT', 'rasTeir2Count', rasTeir2Count);
+    nlapiLogExecution('AUDIT', 'rasTeir3Count', rasTeir3Count);
+
     var cust_prod_pricing_dl_ns_item = searchResult.getValue("custrecord_prod_pricing_dl", "CUSTRECORD_CUST_PROD_PRICING", null);
     var cust_prod_pricing_c5_ns_item = searchResult.getValue("custrecord_prod_pricing_c5", "CUSTRECORD_CUST_PROD_PRICING", null);
     var cust_prod_pricing_b4_ns_item = searchResult.getValue("custrecord_prod_pricing_b4", "CUSTRECORD_CUST_PROD_PRICING", null);
@@ -196,6 +246,12 @@ function main() {
     nlapiLogExecution('DEBUG', 'mpex_C5_price_point', mpex_C5_price_point);
     nlapiLogExecution('DEBUG', 'mpex_DL_price_point', mpex_DL_price_point);
 
+    nlapiLogExecution('AUDIT', 'product_type', product_type);
+    nlapiLogExecution('AUDIT', 'Barcode', barcode);
+    nlapiLogExecution('AUDIT', 'Prod Name', product_name);
+    nlapiLogExecution('AUDIT', 'Prod Order ID', product_order_id);
+    nlapiLogExecution('AUDIT', 'Barcode Source', barcode_source);
+
 
     if (cust_prod_customer != old_customer_id) {
 
@@ -214,6 +270,13 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        nlapiLogExecution('AUDIT', 'manualBarcodesCount before saving', manualBarcodesCount);
+
+        productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
+        productOrderRec.setFieldValue('custrecord_manual_barcode_count', manualBarcodesCount);
+        nlapiSubmitRecord(productOrderRec);
         nlapiSubmitRecord(productOrderRec);
 
 
@@ -1796,7 +1859,7 @@ function main() {
 
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_item', product_name);
-      
+
       var inv_details = 'Used:' + new_date + '-' + barcode;
       if (inv_details.length > 33) {
         inv_details = 'Used:' + new_date + '-' + connote_number;
@@ -1806,6 +1869,10 @@ function main() {
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
+
+      if (barcode_source == 1 || isNullorEmpty(barcode_source)) {
+        manualBarcodesCount++;
+      }
 
       if (manual_surcharge == 1) {
         if (barcode_source == 1 && digital_label == 0) {
@@ -3358,7 +3425,7 @@ function main() {
 
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_item', product_name);
-      
+
       var inv_details = 'Used:' + new_date + '-' + barcode;
       if (inv_details.length > 33) {
         inv_details = 'Used:' + new_date + '-' + connote_number;
@@ -3367,6 +3434,10 @@ function main() {
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
+
+      if (barcode_source == 1 || isNullorEmpty(barcode_source)) {
+        manualBarcodesCount++;
+      }
 
       if (manual_surcharge == 1) {
         if (barcode_source == 1 && digital_label == 0) {
@@ -3407,6 +3478,13 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        nlapiLogExecution('AUDIT', 'manualBarcodesCount saving once count crossed 450', manualBarcodesCount);
+
+        productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+        productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
+        productOrderRec.setFieldValue('custrecord_manual_barcode_count', manualBarcodesCount);
+
         nlapiSubmitRecord(productOrderRec);
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
@@ -3443,6 +3521,13 @@ function main() {
       productOrderRec.setFieldValue(
         'custrecord_manual_surcharge_applied', 2)
     }
+
+    nlapiLogExecution('AUDIT', 'manualBarcodesCount saving at the last loop', manualBarcodesCount);
+
+    productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
+    productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
+    productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
+    productOrderRec.setFieldValue('custrecord_manual_barcode_count', manualBarcodesCount);
 
     nlapiSubmitRecord(productOrderRec);
   }

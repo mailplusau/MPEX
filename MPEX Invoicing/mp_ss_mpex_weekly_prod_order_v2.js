@@ -19,9 +19,6 @@ var ctx = nlapiGetContext();
 
 function main() {
 
-  nlapiLogExecution('AUDIT', 'prev_deployment', ctx.getSetting('SCRIPT',
-    'custscript_prev_deploy_create_prod_order'));
-
   prev_inv_deploy = ctx.getDeploymentId();
 
 
@@ -56,11 +53,11 @@ function main() {
   resultCreateProdOrder.forEachResult(function (searchResult) {
 
     var usage_loopstart_cust = ctx.getRemainingUsage();
-    nlapiLogExecution('AUDIT', 'usage_loopstart_cust', usage_loopstart_cust)
+
     if ((usage_loopstart_cust < 200)) {
 
       reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, null);
-      nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+
       if (reschedule == false) {
         return false;
       }
@@ -168,9 +165,12 @@ function main() {
     var receiverState = searchResult.getValue(
       "custrecord_receiver_state");
 
-      // MP Express - Manual Usage - Contact List
+    nlapiLogExecution('AUDIT', 'receiverSuburb', receiverSuburb);
+    nlapiLogExecution('AUDIT', 'receiverPostcode', receiverPostcode);
+
+    // MP Express - Manual Usage - Contact List
     var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
-      'customsearch_tge_ras_suburb_list'); 
+      'customsearch_tge_ras_suburb_list');
 
     var newFilters = new Array();
     newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
@@ -188,6 +188,8 @@ function main() {
       return true;
     });
 
+    nlapiLogExecution('AUDIT', 'teirType', teirType);
+
     if (teirType == 1) {
       rasTeir1Count++;
     } else if (teirType == 2) {
@@ -195,6 +197,10 @@ function main() {
     } else if (teirType == 3) {
       rasTeir3Count++;
     }
+
+    nlapiLogExecution('AUDIT', 'rasTeir1Count', rasTeir1Count);
+    nlapiLogExecution('AUDIT', 'rasTeir2Count', rasTeir2Count);
+    nlapiLogExecution('AUDIT', 'rasTeir3Count', rasTeir3Count);
 
     var cust_prod_pricing_dl_ns_item = searchResult.getValue("custrecord_prod_pricing_dl", "CUSTRECORD_CUST_PROD_PRICING", null);
     var cust_prod_pricing_c5_ns_item = searchResult.getValue("custrecord_prod_pricing_c5", "CUSTRECORD_CUST_PROD_PRICING", null);
@@ -223,6 +229,7 @@ function main() {
     nlapiLogExecution('AUDIT', 'Barcode Source', barcode_source);
 
 
+
     if (cust_prod_customer != old_customer_id) {
 
       /**
@@ -240,16 +247,18 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        nlapiLogExecution('AUDIT', 'manualBarcodesCount before saving', manualBarcodesCount);
+
         productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
         productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
         productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
         productOrderRec.setFieldValue('custrecord_manual_barcode_count', manualBarcodesCount);
         nlapiSubmitRecord(productOrderRec);
 
-        rasTeir1Count = 0;
-        rasTeir2Count = 0;
-        rasTeir3Count = 0;
-        manualBarcodesCount = 0;
+        // rasTeir1Count = 0;
+        // rasTeir2Count = 0;
+        // rasTeir3Count = 0;
+        // manualBarcodesCount = 0;
 
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
@@ -257,7 +266,7 @@ function main() {
 
         reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy,
           params);
-        nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+
         if (reschedule == false) {
 
           return false;
@@ -272,8 +281,7 @@ function main() {
 
       var product_order_rec = nlapiCreateRecord(
         'customrecord_mp_ap_product_order');
-      nlapiLogExecution('DEBUG', 'fuel_surcharge', fuel_surcharge);
-      nlapiLogExecution('DEBUG', 'mpex_fuel_surcharge', mpex_fuel_surcharge);
+
       if (fuel_surcharge == 1 || fuel_surcharge == '1' ||
         mpex_fuel_surcharge == 1 || mpex_fuel_surcharge == '1') {
         product_order_rec.setFieldValue('custrecord_fuel_surcharge_applied',
@@ -337,7 +345,9 @@ function main() {
       if (inv_details.length > 33) {
         inv_details = 'Used:' + new_date + '-' + connote_number;
       }
+
       nlapiLogExecution('DEBUG', 'Details', inv_details);
+
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(
@@ -347,7 +357,7 @@ function main() {
         manualBarcodesCount++;
       }
 
-      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {  
+      if (manual_surcharge == 1 || mpex_fuel_surcharge == 1) {
         if (barcode_source == 1 && digital_label == 0) {
           manual_surcharge_to_be_applied = true;
 
@@ -468,17 +478,19 @@ function main() {
             'custrecord_manual_surcharge_applied', 2)
         }
 
+        nlapiLogExecution('AUDIT', 'manualBarcodesCount saving once count crossed 450', manualBarcodesCount);
+
         productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
         productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
         productOrderRec.setFieldValue('custrecord_ras_teir3_barcode_count', rasTeir3Count);
         productOrderRec.setFieldValue('custrecord_manual_barcode_count', manualBarcodesCount);
         nlapiSubmitRecord(productOrderRec);
 
-        rasTeir1Count = 0;
-        rasTeir2Count = 0;
-        rasTeir3Count = 0;
+        // rasTeir1Count = 0;
+        // rasTeir2Count = 0;
+        // rasTeir3Count = 0;
 
-        manualBarcodesCount = 0;
+        // manualBarcodesCount = 0;
 
         var params = {
           custscript_prev_deploy_create_prod_order: ctx.getDeploymentId(),
@@ -486,7 +498,7 @@ function main() {
 
         reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy,
           params);
-        nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+
         if (reschedule == false) {
 
           return false;
@@ -512,6 +524,8 @@ function main() {
       productOrderRec.setFieldValue(
         'custrecord_manual_surcharge_applied', 2)
     }
+
+    nlapiLogExecution('AUDIT', 'manualBarcodesCount saving at the last loop', manualBarcodesCount);
 
     productOrderRec.setFieldValue('custrecord_ras_teir1_barcode_count', rasTeir1Count);
     productOrderRec.setFieldValue('custrecord_ras_teir2_barcode_count', rasTeir2Count);
