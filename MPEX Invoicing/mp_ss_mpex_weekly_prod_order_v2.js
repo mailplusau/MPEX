@@ -164,6 +164,8 @@ function main() {
       "custrecord_receiver_postcode");
     var receiverState = searchResult.getValue(
       "custrecord_receiver_state");
+    var manualFeeToBeCharged = searchResult.getValue(
+      "custrecord_manual_fee_charged");
 
     nlapiLogExecution('AUDIT', 'receiverSuburb', receiverSuburb);
     nlapiLogExecution('AUDIT', 'receiverPostcode', receiverPostcode);
@@ -315,26 +317,6 @@ function main() {
 
       var barcode_beg = barcode.slice(0, 4);
 
-      /*
-           Old MPEX Pricing - 1st Nov 2021 Onwards
-               Gold    1
-               Platinum    2
-               Same as AP  3
-               Standard    4
-               AP Match    5
-               Pro Platinum (Old)  6
-               Pro Gold (Old)  7
-       */
-
-      /*
-      New MPEX Price Points - 1st Sept 2021 Onwards
-          Pro Standard    8
-          Pro Plus    9
-          Manual Platinum 10
-          Pro Platinum    11
-          Pro Gold    12
-       */
-
       /**
        * Creating line items for the product order based on the Barcode type and the item rate selected on the customer record.
        */
@@ -353,7 +335,7 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-      if (barcode_source == 1 || isNullorEmpty(barcode_source)) {
+      if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
         manualBarcodesCount++;
       }
 
@@ -394,12 +376,6 @@ function main() {
 
       var barcode_beg = barcode.slice(0, 4);
 
-      /**
-       * Pricing Points:
-              Gold - Internal ID (1)
-              Platinum - Internal ID (2)
-              Standard - Internal ID (4)
-       */
 
       /**
        * Creating line items for the product order based on the Barcode type and the item rate selected on the customer record.
@@ -408,24 +384,6 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_item', product_name);
 
-
-      /**
-       * Old Line Items Creation
-       * Based on the delivery method and the special customer type.
-       */
-      // if (isNullorEmpty(special_customer_type) || special_customer_type != 4) {
-      //     if (cust_prod_stock_status == 4) {
-      //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_mp);
-      //     } else if (cust_prod_stock_status == 5) {
-      //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_gold_toll);
-      //     }
-      // } else if (special_customer_type == 4) {
-      //     if (cust_prod_stock_status == 4) {
-      //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_mp);
-      //     } else if (cust_prod_stock_status == 5) {
-      //         ap_stock_line_item.setFieldValue('custrecord_ap_stock_line_item', single_platinum_toll);
-      //     }
-      // }
       var inv_details = 'Used:' + new_date + '-' + barcode;
       if (inv_details.length > 33) {
         inv_details = 'Used:' + new_date + '-' + connote_number;
@@ -435,7 +393,7 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-      if (barcode_source == 1 || isNullorEmpty(barcode_source)) {
+        if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
         manualBarcodesCount++;
       }
 
