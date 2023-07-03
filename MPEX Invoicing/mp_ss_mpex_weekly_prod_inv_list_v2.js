@@ -135,6 +135,15 @@ function main(type) {
       var fuel_surcharge = searchResults[n].getValue(
         'custrecord_fuel_surcharge_applied', null, "GROUP");
 
+      var rasTier1Count = searchResults[n].getValue(
+        'custrecord_ras_teir1_barcode_count', null, "GROUP");
+      var rasTier2Count = searchResults[n].getValue(
+        'custrecord_ras_teir2_barcode_count', null, "GROUP");
+      var rasTier3Count = searchResults[n].getValue(
+        'custrecord_ras_teir3_barcode_count', null, "GROUP");
+      var manualBarcodeCount = searchResults[n].getValue(
+        'custrecord_manual_barcode_count', null, "GROUP");
+
       try {
 
         if (searchResults[n].getValue('custrecord_mp_ap_order_from_swap') !=
@@ -242,6 +251,38 @@ function main(type) {
 
             if (fuel_surcharge_to_be_applied == true) {
               recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
+            }
+
+            if (parseInt(manualBarcodeCount) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+                manualBarcodeCount);
+              recInvoice.commitLineItem('item');
+            }
+
+            if (parseInt(rasTier1Count) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 10782);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+                rasTier1Count);
+              recInvoice.commitLineItem('item');
+            }
+
+            if (parseInt(rasTier2Count) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 10783);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+                rasTier2Count);
+              recInvoice.commitLineItem('item');
+            }
+
+            if (parseInt(rasTier3Count) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 10784);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+                rasTier3Count);
+              recInvoice.commitLineItem('item');
             }
 
             nlapiLogExecution('AUDIT', 'Before submit', '');
@@ -576,6 +617,39 @@ function main(type) {
     if (fuel_surcharge_to_be_applied == true) {
       recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
     }
+
+    if (parseInt(manualBarcodeCount) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+        manualBarcodeCount);
+      recInvoice.commitLineItem('item');
+    }
+
+    if (parseInt(rasTier1Count) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 10782);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+        rasTier1Count);
+      recInvoice.commitLineItem('item');
+    }
+
+    if (parseInt(rasTier2Count) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 10783);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+        rasTier2Count);
+      recInvoice.commitLineItem('item');
+    }
+
+    if (parseInt(rasTier3Count) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 10784);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+        rasTier3Count);
+      recInvoice.commitLineItem('item');
+    }
+
     invoiceId = nlapiSubmitRecord(recInvoice);
     nlapiLogExecution('AUDIT', 'InvID: ' + invoiceId + ' | Usage: ',
       usage_per_inv - ctx.getRemainingUsage());

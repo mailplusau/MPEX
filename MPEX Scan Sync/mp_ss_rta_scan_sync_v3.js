@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  // var jsonName = '14/05/2023';
+  var jsonName = '27/06/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -135,7 +135,7 @@ function getLatestFiles() {
 
             courierSurcharge = barcodes[x].payment.courier_surcharge;
             courierSurcharge = courierSurcharge / 100
-            
+
             transactionID = barcodes[x].payment.transaction_id;
             lastFourDigits = barcodes[x].payment.last_four_digits;
             cardType = barcodes[x].payment.card_type;
@@ -215,6 +215,10 @@ function getLatestFiles() {
           }
           if (operator_id == 896) {
             operator_id = null;
+          }
+
+          if (operator_id == 924) {
+            operator_id = 686;
           }
 
           var updated_at = scans[y].updated_at;
