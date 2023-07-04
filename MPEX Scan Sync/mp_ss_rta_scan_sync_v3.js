@@ -130,8 +130,8 @@ function getLatestFiles() {
             paymentTotalAmount = barcodes[x].payment.total_amount;
             paymentTotalAmount = paymentTotalAmount / 100
 
-            paymentSurcharge = barcodes[x].payment.payment_surcharge;
-            paymentSurcharge = paymentSurcharge / 100
+            // paymentSurcharge = barcodes[x].payment.payment_surcharge;
+            // paymentSurcharge = paymentSurcharge / 100
 
             courierSurcharge = barcodes[x].payment.courier_surcharge;
             courierSurcharge = courierSurcharge / 100
