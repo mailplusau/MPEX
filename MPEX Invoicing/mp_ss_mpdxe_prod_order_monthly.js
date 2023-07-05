@@ -172,24 +172,30 @@ function main() {
       receiverPostcode);
 
     tgeRASSuburbListSearch.addFilters(newFilters);
-
     var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
+
     var teirType = 0;
+    var currentBarcodeRASTier1 = false;
+    var currentBarcodeRASTier2 = false;
+    var currentBarcodeRASTier3 = false;
+
     tgeRASSuburbListSearch.forEachResult(function (searchResult) {
 
       teirType = searchResult.getValue('custrecord_ras_teir');
       return true;
     });
 
-    nlapiLogExecution('AUDIT', 'teirType', teirType);
-
     if (teirType == 1) {
       rasTeir1Count++;
+      currentBarcodeRASTier1 = true;
     } else if (teirType == 2) {
       rasTeir2Count++;
+      currentBarcodeRASTier2 = true;
     } else if (teirType == 3) {
       rasTeir3Count++;
+      currentBarcodeRASTier3 = true;
     }
+
 
     nlapiLogExecution('AUDIT', 'rasTeir1Count', rasTeir1Count);
     nlapiLogExecution('AUDIT', 'rasTeir2Count', rasTeir2Count);
@@ -350,7 +356,19 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-        if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
+      if (currentBarcodeRASTier1 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 1');
+      } else if (currentBarcodeRASTier2 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 3');
+      } else if (currentBarcodeRASTier3 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 3');
+      }
+
+
+      if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
         manualBarcodesCount++;
       }
 
@@ -406,7 +424,19 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_actual_qty', 1);
 
-        if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
+      if (currentBarcodeRASTier1 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 1');
+      } else if (currentBarcodeRASTier2 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 3');
+      } else if (currentBarcodeRASTier3 == true) {
+        ap_stock_line_item.setFieldValue(
+          'custrecord_ap_bill_item_description', 'Tier 3');
+      }
+
+
+      if ((barcode_source == 1 || isNullorEmpty(barcode_source)) && manualFeeToBeCharged != 2) {
         manualBarcodesCount++;
       }
 
