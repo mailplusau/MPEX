@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  var jsonName = '27/06/2023';
+  // var jsonName = '27/06/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -255,6 +255,43 @@ function getLatestFiles() {
           var eta_delivery_date_max = scans[y].estimated_delivery_date_maximum;
           var delivery_zone = scans[y].delivery_zone;
 
+          var teirType = 0;
+          var currentBarcodeRASTier1 = false;
+          var currentBarcodeRASTier2 = false;
+          var currentBarcodeRASTier3 = false;
+
+          if (!isNullorEmpty(receiver_suburb) && !isNullorEmpty(receiver_postcode)) {
+            // MP Express - Manual Usage - Contact List
+            var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
+              'customsearch_tge_ras_suburb_list');
+
+            var newFilters = new Array();
+            newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
+              receiver_suburb);
+            newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
+              receiver_postcode);
+
+            tgeRASSuburbListSearch.addFilters(newFilters);
+
+            var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
+
+            tgeRASSuburbListSearch.forEachResult(function (searchResult) {
+
+              teirType = searchResult.getValue('custrecord_ras_teir');
+              return true;
+            });
+
+            nlapiLogExecution('AUDIT', 'teirType', teirType);
+
+            if (teirType == 1) {
+              currentBarcodeRASTier1 = true;
+            } else if (teirType == 2) {
+              currentBarcodeRASTier2 = true;
+            } else if (teirType == 3) {
+              currentBarcodeRASTier3 = true;
+            }
+          }
+
           // if (isNullorEmpty(scans[y].order_total_price)) {
           //   var order_total_price = null;
           // } else {
@@ -367,6 +404,17 @@ function getLatestFiles() {
             customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
             customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
             customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+
+            if (currentBarcodeRASTier1 == true) {
+              customer_prod_stock.setFieldValue(
+                'custrecord_tge_ras', 'Tier 1');
+            } else if (currentBarcodeRASTier2 == true) {
+              customer_prod_stock.setFieldValue(
+                'custrecord_tge_ras', 'Tier 3');
+            } else if (currentBarcodeRASTier3 == true) {
+              customer_prod_stock.setFieldValue(
+                'custrecord_tge_ras', 'Tier 3');
+            }
 
             if (!isNullorEmpty(transactionID)) {
               customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
@@ -1806,6 +1854,17 @@ function getLatestFiles() {
               customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
               customer_prod_stock.setFieldValue(
                 'custrecord_cust_date_stock_given', updated_at);
+
+              if (currentBarcodeRASTier1 == true) {
+                customer_prod_stock.setFieldValue(
+                  'custrecord_tge_ras', 'Tier 1');
+              } else if (currentBarcodeRASTier2 == true) {
+                customer_prod_stock.setFieldValue(
+                  'custrecord_tge_ras', 'Tier 3');
+              } else if (currentBarcodeRASTier3 == true) {
+                customer_prod_stock.setFieldValue(
+                  'custrecord_tge_ras', 'Tier 3');
+              }
 
 
               if (!isNullorEmpty(transactionID)) {
