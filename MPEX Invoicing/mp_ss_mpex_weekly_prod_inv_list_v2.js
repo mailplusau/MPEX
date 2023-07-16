@@ -55,6 +55,10 @@ function main(type) {
 
   var digital_barcode_used_prod_order = false;
 
+  var oldRASTier1Count = 0;
+  var oldRASTier2Count = 0;
+  var oldRASTier3Count = 0;
+
   var invoiceId = null;
 
   var item_rates = ['a', 'b', 'c', 'd', 'e', 'f', 'g']; // make sure to check the search
@@ -261,27 +265,32 @@ function main(type) {
             //   recInvoice.commitLineItem('item');
             // }
 
-            if (parseInt(rasTier1Count) > 0) {
+            nlapiLogExecution('AUDIT', 'creating the line items');
+            nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);
+            nlapiLogExecution('AUDIT', 'oldRASTier2Count', oldRASTier2Count);
+            nlapiLogExecution('AUDIT', 'oldRASTier3Count', oldRASTier3Count);
+
+            if (parseInt(oldRASTier1Count) > 0) {
               recInvoice.selectNewLineItem('item');
               recInvoice.setCurrentLineItemValue('item', 'item', 10782);
               recInvoice.setCurrentLineItemValue('item', 'quantity',
-                rasTier1Count);
+                oldRASTier1Count);
               recInvoice.commitLineItem('item');
             }
 
-            if (parseInt(rasTier2Count) > 0) {
+            if (parseInt(oldRASTier2Count) > 0) {
               recInvoice.selectNewLineItem('item');
               recInvoice.setCurrentLineItemValue('item', 'item', 10783);
               recInvoice.setCurrentLineItemValue('item', 'quantity',
-                rasTier2Count);
+                oldRASTier2Count);
               recInvoice.commitLineItem('item');
             }
 
-            if (parseInt(rasTier3Count) > 0) {
+            if (parseInt(oldRASTier3Count) > 0) {
               recInvoice.selectNewLineItem('item');
               recInvoice.setCurrentLineItemValue('item', 'item', 10784);
               recInvoice.setCurrentLineItemValue('item', 'quantity',
-                rasTier3Count);
+                oldRASTier3Count);
               recInvoice.commitLineItem('item');
             }
 
@@ -309,8 +318,11 @@ function main(type) {
 
             fuel_surcharge_to_be_applied = false;
             manual_surcharge_to_be_applied = false;
-
             digital_barcode_used_prod_order = false;
+
+            oldRASTier1Count = 0;
+            oldRASTier2Count = 0;
+            oldRASTier3Count = 0;
 
             if (fuel_surcharge == 1 || fuel_surcharge == '1') {
               fuel_surcharge_to_be_applied = true;
@@ -602,6 +614,18 @@ function main(type) {
       nlapiLogExecution('AUDIT', 'Loop: ' + invCount + '.' + n +
         ' | Product IDS: ' + internal_id, usage_per_loop - ctx.getRemainingUsage()
       );
+
+
+      oldRASTier1Count = rasTier1Count;
+      oldRASTier2Count = rasTier2Count;
+      oldRASTier3Count = rasTier3Count;
+
+
+      nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);
+      nlapiLogExecution('AUDIT', 'oldRASTier2Count', oldRASTier2Count);
+      nlapiLogExecution('AUDIT', 'oldRASTier3Count', oldRASTier3Count);
+
+
     }
 
     //--------------- Submit Current Invoice ---------------//
@@ -626,27 +650,32 @@ function main(type) {
     //   recInvoice.commitLineItem('item');
     // }
 
-    if (parseInt(rasTier1Count) > 0) {
+    nlapiLogExecution('AUDIT', 'creating the line items');
+    nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);
+    nlapiLogExecution('AUDIT', 'oldRASTier2Count', oldRASTier2Count);
+    nlapiLogExecution('AUDIT', 'oldRASTier3Count', oldRASTier3Count);
+
+    if (parseInt(oldRASTier1Count) > 0) {
       recInvoice.selectNewLineItem('item');
       recInvoice.setCurrentLineItemValue('item', 'item', 10782);
       recInvoice.setCurrentLineItemValue('item', 'quantity',
-        rasTier1Count);
+        oldRASTier1Count);
       recInvoice.commitLineItem('item');
     }
 
-    if (parseInt(rasTier2Count) > 0) {
+    if (parseInt(oldRASTier2Count) > 0) {
       recInvoice.selectNewLineItem('item');
       recInvoice.setCurrentLineItemValue('item', 'item', 10783);
       recInvoice.setCurrentLineItemValue('item', 'quantity',
-        rasTier2Count);
+        oldRASTier2Count);
       recInvoice.commitLineItem('item');
     }
 
-    if (parseInt(rasTier3Count) > 0) {
+    if (parseInt(oldRASTier3Count) > 0) {
       recInvoice.selectNewLineItem('item');
       recInvoice.setCurrentLineItemValue('item', 'item', 10784);
       recInvoice.setCurrentLineItemValue('item', 'quantity',
-        rasTier3Count);
+        oldRASTier3Count);
       recInvoice.commitLineItem('item');
     }
 

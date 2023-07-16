@@ -348,7 +348,7 @@ function main() {
           'custrecord_ap_bill_item_description', 'Tier 1');
       } else if (currentBarcodeRASTier2 == true) {
         ap_stock_line_item.setFieldValue(
-          'custrecord_ap_bill_item_description', 'Tier 3');
+          'custrecord_ap_bill_item_description', 'Tier 2');
       } else if (currentBarcodeRASTier3 == true) {
         ap_stock_line_item.setFieldValue(
           'custrecord_ap_bill_item_description', 'Tier 3');
@@ -418,7 +418,7 @@ function main() {
           'custrecord_ap_bill_item_description', 'Tier 1');
       } else if (currentBarcodeRASTier2 == true) {
         ap_stock_line_item.setFieldValue(
-          'custrecord_ap_bill_item_description', 'Tier 3');
+          'custrecord_ap_bill_item_description', 'Tier 2');
       } else if (currentBarcodeRASTier3 == true) {
         ap_stock_line_item.setFieldValue(
           'custrecord_ap_bill_item_description', 'Tier 3');
