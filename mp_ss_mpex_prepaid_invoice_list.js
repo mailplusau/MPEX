@@ -139,7 +139,7 @@ function main(type) {
                         recInvoice.setFieldValue('trandate', tranDate);
                         recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date'));
                         recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date'));
-                        recInvoice.setFieldValue('custbody_ap_product_order',internal_id);
+                        recInvoice.setFieldValue('custbody_ap_product_order', internal_id);
                         if (isNullorEmpty(product_po) && isNullorEmpty(customer_po)) {
                             // if (!isNullorEmpty(ordered_by)) {
                             //     var final_po_text = 'Order By - ' + ordered_by;
@@ -189,7 +189,7 @@ function main(type) {
                         recInvoice.setFieldValue('trandate', tranDate);
                         recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date'));
                         recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date'));
-                        recInvoice.setFieldValue('custbody_ap_product_order',internal_id);
+                        recInvoice.setFieldValue('custbody_ap_product_order', internal_id);
                         if (isNullorEmpty(product_po) && isNullorEmpty(customer_po)) {
                             // if (!isNullorEmpty(ordered_by)) {
                             //     var final_po_text = 'Order By - ' + ordered_by;
@@ -523,10 +523,10 @@ function main(type) {
                          */
 
                         var message = '';
-                        message += 'AP Item: '+ searchResults[n].getText('custrecord_ap_stock_line_item','CUSTRECORD_AP_PRODUCT_ORDER',null);
-                        message += ' | LineID: '+ searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER');
-                        message += ' | OrderID:'+ searchResults[n].getValue('internalid');
-                        
+                        message += 'AP Item: ' + searchResults[n].getText('custrecord_ap_stock_line_item', 'CUSTRECORD_AP_PRODUCT_ORDER', null);
+                        message += ' | LineID: ' + searchResults[n].getValue('internalid', 'CUSTRECORD_AP_PRODUCT_ORDER');
+                        message += ' | OrderID:' + searchResults[n].getValue('internalid');
+
 
                         nlapiCreateError('Pricing Algorithm Undefined', message);
 

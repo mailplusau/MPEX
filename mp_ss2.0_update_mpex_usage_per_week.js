@@ -88,7 +88,9 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 						value: 1
 					});
 
-					customerRecord.save();
+					customerRecord.save({
+						ignoreMandatoryFields: true
+					});
 
 					// reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, null);
 					var scriptTask = task.create({
@@ -136,7 +138,9 @@ define(['N/task', 'N/email', 'N/runtime', 'N/search', 'N/record'],
 					value: 1
 				});
 
-				customerRecord.save();
+				customerRecord.save({
+					ignoreMandatoryFields: true
+				});
 			} else {
 				data += ']}';
 			}

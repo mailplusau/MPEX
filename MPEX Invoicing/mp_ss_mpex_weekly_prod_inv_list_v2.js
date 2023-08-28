@@ -58,6 +58,7 @@ function main(type) {
   var oldRASTier1Count = 0;
   var oldRASTier2Count = 0;
   var oldRASTier3Count = 0;
+  var oldManualBarcodeCount = 0;
 
   var invoiceId = null;
 
@@ -257,13 +258,13 @@ function main(type) {
               recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
             }
 
-            // if (parseInt(manualBarcodeCount) > 0) {
-            //   recInvoice.selectNewLineItem('item');
-            //   recInvoice.setCurrentLineItemValue('item', 'item', 9567);
-            //   recInvoice.setCurrentLineItemValue('item', 'quantity',
-            //     manualBarcodeCount);
-            //   recInvoice.commitLineItem('item');
-            // }
+            if (parseInt(oldManualBarcodeCount) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+              oldManualBarcodeCount);
+              recInvoice.commitLineItem('item');
+            }
 
             nlapiLogExecution('AUDIT', 'creating the line items');
             nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);
@@ -323,6 +324,7 @@ function main(type) {
             oldRASTier1Count = 0;
             oldRASTier2Count = 0;
             oldRASTier3Count = 0;
+            oldManualBarcodeCount = 0;
 
             if (fuel_surcharge == 1 || fuel_surcharge == '1') {
               fuel_surcharge_to_be_applied = true;
@@ -619,7 +621,7 @@ function main(type) {
       oldRASTier1Count = rasTier1Count;
       oldRASTier2Count = rasTier2Count;
       oldRASTier3Count = rasTier3Count;
-
+      oldManualBarcodeCount = manualBarcodeCount;
 
       nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);
       nlapiLogExecution('AUDIT', 'oldRASTier2Count', oldRASTier2Count);
@@ -642,13 +644,13 @@ function main(type) {
       recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
     }
 
-    // if (parseInt(manualBarcodeCount) > 0) {
-    //   recInvoice.selectNewLineItem('item');
-    //   recInvoice.setCurrentLineItemValue('item', 'item', 9567);
-    //   recInvoice.setCurrentLineItemValue('item', 'quantity',
-    //     manualBarcodeCount);
-    //   recInvoice.commitLineItem('item');
-    // }
+    if (parseInt(oldManualBarcodeCount) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+      oldManualBarcodeCount);
+      recInvoice.commitLineItem('item');
+    }
 
     nlapiLogExecution('AUDIT', 'creating the line items');
     nlapiLogExecution('AUDIT', 'oldRASTier1Count', oldRASTier1Count);

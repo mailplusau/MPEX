@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  // var jsonName = '27/06/2023';
+  // var jsonName = '15/07/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -219,6 +219,10 @@ function getLatestFiles() {
 
           if (operator_id == 924) {
             operator_id = 686;
+          }
+
+          if (operator_id == 855) {
+            operator_id = 1202;
           }
 
           var updated_at = scans[y].updated_at;
@@ -1248,6 +1252,62 @@ function getLatestFiles() {
 
 
                   }
+                } else if (account == 'shippit') {
+                  if (product_type == null) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 5);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
+                    }
+
+
+
+                  }
                 } else if (account == 'global_express' && product_type ==
                   null) {
                   customer_prod_stock.setFieldValue(
@@ -1795,6 +1855,62 @@ function getLatestFiles() {
 
                   }
 
+                } else if (account == 'shippit') {
+                  if (product_type == null) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 5);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
+                    }
+
+
+
+                  }
                 } else if (account == 'global_express' && product_type ==
                   null) {
                   customer_prod_stock.setFieldValue(
@@ -2617,6 +2733,62 @@ function getLatestFiles() {
                         customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
                       }
                     }
+
+                  }
+                } else if (account == 'shippit') {
+                  if (product_type == null) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_stock_prod_name', 862);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 5);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+                  } else {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_integration', 1);
+                    if (!isNullorEmpty(futile_reasons)) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_futile_reasons', futile_reasons);
+                    }
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_futile_image', futile_images);
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_ext_reference_id', reference_id);
+                    customer_prod_stock.setFieldValue('custrecord_job_id',
+                      job_id);
+                    customer_prod_stock.setFieldValue('custrecord_order_date', order_date);
+                    customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
+                    customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
+                    customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+                    customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+                    customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                    customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
+
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_min', eta_delivery_date_min);
+                    customer_prod_stock.setFieldValue('custrecord_eta_del_date_max', eta_delivery_date_max);
+                    if (!isNullorEmpty(delivery_zone)) {
+                      if (delivery_zone.toUpperCase() == 'NATIONAL') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 1);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 2);
+                      } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
+                        customer_prod_stock.setFieldValue('custrecord_delivery_zone', 3);
+                      }
+                    }
+
+
 
                   }
                 } else if (account == 'global_express' && product_type ==

@@ -58,6 +58,7 @@ function main(type) {
   var oldRASTier1Count = 0;
   var oldRASTier2Count = 0;
   var oldRASTier3Count = 0;
+  var oldManualBarcodeCount = 0;
 
   var invoiceId = null;
 
@@ -467,13 +468,13 @@ function main(type) {
               recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
             }
 
-            // if (parseInt(manualBarcodeCount) > 0) {
-            //   recInvoice.selectNewLineItem('item');
-            //   recInvoice.setCurrentLineItemValue('item', 'item', 9567);
-            //   recInvoice.setCurrentLineItemValue('item', 'quantity',
-            //     manualBarcodeCount);
-            //   recInvoice.commitLineItem('item');
-            // }
+            if (parseInt(oldManualBarcodeCount) > 0) {
+              recInvoice.selectNewLineItem('item');
+              recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+              recInvoice.setCurrentLineItemValue('item', 'quantity',
+                oldManualBarcodeCount);
+              recInvoice.commitLineItem('item');
+            }
 
             if (parseInt(oldRASTier1Count) > 0) {
               recInvoice.selectNewLineItem('item');
@@ -522,7 +523,7 @@ function main(type) {
 
             digital_barcode_used_prod_order = false;
 
-            
+
 
             if (fuel_surcharge == 1 || fuel_surcharge == '1') {
               fuel_surcharge_to_be_applied = true;
@@ -849,6 +850,7 @@ function main(type) {
       oldRASTier1Count = rasTier1Count;
       oldRASTier2Count = rasTier2Count;
       oldRASTier3Count = rasTier3Count;
+      oldManualBarcodeCount = manualBarcodeCount;
 
     }
 
@@ -1023,13 +1025,13 @@ function main(type) {
       recInvoice.setFieldValue('custbody_inv_fuel_surcharge', 1);
     }
 
-    // if (parseInt(manualBarcodeCount) > 0) {
-    //   recInvoice.selectNewLineItem('item');
-    //   recInvoice.setCurrentLineItemValue('item', 'item', 9567);
-    //   recInvoice.setCurrentLineItemValue('item', 'quantity',
-    //     manualBarcodeCount);
-    //   recInvoice.commitLineItem('item');
-    // }
+    if (parseInt(oldManualBarcodeCount) > 0) {
+      recInvoice.selectNewLineItem('item');
+      recInvoice.setCurrentLineItemValue('item', 'item', 9567);
+      recInvoice.setCurrentLineItemValue('item', 'quantity',
+        oldManualBarcodeCount);
+      recInvoice.commitLineItem('item');
+    }
 
     if (parseInt(oldRASTier1Count) > 0) {
       recInvoice.selectNewLineItem('item');
