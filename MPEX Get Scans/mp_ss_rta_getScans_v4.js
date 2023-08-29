@@ -20,15 +20,15 @@ function getScansV4() {
     headers['GENERAL-API-KEY'] = '708aa067-d67d-73e6-8967-66786247f5d7';
 
     var todayDate = new Date();
-    var adhocDate = '27/08/2023'
+    //var adhocDate = '27/08/2023'
 
     var jsonName = formatDate(todayDate);
-    var jsonName = adhocDate;
+    //var jsonName = adhocDate;
 
     nlapiLogExecution("DEBUG", "jsonName", jsonName);
 
-    //var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
-    var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + adhocDate;
+    var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
+    //var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + adhocDate;
 
     var response = nlapiRequestURL(mainURL, null, headers);
 
@@ -39,15 +39,15 @@ function getScansV4() {
     var todays_scans = JSON.parse(body);
 
     if (isNullorEmpty(todays_scans.barcodes)) {
-        if (("message" in todays_scans) == true) {
-            reschedule = rescheduleScript('customdeploy1', 'customdeploy2',
-                null);
-            nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
-            if (reschedule == 'false') {
+        // if (("message" in todays_scans) == true) {
+        reschedule = rescheduleScript('customdeploy1', 'customdeploy2',
+            null);
+        nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+        if (reschedule == 'false') {
 
-                return false;
-            }
+            return false;
         }
+        // }
     }
     else {
         var todays_scans = JSON.parse(body);
