@@ -27,7 +27,7 @@ function getScansV4() {
 
     nlapiLogExecution("DEBUG", "jsonName", jsonName);
 
-    var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
+    var mainURL = 'https://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + formatDate(todayDate);
     //var mainURL = 'http://app.mailplus.com.au/api/v1/admin/scans/sync?date=' + adhocDate;
 
     var response = nlapiRequestURL(mainURL, null, headers);
@@ -38,18 +38,18 @@ function getScansV4() {
 
     var todays_scans = JSON.parse(body);
 
-    if (isNullorEmpty(todays_scans.barcodes)) {
-        // if (("message" in todays_scans) == true) {
-        reschedule = rescheduleScript('customdeploy1', 'customdeploy2',
-            null);
-        nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
-        if (reschedule == 'false') {
+    // if (isNullorEmpty(todays_scans.barcodes)) {
+    //     // if (("message" in todays_scans) == true) {
+    //     reschedule = rescheduleScript('customdeploy1', 'customdeploy2',
+    //         null);
+    //     nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+    //     if (reschedule == 'false') {
 
-            return false;
-        }
-        // }
-    }
-    else {
+    //         return false;
+    //     }
+    //     // }
+    // }
+    // else {
         var todays_scans = JSON.parse(body);
         var barcodes = todays_scans.barcodes;
         var no_of_barcodes = barcodes.length; //No. of barcodes
@@ -95,7 +95,7 @@ function getScansV4() {
         }
 
 
-    }
+    // }
 
 }
 

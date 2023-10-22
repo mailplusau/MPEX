@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  // var jsonName = '15/07/2023';
+  var jsonName = '09/09/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -186,7 +186,7 @@ function getLatestFiles() {
             operator_id = 1123;
           }
 
-          if (operator_id == 851) {
+          if (operator_id == 851 || operator_id == 423) {
             operator_id = 1167;
           }
 
