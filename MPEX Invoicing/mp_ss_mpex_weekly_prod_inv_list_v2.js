@@ -216,7 +216,10 @@ function main(type) {
             //                        recInvoice.setFieldValue('trandate', '22/08/2021');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
               previousWeekStartDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_from',
+            //   '1/7/2023');
             recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', '31/8/2023');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
@@ -262,7 +265,7 @@ function main(type) {
               recInvoice.selectNewLineItem('item');
               recInvoice.setCurrentLineItemValue('item', 'item', 9567);
               recInvoice.setCurrentLineItemValue('item', 'quantity',
-              oldManualBarcodeCount);
+                oldManualBarcodeCount);
               recInvoice.commitLineItem('item');
             }
 
@@ -364,10 +367,13 @@ function main(type) {
               435)
               .getFieldValue('location'));
             recInvoice.setFieldValue('trandate', tranDate);
-            // recInvoice.setFieldValue('trandate', '22/08/2021');
+            //                        recInvoice.setFieldValue('trandate', '22/08/2021');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
               previousWeekStartDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_from',
+            //   '1/7/2023');
             recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', '31/8/2023');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
@@ -648,7 +654,7 @@ function main(type) {
       recInvoice.selectNewLineItem('item');
       recInvoice.setCurrentLineItemValue('item', 'item', 9567);
       recInvoice.setCurrentLineItemValue('item', 'quantity',
-      oldManualBarcodeCount);
+        oldManualBarcodeCount);
       recInvoice.commitLineItem('item');
     }
 
