@@ -7,7 +7,7 @@
  * Description: Create MPEX Usage Report        
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-06 11:53:39
+ * @Last Modified time: 2020-06-30 12:13:53
  *
  */
 
@@ -39,8 +39,9 @@ function main() {
     }
     var resultCustomerList = customerList.runSearch();
 
-    resultCustomerList.forEachResult(function(searchResultCustomer) {
+    resultCustomerList.forEachResult(function (searchResultCustomer) {
         var cust_prod_customer = searchResultCustomer.getValue("custrecord_ap_order_customer", null, "GROUP");
+        nlapiLogExecution('AUDIT', 'cust_prod_customer', cust_prod_customer);
 
         //SEARCH: MPEX Monthly Product Order Usage Report (List) - DO NOT DELETE
         var createProdOrderSearch = nlapiLoadSearch('customrecord_mp_ap_product_order', 'customsearch_mpex_product_invoice_list_3');
@@ -66,7 +67,7 @@ function main() {
         nlapiLogExecution('AUDIT', 'month', month);
         nlapiLogExecution('AUDIT', 'START --->', ctx.getRemainingUsage());
 
-        resultCreateProdOrder.forEachResult(function(searchResult) {
+        resultCreateProdOrder.forEachResult(function (searchResult) {
             var cust_prod_stock_id = searchResult.getValue("internalid", null, "GROUP");
             var cust_prod_item = searchResult.getText("custrecord_ap_stock_line_item", "CUSTRECORD_AP_PRODUCT_ORDER", "GROUP");
             var cust_prod_order_inv = searchResult.getValue("tranid", "CUSTRECORD_MP_AP_ORDER_INVOICENUM", "GROUP");
@@ -74,6 +75,10 @@ function main() {
             var cust_prod_customer = searchResult.getValue("custrecord_ap_order_customer", null, "GROUP");
 
             var line_item_details = searchResult.getValue("custrecord_ap_line_item_inv_details", "CUSTRECORD_AP_PRODUCT_ORDER", "GROUP");
+            var ras_tier = searchResult.getValue("custrecord_ap_bill_item_description", "CUSTRECORD_AP_PRODUCT_ORDER", "GROUP");
+            if (isNullorEmpty(ras_tier) || ras_tier == '- None -') {
+                ras_tier = 0;
+            }
             line_item_details = line_item_details.replace(/\s/g, '')
             var details = line_item_details.split('-');
 
@@ -212,7 +217,12 @@ function main() {
                     }
                 }
 
-                usage_report_barcode[usage_report_barcode.length] = barcode;
+                if (ras_tier == 0) {
+                    usage_report_barcode[usage_report_barcode.length] = barcode;
+                } else {
+                    usage_report_barcode[usage_report_barcode.length] = barcode + ' - ' + ras_tier;
+                }
+
                 usage_report_date[usage_report_date.length] = date_used[1];
                 usage_report_prod[usage_report_prod.length] = cust_prod_item;
 
