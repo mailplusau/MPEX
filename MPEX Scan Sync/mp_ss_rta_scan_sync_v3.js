@@ -156,7 +156,12 @@ function getLatestFiles() {
           var connote_number = scans[y].connote_number;
           var product_type = scans[y].product_type;
           var customer_id = scans[y].customer_ns_id;
+          
           var zee_id = scans[y].zee_ns_id;
+          var zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
+          if (zee_id != zeeIDCustomerRecord) {
+            zee_id = zeeIDCustomerRecord;
+          }
           var rta_id = scans[y].id;
           var invoiceable = scans[y].invoiceable;
           var scan_type = scans[y].scan_type.toLowerCase();
