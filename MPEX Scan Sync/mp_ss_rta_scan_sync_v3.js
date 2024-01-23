@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  var jsonName = '20/10/2023';
+  //var jsonName = '20/10/2023';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -88,6 +88,7 @@ function getLatestFiles() {
         var order_number = barcodes[x].order_number;
         var order_date = barcodes[x].order_date;
         var delivery_speed = barcodes[x].delivery_speed;
+        var starTrack_api_price = barcodes[x].order_total_startrack_price;
         var depot_id = barcodes[x].depot_id;
 
         if (("order_total_price" in barcodes[x])) {
@@ -223,6 +224,9 @@ function getLatestFiles() {
 
           if (operator_id == 855) {
             operator_id = 1202;
+          }
+          if (operator_id == 501) {
+            operator_id = 410;
           }
 
           var updated_at = scans[y].updated_at;
@@ -408,6 +412,7 @@ function getLatestFiles() {
             customer_prod_stock.setFieldValue('custrecord_item_price', item_price);
             customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
             customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
+            customer_prod_stock.setFieldValue('custrecord_api_price', starTrack_api_price);
 
             if (currentBarcodeRASTier1 == true) {
               customer_prod_stock.setFieldValue(
@@ -499,6 +504,10 @@ function getLatestFiles() {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
                   }
 
                   searchProductPricing.setFilterExpression(newFilterExpression);
@@ -564,7 +573,14 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                          }
+                        }
                       }
+
 
 
                       var newFilterExpressionAPItem = [
@@ -699,6 +715,10 @@ function getLatestFiles() {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
                   }
 
                   searchProductPricing.setFilterExpression(newFilterExpression);
@@ -764,7 +784,14 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                          }
+                        }
                       }
+
 
 
                       var newFilterExpressionAPItem = [
@@ -832,6 +859,10 @@ function getLatestFiles() {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
                   }
 
 
@@ -897,7 +928,14 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                          }
+                        }
                       }
+
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
@@ -964,6 +1002,10 @@ function getLatestFiles() {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
                   }
 
 
@@ -1028,7 +1070,14 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                          }
+                        }
                       }
+
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
@@ -1401,6 +1450,10 @@ function getLatestFiles() {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
                   }
 
                   searchProductPricing.setFilterExpression(newFilterExpression);
@@ -1464,6 +1517,12 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:REM)'
                           } else if (delivery_zone.toUpperCase() == 'REMOTE_WANT') {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
+                          }
+                        }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
                           }
                         }
                       }
@@ -1970,6 +2029,8 @@ function getLatestFiles() {
               customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
               customer_prod_stock.setFieldValue(
                 'custrecord_cust_date_stock_given', updated_at);
+              customer_prod_stock.setFieldValue(
+                'custrecord_api_price', starTrack_api_price);
 
               if (currentBarcodeRASTier1 == true) {
                 customer_prod_stock.setFieldValue(
@@ -2025,6 +2086,10 @@ function getLatestFiles() {
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
                       ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                    ];
+                  } else if (delivery_speed == 'Premium') {
+                    var newFilterExpression = [
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                     ];
                   }
 
@@ -2091,7 +2156,14 @@ function getLatestFiles() {
                             prodItemText = prodItemText.slice(0, -1) + ', D:RWT)'
                           }
                         }
+                      } else if (delivery_speed == 'Premium') {
+                        if (!isNullorEmpty(delivery_zone)) {
+                          if (delivery_zone.toUpperCase() == 'REMOTE') {
+                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                          }
+                        }
                       }
+
 
 
                       var newFilterExpressionAPItem = [
@@ -2218,6 +2290,10 @@ function getLatestFiles() {
                       var newFilterExpression = [
                         ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
+                    } else if (delivery_speed == 'Premium') {
+                      var newFilterExpression = [
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
                     }
 
                     searchProductPricing.setFilterExpression(newFilterExpression);
@@ -2339,6 +2415,10 @@ function getLatestFiles() {
                       var newFilterExpression = [
                         ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
+                    } else if (delivery_speed == 'Premium') {
+                      var newFilterExpression = [
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
                     }
 
 
@@ -2459,6 +2539,10 @@ function getLatestFiles() {
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
                         ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
+                      ];
+                    } else if (delivery_speed == 'Premium') {
+                      var newFilterExpression = [
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", 2]
                       ];
                     }
 
