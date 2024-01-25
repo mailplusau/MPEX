@@ -156,7 +156,7 @@ function getLatestFiles() {
           var connote_number = scans[y].connote_number;
           var product_type = scans[y].product_type;
           var customer_id = scans[y].customer_ns_id;
-          
+
           var zee_id = scans[y].zee_ns_id;
           var zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
           if (zee_id != zeeIDCustomerRecord) {
@@ -419,6 +419,14 @@ function getLatestFiles() {
             customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
             customer_prod_stock.setFieldValue('custrecord_api_price', starTrack_api_price);
 
+            if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
+              customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+            } else if (delivery_speed == 'Standard') {
+              customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+            } else if (delivery_speed == 'Premium') {
+              customer_prod_stock.setFieldValue('custrecord_delivery_speed', 4);
+            }
+
             if (currentBarcodeRASTier1 == true) {
               customer_prod_stock.setFieldValue(
                 'custrecord_tge_ras', 'Tier 1');
@@ -589,7 +597,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -800,7 +808,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -943,7 +951,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -1085,7 +1093,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -1534,7 +1542,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -2037,6 +2045,14 @@ function getLatestFiles() {
               customer_prod_stock.setFieldValue(
                 'custrecord_api_price', starTrack_api_price);
 
+              if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
+                customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
+              } else if (delivery_speed == 'Standard') {
+                customer_prod_stock.setFieldValue('custrecord_delivery_speed', 1);
+              } else if (delivery_speed == 'Premium') {
+                customer_prod_stock.setFieldValue('custrecord_delivery_speed', 4);
+              }
+
               if (currentBarcodeRASTier1 == true) {
                 customer_prod_stock.setFieldValue(
                   'custrecord_tge_ras', 'Tier 1');
@@ -2172,7 +2188,7 @@ function getLatestFiles() {
 
 
                       var newFilterExpressionAPItem = [
-                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                        ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                         ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                       ];
 
@@ -2357,7 +2373,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18", "17", "18"], "AND",
                           ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
@@ -2483,7 +2499,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                           ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
@@ -2607,7 +2623,7 @@ function getLatestFiles() {
                           'customsearch6413');
 
                         var newFilterExpressionAPItem = [
-                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16"], "AND",
+                          ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
                           ["isinactive", "is", "F"], 'AND', ["name", "is", prodItemText]
                         ];
 
