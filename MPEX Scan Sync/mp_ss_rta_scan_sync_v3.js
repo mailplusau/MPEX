@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  //var jsonName = '20/10/2023';
+  //var jsonName = '09/02/2024';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -158,7 +158,10 @@ function getLatestFiles() {
           var customer_id = scans[y].customer_ns_id;
 
           var zee_id = scans[y].zee_ns_id;
-          var zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
+          if (!isNullorEmpty(customer_id)) {
+            var zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
+          }
+
           if (zee_id != zeeIDCustomerRecord) {
             zee_id = zeeIDCustomerRecord;
           }
@@ -1160,6 +1163,11 @@ function getLatestFiles() {
 
                 var sourceId = getSourceID(source);
 
+                if (source == 'threepl' && customer_id == 363794) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer', customer_id);
+                }
+
 
                 customer_prod_stock.setFieldValue(
                   'custrecord_mpdl_number', external_barcode);
@@ -1774,6 +1782,11 @@ function getLatestFiles() {
                 }
 
                 var sourceId = getSourceID(source);
+
+                if (source == 'threepl' && customer_id == 363794) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer', customer_id);
+                }
 
 
                 customer_prod_stock.setFieldValue(
@@ -2689,6 +2702,11 @@ function getLatestFiles() {
                 }
 
                 var sourceId = getSourceID(source);
+
+                if (source == 'threepl' && customer_id == 363794) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_customer', customer_id);
+                }
 
 
                 customer_prod_stock.setFieldValue(
