@@ -1165,7 +1165,7 @@ function getLatestFiles() {
 
                 if (source == 'threepl' && customer_id == 363794) {
                   customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
+                    'custrecord_cust_prod_stock_customer', 1684503);
                 }
 
 
@@ -1785,7 +1785,7 @@ function getLatestFiles() {
 
                 if (source == 'threepl' && customer_id == 363794) {
                   customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
+                    'custrecord_cust_prod_stock_customer', 1684503);
                 }
 
 
@@ -2705,7 +2705,7 @@ function getLatestFiles() {
 
                 if (source == 'threepl' && customer_id == 363794) {
                   customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_customer', customer_id);
+                    'custrecord_cust_prod_stock_customer', 1684503);
                 }
 
 
