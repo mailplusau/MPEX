@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  //var jsonName = '09/02/2024';
+  //var jsonName = '20/03/2024';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -577,6 +577,7 @@ function getLatestFiles() {
 
 
                     }
+                    nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
@@ -592,12 +593,12 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
 
-
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
@@ -612,11 +613,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -803,7 +804,7 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
@@ -947,7 +948,7 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
@@ -1089,7 +1090,7 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
@@ -1543,7 +1544,7 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
@@ -2174,7 +2175,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
 
                     }
@@ -2193,12 +2194,12 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            prodItemText = prodItemText.slice(0, -1) + ' (D:REM)'
+                            prodItemText = prodItemText + ' (D: REM)'
                           }
                         }
                       }
 
-
+                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
@@ -2213,11 +2214,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
