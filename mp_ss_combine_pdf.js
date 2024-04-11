@@ -84,7 +84,12 @@ function main() {
 
             var barcode = details[1];
 
-            var date_used = details[0].split(':');
+            if (details[0].indexOf(':') != -1) {
+                var date_used = details[0].split(':');
+                var usageDate = date_used[1];
+            } else {
+                var usageDate = details[0];
+            }
 
             // var ap_item_record = nlapiLoadRecord('customrecord_ap_item', cust_prod_item);
             // var single_ap_item = ap_item_record.getFieldValue('custrecord_ap_item_single_name');
@@ -223,7 +228,8 @@ function main() {
                     usage_report_barcode[usage_report_barcode.length] = barcode + ' - ' + ras_tier;
                 }
 
-                usage_report_date[usage_report_date.length] = date_used[1];
+                // usage_report_date[usage_report_date.length] = date_used[1];
+                usage_report_date[usage_report_date.length] = usageDate;
                 usage_report_prod[usage_report_prod.length] = cust_prod_item;
 
             }

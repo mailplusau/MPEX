@@ -346,9 +346,14 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_item', product_name);
 
-      var inv_details = 'Used:' + new_date + '-' + barcode;
-      if (inv_details.length > 33) {
-        inv_details = 'Used:' + new_date + '-' + connote_number;
+      // var inv_details = 'Used:' + new_date + '-' + barcode;
+      // if (inv_details.length > 33) {
+      //   inv_details = 'Used:' + new_date + '-' + connote_number;
+      // }
+      if (!isNullorEmpty(connote_number)) {
+        var inv_details = new_date + '-' + connote_number;
+      } else {
+        var inv_details = new_date + '-' + barcode;
       }
 
       ap_stock_line_item.setFieldValue(
@@ -415,10 +420,16 @@ function main() {
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_stock_line_item', product_name);
 
-      var inv_details = 'Used:' + new_date + '-' + barcode;
-      if (inv_details.length > 33) {
-        inv_details = 'Used:' + new_date + '-' + connote_number;
+      // var inv_details = 'Used:' + new_date + '-' + barcode;
+      // if (inv_details.length > 33) {
+      //   inv_details = 'Used:' + new_date + '-' + connote_number;
+      // }
+      if (!isNullorEmpty(connote_number)) {
+        var inv_details = new_date + '-' + connote_number;
+      } else {
+        var inv_details = new_date + '-' + barcode;
       }
+      
       ap_stock_line_item.setFieldValue(
         'custrecord_ap_line_item_inv_details', inv_details);
       ap_stock_line_item.setFieldValue(

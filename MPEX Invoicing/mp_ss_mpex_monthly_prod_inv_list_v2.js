@@ -149,15 +149,15 @@ function main(type) {
       //   'custrecord_ras_teir3_barcode_count', null, "GROUP");
       // var manualBarcodeCount = searchResults[n].getValue(
       //   'custrecord_manual_barcode_count', null, "GROUP");
-      
-        var rasTier1Count = searchResults[n].getValue(
-          'custrecord_total_ras_teir1_barcode_count', null, "GROUP");
-        var rasTier2Count = searchResults[n].getValue(
-          'custrecord_total_ras_teir2_barcode_count', null, "GROUP");
-        var rasTier3Count = searchResults[n].getValue(
-          'custrecord_total_ras_teir3_barcode_count', null, "GROUP");
-        var manualBarcodeCount = searchResults[n].getValue(
-          'custrecord_total_manual_barcode_count', null, "GROUP");
+
+      var rasTier1Count = searchResults[n].getValue(
+        'custrecord_total_ras_teir1_barcode_count', null, "GROUP");
+      var rasTier2Count = searchResults[n].getValue(
+        'custrecord_total_ras_teir2_barcode_count', null, "GROUP");
+      var rasTier3Count = searchResults[n].getValue(
+        'custrecord_total_ras_teir3_barcode_count', null, "GROUP");
+      var manualBarcodeCount = searchResults[n].getValue(
+        'custrecord_total_manual_barcode_count', null, "GROUP");
 
       nlapiLogExecution('DEBUG', 'Product Internal ID', searchResults[n].getValue(
         'internalid', null, "GROUP"));
@@ -233,12 +233,12 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '30/09/2023');
+            recInvoice.setFieldValue('trandate', '31/03/2024');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/09/2023');
+              '01/03/2024');
             //recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/09/2023');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/03/2024');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
@@ -570,12 +570,12 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner', 435)
               .getFieldValue('location'));
             //recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '30/09/2023');
+            recInvoice.setFieldValue('trandate', '31/03/2024');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '01/09/2023');
+              '01/03/2024');
             // recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/09/2023');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '31/03/2024');
             // recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
             //recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
