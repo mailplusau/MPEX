@@ -178,6 +178,7 @@ function main(type) {
 
             var setMpExpItems = false;
             var setMpStdItems = false;
+            var setMpPrmItems = false;
 
             //--------------- Init New Invoice ---------------//
             usage_per_inv = ctx.getRemainingUsage();
@@ -354,6 +355,7 @@ function main(type) {
 
             var setMpExpItems = false;
             var setMpStdItems = false;
+            var setMpPrmItems = false;
 
             recInvoice = nlapiCreateRecord('invoice', {
               recordmode: 'dynamic'
@@ -455,6 +457,7 @@ function main(type) {
 
               var mpStdIncluded = 2;
               var mpExpIncluded = 2;
+              var mpPrmIncluded = 2;
 
               if (apItemDeliverySpeed == 1 || setMpStdItems == true) {
                 mpStdIncluded = 1;
@@ -465,6 +468,12 @@ function main(type) {
                 mpExpIncluded = 1;
                 setMpExpItems = true;
               }
+
+              if (apItemDeliverySpeed == 4 || setMpPrmItems == true) {
+                mpPrmIncluded = 1;
+                setMpPrmItems = true;
+              }
+
 
               if (y != '') {
                 if (parseInt(line_qty) < y) {
@@ -512,6 +521,7 @@ function main(type) {
                   recInvoice.commitLineItem('item');
                   recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
                   recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
+                  recInvoice.setFieldValue('custbody_mp_prm_included', mpPrmIncluded);
                   break;
                 }
                 // else if(x >= 1 && parseInt(line_qty) >= y){
@@ -579,6 +589,7 @@ function main(type) {
                 recInvoice.commitLineItem('item');
                 recInvoice.setFieldValue('custbody_mp_std_included', mpStdIncluded);
                 recInvoice.setFieldValue('custbody_mp_exp_included', mpExpIncluded);
+                recInvoice.setFieldValue('custbody_mp_prm_included', mpPrmIncluded);
                 break;
               }
             }
