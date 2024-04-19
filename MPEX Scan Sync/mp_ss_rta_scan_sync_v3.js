@@ -89,6 +89,12 @@ function getLatestFiles() {
         var order_date = barcodes[x].order_date;
         var delivery_speed = barcodes[x].delivery_speed;
         var starTrack_api_price = barcodes[x].order_total_startrack_price;
+        var starTrack_api_total_cost_ex_gst = barcodes[x].package_startrack_total_cost_ex_gst;
+        var starTrack_api_shipping_cost = barcodes[x].package_startrack_shipping_cost;
+        var starTrack_api_fuel_surcharge = barcodes[x].package_startrack_fuel_surcharge;
+        var starTrack_api_total_gst = barcodes[x].package_startrack_total_gst;
+        var starTrack_freight_charge = barcodes[x].package_startrack_freight_charge;
+        var starTrack_security_surcharge = barcodes[x].package_startrack_security_surcharge;
         var depot_id = barcodes[x].depot_id;
 
         if (("order_total_price" in barcodes[x])) {
@@ -169,7 +175,7 @@ function getLatestFiles() {
           }
           nlapiLogExecution('DEBUG', 'zee_id after comparison', zee_id);
           var rta_id = scans[y].id;
-          var invoiceable = scans[y].invoiceable; 
+          var invoiceable = scans[y].invoiceable;
           var scan_type = scans[y].scan_type.toLowerCase();
           var operator_id = scans[y].operator_ns_id;
 
@@ -424,6 +430,13 @@ function getLatestFiles() {
             customer_prod_stock.setFieldValue('custrecord_order_number', order_number);
             customer_prod_stock.setFieldValue('custrecord_order_total_price', order_total_price);
             customer_prod_stock.setFieldValue('custrecord_api_price', starTrack_api_price);
+            customer_prod_stock.setFieldValue('custrecord_st_total_cost', (parseInt(starTrack_api_total_cost_ex_gst) + parseInt(starTrack_api_total_gst)));
+            customer_prod_stock.setFieldValue('custrecord_st_total_cost_exc_gst', starTrack_api_total_cost_ex_gst);
+            customer_prod_stock.setFieldValue('custrecord_st_shipping_cost', starTrack_api_shipping_cost);
+            customer_prod_stock.setFieldValue('custrecord_st_fuel_surcharge', starTrack_api_fuel_surcharge);
+            customer_prod_stock.setFieldValue('custrecord_st_total_gst', starTrack_api_total_gst);
+            customer_prod_stock.setFieldValue('custrecord_st_freight_charge', starTrack_freight_charge);
+            customer_prod_stock.setFieldValue('custrecord_st_security_surcharge', starTrack_security_surcharge);
 
             if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
               customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
@@ -2067,6 +2080,13 @@ function getLatestFiles() {
                 'custrecord_cust_date_stock_given', updated_at);
               customer_prod_stock.setFieldValue(
                 'custrecord_api_price', starTrack_api_price);
+              customer_prod_stock.setFieldValue('custrecord_st_total_cost', (parseInt(starTrack_api_total_cost_ex_gst) + parseInt(starTrack_api_total_gst)));
+              customer_prod_stock.setFieldValue('custrecord_st_total_cost_exc_gst', starTrack_api_total_cost_ex_gst);
+              customer_prod_stock.setFieldValue('custrecord_st_shipping_cost', starTrack_api_shipping_cost);
+              customer_prod_stock.setFieldValue('custrecord_st_fuel_surcharge', starTrack_api_fuel_surcharge);
+              customer_prod_stock.setFieldValue('custrecord_st_total_gst', starTrack_api_total_gst);
+              customer_prod_stock.setFieldValue('custrecord_st_freight_charge', starTrack_freight_charge);
+              customer_prod_stock.setFieldValue('custrecord_st_security_surcharge', starTrack_security_surcharge);
 
               if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                 customer_prod_stock.setFieldValue('custrecord_delivery_speed', 2);
