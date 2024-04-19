@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  //var jsonName = '20/03/2024';
+  var jsonName = '15/04/2024';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -158,15 +158,18 @@ function getLatestFiles() {
           var customer_id = scans[y].customer_ns_id;
 
           var zee_id = scans[y].zee_ns_id;
+          var zeeIDCustomerRecord = null;
           if (!isNullorEmpty(customer_id)) {
-            var zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
+            zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
           }
-
-          if (zee_id != zeeIDCustomerRecord) {
+          nlapiLogExecution('DEBUG', 'customer_id', customer_id);
+          nlapiLogExecution('DEBUG', 'zee_id before comparison', zee_id);
+          if (zee_id != zeeIDCustomerRecord && !isNullorEmpty(zeeIDCustomerRecord)) {
             zee_id = zeeIDCustomerRecord;
           }
+          nlapiLogExecution('DEBUG', 'zee_id after comparison', zee_id);
           var rta_id = scans[y].id;
-          var invoiceable = scans[y].invoiceable;
+          var invoiceable = scans[y].invoiceable; 
           var scan_type = scans[y].scan_type.toLowerCase();
           var operator_id = scans[y].operator_ns_id;
 
@@ -395,7 +398,7 @@ function getLatestFiles() {
           var save_barcode = true;
 
           resultSetProductStock.forEachResult(function (searchResult) {
-            nlapiLogExecution('DEBUG', 'Barcode  exist', barcode)
+            nlapiLogExecution('DEBUG', 'Barcode exist', barcode)
             var customer_prod_stock_id = searchResult.getValue(
               'internalid');
 
