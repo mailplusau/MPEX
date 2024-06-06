@@ -27,7 +27,7 @@ function getLatestFiles() {
   var todayDate = new Date();
 
   var jsonName = formatDate(todayDate);
-  //var jsonName = '15/04/2024';
+  // var jsonName = '05/06/2024';
 
   var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json',
     'customsearch_scan_json');
@@ -312,7 +312,7 @@ function getLatestFiles() {
               return true;
             });
 
-            nlapiLogExecution('AUDIT', 'teirType', teirType);
+            nlapiLogExecution('DEBUG', 'teirType', teirType);
 
             if (teirType == 1) {
               currentBarcodeRASTier1 = true;
@@ -397,7 +397,7 @@ function getLatestFiles() {
             ["name", "is", barcode], 'AND', ["isinactive", "is", "F"]
           ];
 
-          // nlapiLogExecution('AUDIT', 'newFilterExpression',
+          // nlapiLogExecution('DEBUG', 'newFilterExpression',
           //   newFilterExpression);
 
           productStockSearch.setFilterExpression(newFilterExpression);
@@ -595,11 +595,11 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
 
 
                     }
-                    nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                    nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
                     if (!isNullorEmpty(prodItemText)) {
                       var searchAPItems = nlapiLoadSearch('customrecord_ap_item',
                         'customsearch6413');
@@ -615,14 +615,14 @@ function getLatestFiles() {
                       } else if (delivery_speed == 'Premium') {
                         if (!isNullorEmpty(delivery_zone)) {
                           if (delivery_zone.toUpperCase() == 'REMOTE') {
-                            nlapiLogExecution('AUDIT', 'typeof prodItemText', typeof prodItemText)
+                            nlapiLogExecution('DEBUG', 'typeof prodItemText', typeof prodItemText)
                             prodItemText = removeTrailingWhitespace(prodItemText) + ' ';
                             prodItemText = prodItemText.slice(0, -1) + ' (D: REM)'
                           }
                         }
                       }
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
@@ -637,11 +637,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      nlapiLogExecution('DEBUG', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -809,7 +809,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
 
 
                     }
@@ -849,11 +849,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('DEBUG', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -955,7 +955,7 @@ function getLatestFiles() {
                       itemText = itemText + product_type_lowercase;
 
                       prodItemText = firstResult[0].getText(itemText);
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
@@ -994,7 +994,7 @@ function getLatestFiles() {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
 
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
 
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
@@ -1098,7 +1098,7 @@ function getLatestFiles() {
                       itemText = itemText + product_type_lowercase;
 
                       prodItemText = firstResult[0].getText(itemText);
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                     }
                     if (!isNullorEmpty(prodItemText)) {
@@ -1136,7 +1136,7 @@ function getLatestFiles() {
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -1552,7 +1552,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
 
 
                     }
@@ -1591,11 +1591,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      // nlapiLogExecution('DEBUG', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -2210,7 +2210,7 @@ function getLatestFiles() {
 
                       prodItemText = firstResult[0].getText(itemText);
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
 
 
                     }
@@ -2235,7 +2235,7 @@ function getLatestFiles() {
                         }
                       }
 
-                      nlapiLogExecution('AUDIT', 'prodItemText', prodItemText);
+                      nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
 
                       var newFilterExpressionAPItem = [
                         ["custrecord_ap_item_default.custitem_price_plans", "anyof", "13", "14", "15", "16", "17", "18"], "AND",
@@ -2250,11 +2250,11 @@ function getLatestFiles() {
                       var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
 
-                      nlapiLogExecution('AUDIT', 'firstResultAPItem.length 1', firstResultAPItem.length)
+                      nlapiLogExecution('DEBUG', 'firstResultAPItem.length 1', firstResultAPItem.length)
                       if (firstResultAPItem.length > 0) {
                         var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                       }
-                      nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                      nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                       customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                     }
 
@@ -2413,7 +2413,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText);
@@ -2433,12 +2433,12 @@ function getLatestFiles() {
 
                         var firstResultAPItem = resultSetAPItem.getResults(0, 1);
 
-                        // nlapiLogExecution('AUDIT', 'firstResultAPItem.length 2', firstResultAPItem.length)
+                        // nlapiLogExecution('DEBUG', 'firstResultAPItem.length 2', firstResultAPItem.length)
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                           nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID);
                         }
-                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -2540,7 +2540,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                       }
                       // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
@@ -2561,7 +2561,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -2664,7 +2664,7 @@ function getLatestFiles() {
                         itemText = itemText + product_type_lowercase;
 
                         prodItemText = firstResult[0].getText(itemText);
-                        // nlapiLogExecution('AUDIT', 'prodItemText', prodItemText)
+                        // nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
 
                       }
                       nlapiLogExecution('DEBUG', 'prodItemText', prodItemText)
@@ -2685,7 +2685,7 @@ function getLatestFiles() {
                         if (firstResultAPItem.length > 0) {
                           var apItemInternalID = firstResultAPItem[0].getValue('internalid');
                         }
-                        // nlapiLogExecution('AUDIT', 'apItemInternalID', apItemInternalID)
+                        // nlapiLogExecution('DEBUG', 'apItemInternalID', apItemInternalID)
                         customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', apItemInternalID);
                       }
 
@@ -2989,7 +2989,7 @@ function getLatestFiles() {
 
         reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy,
           null);
-        nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
+        nlapiLogExecution('DEBUG', 'Reschedule Return', reschedule);
         if (reschedule == 'false') {
 
           return false;
