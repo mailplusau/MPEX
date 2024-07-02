@@ -166,34 +166,41 @@ function main() {
       "custrecord_receiver_state");
     var manualFeeToBeCharged = searchResult.getValue(
       "custrecord_manual_fee_charged");
+    var barcodeDeliverySpeed = searchResult.getValue(
+      "custrecord_delivery_speed");
 
     nlapiLogExecution('AUDIT', 'receiverSuburb', receiverSuburb);
     nlapiLogExecution('AUDIT', 'receiverPostcode', receiverPostcode);
 
-    // MP Express - Manual Usage - Contact List
-    var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
-      'customsearch_tge_ras_suburb_list');
-
-    var newFilters = new Array();
-    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
-      receiverSuburb);
-    newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
-      receiverPostcode);
-
-    tgeRASSuburbListSearch.addFilters(newFilters);
-
-    var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
 
     var teirType = 0;
     var currentBarcodeRASTier1 = false;
     var currentBarcodeRASTier2 = false;
     var currentBarcodeRASTier3 = false;
 
-    tgeRASSuburbListSearch.forEachResult(function (searchResult) {
+    if (barcodeDeliverySpeed == 2) {
+      // MP Express - Manual Usage - Contact List
+      var tgeRASSuburbListSearch = nlapiLoadSearch('customrecord_tge_ras_suburb_list',
+        'customsearch_tge_ras_suburb_list');
 
-      teirType = searchResult.getValue('custrecord_ras_teir');
-      return true;
-    });
+      var newFilters = new Array();
+      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_suburb', null, 'is',
+        receiverSuburb);
+      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_ras_postcode', null, 'is',
+        receiverPostcode);
+
+      tgeRASSuburbListSearch.addFilters(newFilters);
+
+      var tgeRASSuburbListSearch = tgeRASSuburbListSearch.runSearch();
+
+
+      tgeRASSuburbListSearch.forEachResult(function (searchResult) {
+
+        teirType = searchResult.getValue('custrecord_ras_teir');
+        return true;
+      });
+
+    }
 
     nlapiLogExecution('AUDIT', 'teirType', teirType);
 
