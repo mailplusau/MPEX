@@ -165,8 +165,13 @@ function getLatestFiles() {
 
           var zee_id = scans[y].zee_ns_id;
           var zeeIDCustomerRecord = null;
+          var customerFreeTrial = false;
           if (!isNullorEmpty(customer_id)) {
             zeeIDCustomerRecord = nlapiLoadRecord('customer', customer_id).getFieldValue('partner');
+            var customerStatus = nlapiLoadRecord('customer', customer_id).getFieldValue('entitystatus');
+            if (customerStatus == 32) {
+              customerFreeTrial == true;
+            }
           }
           nlapiLogExecution('DEBUG', 'customer_id', customer_id);
           nlapiLogExecution('DEBUG', 'zee_id before comparison', zee_id);
@@ -536,15 +541,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -655,6 +660,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -719,6 +728,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -750,15 +763,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -866,6 +879,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -895,15 +912,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -1007,6 +1024,10 @@ function getLatestFiles() {
                       'custrecord_cust_prod_stock_invoiceable', 2);
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_status', 4);
@@ -1039,15 +1060,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -1148,6 +1169,10 @@ function getLatestFiles() {
                       'custrecord_cust_prod_stock_invoiceable', 2);
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
+                  }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
                   }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_status', 5);
@@ -1187,6 +1212,10 @@ function getLatestFiles() {
                     'custrecord_cust_prod_stock_invoiceable', 2);
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
+                }
+                if (customerFreeTrial == true) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_invoiceable', 2);
                 }
 
                 var sourceId = getSourceID(source);
@@ -1422,6 +1451,9 @@ function getLatestFiles() {
                     'custrecord_ext_reference_id', reference_id);
                   customer_prod_stock.setFieldValue('custrecord_job_id',
                     job_id);
+                } else {
+                  customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                  customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
                 }
 
 
@@ -1493,15 +1525,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -1609,6 +1641,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -1673,6 +1709,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -1706,6 +1746,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                    }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_customer',
                       customer_id);
@@ -1736,6 +1780,10 @@ function getLatestFiles() {
                         'custrecord_cust_prod_stock_invoiceable', 2);
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
+                    }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
                     }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 4);
@@ -1769,6 +1817,10 @@ function getLatestFiles() {
                         'custrecord_cust_prod_stock_invoiceable', 2);
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
+                    }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
                     }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 5);
@@ -1808,6 +1860,10 @@ function getLatestFiles() {
                     'custrecord_cust_prod_stock_invoiceable', 2);
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
+                }
+                if (customerFreeTrial == true) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_invoiceable', 2);
                 }
 
                 var sourceId = getSourceID(source);
@@ -2041,6 +2097,9 @@ function getLatestFiles() {
                     'custrecord_ext_reference_id', reference_id);
                   customer_prod_stock.setFieldValue('custrecord_job_id',
                     job_id);
+                } else {
+                  customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                  customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
                 }
 
 
@@ -2138,6 +2197,10 @@ function getLatestFiles() {
                 customer_prod_stock.setFieldValue(
                   'custrecord_cust_prod_stock_prepaid', 1);
               }
+              if (customerFreeTrial == true) {
+                customer_prod_stock.setFieldValue(
+                  'custrecord_cust_prod_stock_invoiceable', 2);
+              }
 
               customer_prod_stock.setFieldValue('name', barcode);
 
@@ -2151,15 +2214,15 @@ function getLatestFiles() {
 
                   if (delivery_speed == 'Express' || isNullorEmpty(delivery_speed)) {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Standard') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   } else if (delivery_speed == 'Premium') {
                     var newFilterExpression = [
-                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                      ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                     ];
                   }
 
@@ -2268,6 +2331,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer', customer_id);
                   customer_prod_stock.setFieldValue(
@@ -2327,6 +2394,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
+                  if (customerFreeTrial == true) {
+                    customer_prod_stock.setFieldValue(
+                      'custrecord_cust_prod_stock_invoiceable', 2);
+                  }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer', customer_id);
                   customer_prod_stock.setFieldValue(
@@ -2355,15 +2426,15 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Premium') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     }
 
@@ -2451,6 +2522,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                    }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_customer',
                       customer_id);
@@ -2480,15 +2555,15 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Premium') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     }
 
@@ -2574,6 +2649,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                    }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 4);
                     customer_prod_stock.setFieldValue(
@@ -2605,15 +2684,15 @@ function getLatestFiles() {
 
                     if (delivery_speed == 'Express') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 2], 'AND', ["custrecord_prod_pricing_carrier_last_mil", "anyof", 2], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Standard') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 1], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     } else if (delivery_speed == 'Premium') {
                       var newFilterExpression = [
-                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2,6]]
+                        ["isinactive", "is", "F"], 'AND', ["custrecord_prod_pricing_customer", "anyof", customer_id], 'AND', ["custrecord_prod_pricing_delivery_speeds", "anyof", 4], 'AND', ["custrecord_prod_pricing_status", "anyof", [2, 6]]
                       ];
                     }
 
@@ -2698,6 +2777,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
+                    if (customerFreeTrial == true) {
+                      customer_prod_stock.setFieldValue(
+                        'custrecord_cust_prod_stock_invoiceable', 2);
+                    }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 5);
                     customer_prod_stock.setFieldValue(
@@ -2736,6 +2819,10 @@ function getLatestFiles() {
                     'custrecord_cust_prod_stock_invoiceable', 2);
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
+                }
+                if (customerFreeTrial == true) {
+                  customer_prod_stock.setFieldValue(
+                    'custrecord_cust_prod_stock_invoiceable', 2);
                 }
 
                 var sourceId = getSourceID(source);
@@ -2967,6 +3054,9 @@ function getLatestFiles() {
                     'custrecord_ext_reference_id', reference_id);
                   customer_prod_stock.setFieldValue('custrecord_job_id',
                     job_id);
+                } else {
+                  customer_prod_stock.setFieldValue('custrecord_lodgement_location', depot_id);
+                  customer_prod_stock.setFieldValue('custrecord_carrier_label', courier);
                 }
 
                 customer_prod_stock_id = nlapiSubmitRecord(
