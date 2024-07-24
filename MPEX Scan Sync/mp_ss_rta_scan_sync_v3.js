@@ -660,10 +660,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -728,10 +728,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -879,10 +879,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -1025,10 +1025,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_status', 4);
                   customer_prod_stock.setFieldValue(
@@ -1170,10 +1170,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_status', 5);
                   customer_prod_stock.setFieldValue(
@@ -1213,10 +1213,10 @@ function getLatestFiles() {
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
                 }
-                if (customerFreeTrial == true) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_invoiceable', 2);
-                }
+                // if (customerFreeTrial == true) {
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_prod_stock_invoiceable', 2);
+                // }
 
                 var sourceId = getSourceID(source);
 
@@ -1641,10 +1641,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -1709,10 +1709,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer',
                     customer_id);
@@ -1746,10 +1746,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_customer',
                       customer_id);
@@ -1781,10 +1781,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 4);
                     customer_prod_stock.setFieldValue(
@@ -1818,10 +1818,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 5);
                     customer_prod_stock.setFieldValue(
@@ -1861,10 +1861,10 @@ function getLatestFiles() {
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
                 }
-                if (customerFreeTrial == true) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_invoiceable', 2);
-                }
+                // if (customerFreeTrial == true) {
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_prod_stock_invoiceable', 2);
+                // }
 
                 var sourceId = getSourceID(source);
 
@@ -2197,10 +2197,10 @@ function getLatestFiles() {
                 customer_prod_stock.setFieldValue(
                   'custrecord_cust_prod_stock_prepaid', 1);
               }
-              if (customerFreeTrial == true) {
-                customer_prod_stock.setFieldValue(
-                  'custrecord_cust_prod_stock_invoiceable', 2);
-              }
+              // if (customerFreeTrial == true) {
+              //   customer_prod_stock.setFieldValue(
+              //     'custrecord_cust_prod_stock_invoiceable', 2);
+              // }
 
               customer_prod_stock.setFieldValue('name', barcode);
 
@@ -2331,10 +2331,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer', customer_id);
                   customer_prod_stock.setFieldValue(
@@ -2394,10 +2394,10 @@ function getLatestFiles() {
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_prepaid', 1);
                   }
-                  if (customerFreeTrial == true) {
-                    customer_prod_stock.setFieldValue(
-                      'custrecord_cust_prod_stock_invoiceable', 2);
-                  }
+                  // if (customerFreeTrial == true) {
+                  //   customer_prod_stock.setFieldValue(
+                  //     'custrecord_cust_prod_stock_invoiceable', 2);
+                  // }
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_customer', customer_id);
                   customer_prod_stock.setFieldValue(
@@ -2522,10 +2522,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_customer',
                       customer_id);
@@ -2649,10 +2649,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 4);
                     customer_prod_stock.setFieldValue(
@@ -2777,10 +2777,10 @@ function getLatestFiles() {
                       customer_prod_stock.setFieldValue(
                         'custrecord_cust_prod_stock_prepaid', 1);
                     }
-                    if (customerFreeTrial == true) {
-                      customer_prod_stock.setFieldValue(
-                        'custrecord_cust_prod_stock_invoiceable', 2);
-                    }
+                    // if (customerFreeTrial == true) {
+                    //   customer_prod_stock.setFieldValue(
+                    //     'custrecord_cust_prod_stock_invoiceable', 2);
+                    // }
                     customer_prod_stock.setFieldValue(
                       'custrecord_cust_prod_stock_status', 5);
                     customer_prod_stock.setFieldValue(
@@ -2820,10 +2820,10 @@ function getLatestFiles() {
                   customer_prod_stock.setFieldValue(
                     'custrecord_cust_prod_stock_prepaid', 1);
                 }
-                if (customerFreeTrial == true) {
-                  customer_prod_stock.setFieldValue(
-                    'custrecord_cust_prod_stock_invoiceable', 2);
-                }
+                // if (customerFreeTrial == true) {
+                //   customer_prod_stock.setFieldValue(
+                //     'custrecord_cust_prod_stock_invoiceable', 2);
+                // }
 
                 var sourceId = getSourceID(source);
 
