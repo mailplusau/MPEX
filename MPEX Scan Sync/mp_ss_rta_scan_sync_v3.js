@@ -1958,10 +1958,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										customer_prod_stock.setFieldValue(
-											"custrecord_delivery_speed",
-											2
-										);
+										
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
@@ -3014,10 +3011,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										customer_prod_stock.setFieldValue(
-											"custrecord_delivery_speed",
-											2
-										);
+										
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
@@ -4669,10 +4663,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										customer_prod_stock.setFieldValue(
-											"custrecord_delivery_speed",
-											2
-										);
+										
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
