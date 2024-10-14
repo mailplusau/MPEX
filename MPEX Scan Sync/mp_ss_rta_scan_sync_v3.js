@@ -107,6 +107,31 @@ function getLatestFiles() {
 				var starTrack_security_surcharge =
 					barcodes[x].package_startrack_security_surcharge;
 				var depot_id = barcodes[x].depot_id;
+				var starTrack_manifest_date_time =
+					barcodes[x].package_startrack_adhoc_date;
+				var starTrack_booking_id =
+					barcodes[x].package_startrack_adhoc_booking_id;
+
+				var starTrack_manifest_time = null;
+				if (!isNullorEmpty(starTrack_manifest_date_time)) {
+					var starTrack_manifest_date_time_array =
+						starTrack_manifest_date_time.split(" ");
+					starTrack_manifest_time = starTrack_manifest_date_time_array[1];
+					starTrack_manifest_time = onTimeChange(starTrack_manifest_time);
+				}
+
+				var starTrack_manifest_date = null;
+				if (!isNullorEmpty(starTrack_manifest_date_time)) {
+					starTrack_manifest_date =
+						starTrack_manifest_date_time_array[0].split("-");
+					starTrack_manifest_date = nlapiStringToDate(
+						starTrack_manifest_date[2] +
+							"/" +
+							starTrack_manifest_date[1] +
+							"/" +
+							starTrack_manifest_date[0]
+					);
+				}
 
 				if ("order_total_price" in barcodes[x]) {
 					nlapiLogExecution(
@@ -529,6 +554,18 @@ function getLatestFiles() {
 						customer_prod_stock.setFieldValue(
 							"custrecord_api_price",
 							starTrack_api_price
+						);
+						customer_prod_stock.setFieldValue(
+							"custrecord_st_manifest_date",
+							starTrack_manifest_date
+						);
+						customer_prod_stock.setFieldValue(
+							"custrecord_st_manifest_time",
+							starTrack_manifest_time
+						);
+						customer_prod_stock.setFieldValue(
+							"custrecord_st_booking_id",
+							starTrack_booking_id
 						);
 						customer_prod_stock.setFieldValue(
 							"custrecord_st_total_cost",
@@ -1958,7 +1995,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										
+
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
@@ -3011,7 +3048,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										
+
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
@@ -3317,6 +3354,18 @@ function getLatestFiles() {
 							customer_prod_stock.setFieldValue(
 								"custrecord_api_price",
 								starTrack_api_price
+							);
+							customer_prod_stock.setFieldValue(
+								"custrecord_st_manifest_date",
+								starTrack_manifest_date
+							);
+							customer_prod_stock.setFieldValue(
+								"custrecord_st_manifest_time",
+								starTrack_manifest_time
+							);
+							customer_prod_stock.setFieldValue(
+								"custrecord_st_booking_id",
+								starTrack_booking_id
 							);
 							customer_prod_stock.setFieldValue(
 								"custrecord_st_total_cost",
@@ -4663,7 +4712,7 @@ function getLatestFiles() {
 											"custrecord_order_date",
 											order_date
 										);
-										
+
 										customer_prod_stock.setFieldValue(
 											"custrecord_lodgement_location",
 											depot_id
