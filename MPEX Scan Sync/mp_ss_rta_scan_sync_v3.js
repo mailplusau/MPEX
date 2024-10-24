@@ -107,29 +107,51 @@ function getLatestFiles() {
 				var starTrack_security_surcharge =
 					barcodes[x].package_startrack_security_surcharge;
 				var depot_id = barcodes[x].depot_id;
-				var starTrack_manifest_date_time =
+				var starTrack_adhoc_api_date_time =
 					barcodes[x].package_startrack_adhoc_date;
 				var starTrack_booking_id =
 					barcodes[x].package_startrack_adhoc_booking_id;
+				var barcode_manifested_date_time = barcodes[x].manifested_at;
 
-				var starTrack_manifest_time = null;
-				if (!isNullorEmpty(starTrack_manifest_date_time)) {
-					var starTrack_manifest_date_time_array =
-						starTrack_manifest_date_time.split(" ");
-					starTrack_manifest_time = starTrack_manifest_date_time_array[1];
-					starTrack_manifest_time = onTimeChange(starTrack_manifest_time);
+				var manifested_time = null;
+				if (!isNullorEmpty(barcode_manifested_date_time)) {
+					var barcode_manifested_date_time_array =
+						barcode_manifested_date_time.split(" ");
+					manifested_time = barcode_manifested_date_time_array[1];
+					manifested_time = onTimeChange(manifested_time);
 				}
 
-				var starTrack_manifest_date = null;
-				if (!isNullorEmpty(starTrack_manifest_date_time)) {
-					starTrack_manifest_date =
-						starTrack_manifest_date_time_array[0].split("-");
-					starTrack_manifest_date = nlapiStringToDate(
-						starTrack_manifest_date[2] +
+				var manifested_date = null;
+				if (!isNullorEmpty(barcode_manifested_date_time)) {
+					manifested_date_date =
+						barcode_manifested_date_time_array[0].split("/");
+					manifested_date_date = nlapiStringToDate(
+						manifested_date_date[0] +
 							"/" +
-							starTrack_manifest_date[1] +
+							manifested_date_date[1] +
 							"/" +
-							starTrack_manifest_date[0]
+							manifested_date_date[2]
+					);
+				}
+
+				var starTrack_adhoc_api_time = null;
+				if (!isNullorEmpty(starTrack_adhoc_api_date_time)) {
+					var starTrack_adhoc_api_date_time_array =
+						starTrack_adhoc_api_date_time.split(" ");
+					starTrack_adhoc_api_time = starTrack_adhoc_api_date_time_array[1];
+					starTrack_adhoc_api_time = onTimeChange(starTrack_adhoc_api_time);
+				}
+
+				var starTrack_adhoc_api_date = null;
+				if (!isNullorEmpty(starTrack_adhoc_api_date_time)) {
+					starTrack_adhoc_api_date =
+						starTrack_adhoc_api_date_time_array[0].split("-");
+					starTrack_adhoc_api_date = nlapiStringToDate(
+						starTrack_adhoc_api_date[2] +
+							"/" +
+							starTrack_adhoc_api_date[1] +
+							"/" +
+							starTrack_adhoc_api_date[0]
 					);
 				}
 
@@ -559,12 +581,20 @@ function getLatestFiles() {
 							starTrack_api_price
 						);
 						customer_prod_stock.setFieldValue(
-							"custrecord_st_manifest_date",
-							starTrack_manifest_date
+							"custrecord_manifest_time",
+							manifested_time
 						);
 						customer_prod_stock.setFieldValue(
-							"custrecord_st_manifest_time",
-							starTrack_manifest_time
+							"custrecord_manifest_date",
+							manifested_date
+						);
+						customer_prod_stock.setFieldValue(
+							"custrecord_st_adhoc_api_date",
+							starTrack_adhoc_api_date
+						);
+						customer_prod_stock.setFieldValue(
+							"custrecord_st_adhoc_api_time",
+							starTrack_adhoc_api_time
 						);
 						customer_prod_stock.setFieldValue(
 							"custrecord_st_booking_id",
@@ -3359,12 +3389,20 @@ function getLatestFiles() {
 								starTrack_api_price
 							);
 							customer_prod_stock.setFieldValue(
-								"custrecord_st_manifest_date",
-								starTrack_manifest_date
+								"custrecord_manifest_time",
+								manifested_time
 							);
 							customer_prod_stock.setFieldValue(
-								"custrecord_st_manifest_time",
-								starTrack_manifest_time
+								"custrecord_manifest_date",
+								manifested_date
+							);
+							customer_prod_stock.setFieldValue(
+								"custrecord_st_adhoc_api_date",
+								starTrack_adhoc_api_date
+							);
+							customer_prod_stock.setFieldValue(
+								"custrecord_st_adhoc_api_time",
+								starTrack_adhoc_api_time
 							);
 							customer_prod_stock.setFieldValue(
 								"custrecord_st_booking_id",
