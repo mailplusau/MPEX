@@ -114,24 +114,36 @@ function getLatestFiles() {
 				var barcode_manifested_date_time = barcodes[x].manifested_at;
 
 				var manifested_time = null;
+				var manifested_date = null;
 				if (!isNullorEmpty(barcode_manifested_date_time)) {
 					var barcode_manifested_date_time_array =
 						barcode_manifested_date_time.split(" ");
+
+					nlapiLogExecution(
+						"AUDIT",
+						"scans > inside manifested date time",
+						JSON.stringify(scans)
+					);
+					nlapiLogExecution(
+						"AUDIT",
+						"barcode_manifested_date_time_array[0]",
+						barcode_manifested_date_time_array[0]
+					);
+					nlapiLogExecution(
+						"AUDIT",
+						"barcode_manifested_date_time_array[1]",
+						barcode_manifested_date_time_array[1]
+					);
+
 					manifested_time = barcode_manifested_date_time_array[1];
 					manifested_time = onTimeChange(manifested_time);
-				}
 
-				var manifested_date = null;
-				if (!isNullorEmpty(barcode_manifested_date_time)) {
-					manifested_date_date =
-						barcode_manifested_date_time_array[0].split("/");
-					manifested_date_date = nlapiStringToDate(
-						manifested_date_date[0] +
-							"/" +
-							manifested_date_date[1] +
-							"/" +
-							manifested_date_date[2]
-					);
+					nlapiLogExecution("AUDIT", "manifested_time", manifested_time);
+
+					manifested_date = barcode_manifested_date_time_array[0].split("/");
+					manifested_date = barcode_manifested_date_time_array[0];
+
+					nlapiLogExecution("AUDIT", "manifested_date", manifested_date);
 				}
 
 				var starTrack_adhoc_api_time = null;
