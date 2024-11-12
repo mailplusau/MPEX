@@ -646,7 +646,7 @@ function getLatestFiles() {
 							customer_prod_stock.setFieldValue("custrecord_delivery_speed", 2);
 						} else if (delivery_speed == "Standard") {
 							customer_prod_stock.setFieldValue("custrecord_delivery_speed", 1);
-						} else if (delivery_speed == "Premium") {
+						} else if (delivery_speed == "Premium Express") {
 							customer_prod_stock.setFieldValue("custrecord_delivery_speed", 4);
 						}
 
@@ -800,7 +800,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -887,7 +887,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														nlapiLogExecution(
@@ -1155,7 +1155,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -1242,7 +1242,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														prodItemText =
@@ -1387,7 +1387,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -1473,7 +1473,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														prodItemText =
@@ -1619,7 +1619,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -1705,7 +1705,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														prodItemText =
@@ -2397,7 +2397,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -2483,7 +2483,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														prodItemText =
@@ -3463,7 +3463,7 @@ function getLatestFiles() {
 									"custrecord_delivery_speed",
 									1
 								);
-							} else if (delivery_speed == "Premium") {
+							} else if (delivery_speed == "Premium Express") {
 								customer_prod_stock.setFieldValue(
 									"custrecord_delivery_speed",
 									4
@@ -3602,7 +3602,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -3688,7 +3688,7 @@ function getLatestFiles() {
 															prodItemText.slice(0, -1) + ", D:RWT)";
 													}
 												}
-											} else if (delivery_speed == "Premium") {
+											} else if (delivery_speed == "Premium Express") {
 												if (!isNullorEmpty(delivery_zone)) {
 													if (delivery_zone.toUpperCase() == "REMOTE") {
 														prodItemText =
@@ -3949,7 +3949,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -4163,7 +4163,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
@@ -4371,7 +4371,7 @@ function getLatestFiles() {
 											"AND",
 											["custrecord_prod_pricing_status", "anyof", [2, 6]],
 										];
-									} else if (delivery_speed == "Premium") {
+									} else if (delivery_speed == "Premium Express") {
 										var newFilterExpression = [
 											["isinactive", "is", "F"],
 											"AND",
