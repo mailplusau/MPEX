@@ -29,7 +29,7 @@ function getLatestFiles() {
 	var todayDate = new Date();
 
 	var jsonName = formatDate(todayDate);
-	//var jsonName = '09/10/2024';
+	var jsonName = "13/01/2025";
 
 	var scanJSONSearch = nlapiLoadSearch(
 		"customrecord_scan_json",
@@ -312,7 +312,13 @@ function getLatestFiles() {
 						operator_id = 1167;
 					}
 
-					if (operator_id == 837 || operator_id == 731 || operator_id == 930) {
+					if (
+						operator_id == 837 ||
+						operator_id == 731 ||
+						operator_id == 930 ||
+						operator_id == 936 ||
+						operator_id == 1049
+					) {
 						operator_id = 941;
 					}
 
@@ -363,6 +369,9 @@ function getLatestFiles() {
 					}
 					if (operator_id == 1317) {
 						operator_id = 468;
+					}
+					if (operator_id == 1165) {
+						operator_id = 1343;
 					}
 
 					var updated_at = scans[y].updated_at;
