@@ -29,7 +29,7 @@ function getLatestFiles() {
 	var todayDate = new Date();
 
 	var jsonName = formatDate(todayDate);
-	var jsonName = "13/01/2025";
+	// var jsonName = "13/01/2025";
 
 	var scanJSONSearch = nlapiLoadSearch(
 		"customrecord_scan_json",
