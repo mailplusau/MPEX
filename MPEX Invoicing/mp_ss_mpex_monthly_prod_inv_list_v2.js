@@ -40,10 +40,10 @@ function rescheduleScript(script_deployment_1, script_deployment_2, params) {
 		nlapiLogExecution(
 			"AUDIT",
 			"SWITCH from " +
-				current_script_deployment +
-				" --> " +
-				next_script_deployment +
-				": Usage",
+			current_script_deployment +
+			" --> " +
+			next_script_deployment +
+			": Usage",
 			10000 - ctx.getRemainingUsage()
 		);
 		return false;
@@ -311,16 +311,16 @@ function main(type) {
 							nlapiLoadRecord("partner", 435).getFieldValue("location")
 						);
 						//recInvoice.setFieldValue('trandate', tranDate);
-						recInvoice.setFieldValue("trandate", "31/01/2025");
+						recInvoice.setFieldValue("trandate", "28/02/2025");
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_from",
-							"01/01/2025"
+							"01/02/2025"
 						);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_to",
-							"31/01/2025"
+							"28/02/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
@@ -421,7 +421,7 @@ function main(type) {
 						//--------------- Apply AP Item Pricing Algorithm ---------------//
 						if (
 							poSearch[0].getValue("custrecord_ap_item_pricing_algorithm") ==
-								1 ||
+							1 ||
 							isNullorEmpty(
 								poSearch[0].getValue("custrecord_ap_item_pricing_algorithm")
 							)
@@ -818,16 +818,16 @@ function main(type) {
 							nlapiLoadRecord("partner", 435).getFieldValue("location")
 						);
 						//recInvoice.setFieldValue('trandate', tranDate);
-						recInvoice.setFieldValue("trandate", "31/01/2025");
+						recInvoice.setFieldValue("trandate", "28/02/2025");
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_from",
-							"01/01/2025"
+							"01/02/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_to",
-							"31/01/2025"
+							"28/02/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
@@ -967,7 +967,7 @@ function main(type) {
 							//--------------- Apply AP Item Pricing Algorithm ---------------//
 							if (
 								poSearch[0].getValue("custrecord_ap_item_pricing_algorithm") ==
-									1 ||
+								1 ||
 								isNullorEmpty(
 									poSearch[0].getValue("custrecord_ap_item_pricing_algorithm")
 								)
@@ -1242,15 +1242,15 @@ function main(type) {
 			nlapiLogExecution(
 				"AUDIT",
 				"Loop: " +
-					invCount +
-					"." +
-					n +
-					" | LineID: " +
-					searchResults[n].getValue(
-						"internalid",
-						"CUSTRECORD_AP_PRODUCT_ORDER",
-						"GROUP"
-					),
+				invCount +
+				"." +
+				n +
+				" | LineID: " +
+				searchResults[n].getValue(
+					"internalid",
+					"CUSTRECORD_AP_PRODUCT_ORDER",
+					"GROUP"
+				),
 				usage_per_loop - ctx.getRemainingUsage()
 			);
 			nlapiLogExecution(
