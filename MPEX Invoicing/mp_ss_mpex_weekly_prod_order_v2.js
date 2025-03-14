@@ -26,7 +26,6 @@ function main() {
    * MPEX - To Create Product Order (For Weekly Invoicing)
    *
    */
-  //! Search has been updated to inlcude only test barcodes and for customer 71177505 Demo Customer - Lee Russell - 2025-03-12T21:28:29.217Z
   var createProdOrderSearch = nlapiLoadSearch(
     'customrecord_customer_product_stock',
     'customsearch_mpex_weekly_prod_order');

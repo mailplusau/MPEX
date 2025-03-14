@@ -155,6 +155,15 @@ function main() {
       "custrecord_receiver_postcode");
     var receiverState = searchResult.getValue(
       "custrecord_receiver_state");
+
+    //Sender Details
+    var senderSuburb = searchResult.getValue(
+      "custrecord_sender_suburb");
+    var senderPostcode = searchResult.getValue(
+      "custrecord_sender_post_code");
+    var senderState = searchResult.getValue(
+      "custrecord_sender_state");
+
     var manualFeeToBeCharged = searchResult.getValue(
       "custrecord_manual_fee_charged");
 
@@ -169,6 +178,9 @@ function main() {
     var currentBarcodeRASTier1 = false;
     var currentBarcodeRASTier2 = false;
     var currentBarcodeRASTier3 = false;
+
+    var tgeReceiverTempLevyApplicable = false;
+    var tgeSenderTempLevyApplicable = false;
 
     if (barcodeDeliverySpeed == 2) {
       // MP Express - Manual Usage - Contact List
@@ -192,6 +204,49 @@ function main() {
         return true;
       });
 
+      //Check if receiver suburb/state/postcode is in the TGE Temp Levy Suburb List
+      //Search Name: TGE Temperory Levy - Suburb List Search
+      var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
+        'customsearch_tge_temp_levy_suburb_list');
+
+      var newFilters = new Array();
+      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
+        receiverSuburb);
+      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
+        receiverState);
+      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
+        receiverPostcode);
+
+      tgeTempLevySuburbListSearch.addFilters(newFilters);
+
+      var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
+      var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
+      if (result.length != 0) {
+        tgeReceiverTempLevyApplicable = true;
+      }
+
+      if (tgeReceiverTempLevyApplicable == false) {
+        //Check if sender suburb/state/postcode is in the TGE Temp Levy Suburb List
+        //Search Name: TGE Temperory Levy - Suburb List Search
+        var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
+          'customsearch_tge_temp_levy_suburb_list');
+
+        var newFilters = new Array();
+        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
+          senderSuburb);
+        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
+          senderState);
+        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
+          senderPostcode);
+
+        tgeTempLevySuburbListSearch.addFilters(newFilters);
+
+        var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
+        var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
+        if (result.length != 0) {
+          tgeReceiverTempLevyApplicable = true;
+        }
+      }
     }
 
     if (teirType == 1) {
@@ -395,7 +450,19 @@ function main() {
         }
       }
 
-      nlapiSubmitRecord(ap_stock_line_item);
+      var apLineItemRecordID = nlapiSubmitRecord(ap_stock_line_item);
+
+      //Update the TGE Temp Levy field in the AP Line Item record
+      if (tgeReceiverTempLevyApplicable == true || tgeSenderTempLevyApplicable == true) {
+        var apLineItemRecord = nlapiLoadRecord(
+          'customrecord_ap_stock_line_item', apLineItemRecordID);
+        var expectedRevenue = apLineItemRecord.getFieldValue(
+          'custrecord_ap_line_item_exp_revenue');
+        //Calculate the 25% TGE Temp Levy
+        var tgeTempLevy = (expectedRevenue * 0.25).toFixed(2);
+        apLineItemRecord.setFieldValue('custrecord_tge_temp_levy', tgeTempLevy);
+        nlapiSubmitRecord(apLineItemRecord);
+      }
 
       nlapiLogExecution('DEBUG', 'cust_prod_stock_id', cust_prod_stock_id);
 
@@ -469,7 +536,19 @@ function main() {
         }
       }
 
-      nlapiSubmitRecord(ap_stock_line_item);
+      var apLineItemRecordID = nlapiSubmitRecord(ap_stock_line_item);
+
+      //Update the TGE Temp Levy field in the AP Line Item record
+      if (tgeReceiverTempLevyApplicable == true || tgeSenderTempLevyApplicable == true) {
+        var apLineItemRecord = nlapiLoadRecord(
+          'customrecord_ap_stock_line_item', apLineItemRecordID);
+        var expectedRevenue = apLineItemRecord.getFieldValue(
+          'custrecord_ap_line_item_exp_revenue');
+        //Calculate the 25% TGE Temp Levy
+        var tgeTempLevy = (expectedRevenue * 0.25).toFixed(2);
+        apLineItemRecord.setFieldValue('custrecord_tge_temp_levy', tgeTempLevy);
+        nlapiSubmitRecord(apLineItemRecord);
+      }
 
 
       /**

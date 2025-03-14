@@ -70,6 +70,8 @@ function main(type) {
 	var oldRASTier3Count = 0;
 	var oldManualBarcodeCount = 0;
 
+	var totalTGETempLevyPerInvoice = 0;
+
 	var invoiceId = null;
 
 	var item_rates = ["a", "b", "c", "d", "e", "f", "g"]; // make sure to check the search
@@ -733,6 +735,16 @@ function main(type) {
 							recInvoice.commitLineItem("item");
 						}
 
+						//Create Invoice Line Item for TGE Temp Levy if applicable
+						if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
+							recInvoice.selectNewLineItem('item');
+							recInvoice.setCurrentLineItemValue('item', 'item', 10908);
+							recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
+							recInvoice.setCurrentLineItemValue('item', 'quantity',
+								1);
+							recInvoice.commitLineItem('item');
+						}
+
 						invoiceId = nlapiSubmitRecord(recInvoice);
 						nlapiLogExecution(
 							"AUDIT",
@@ -763,8 +775,14 @@ function main(type) {
 
 						fuel_surcharge_to_be_applied = false;
 						manual_surcharge_to_be_applied = false;
-
 						digital_barcode_used_prod_order = false;
+
+						oldRASTier1Count = 0;
+						oldRASTier2Count = 0;
+						oldRASTier3Count = 0;
+						oldManualBarcodeCount = 0;
+
+						totalTGETempLevyPerInvoice = 0;
 
 						if (fuel_surcharge == 1 || fuel_surcharge == "1") {
 							fuel_surcharge_to_be_applied = true;
@@ -883,6 +901,11 @@ function main(type) {
 							"SUM"
 						)
 					);
+					var tgeTempLevyPerBarcode = searchResults[n].getValue(
+						'custrecord_tge_temp_levy',
+						'CUSTRECORD_AP_PRODUCT_ORDER', "SUM");
+
+					totalTGETempLevyPerInvoice += parseFloat(tgeTempLevyPerBarcode);
 
 					if (n == 0 || (total_line_item_qty == 0 && old_line_items == null)) {
 						old_line_items = line_item;
@@ -1530,6 +1553,16 @@ function main(type) {
 			recInvoice.setCurrentLineItemValue("item", "item", 10784);
 			recInvoice.setCurrentLineItemValue("item", "quantity", oldRASTier3Count);
 			recInvoice.commitLineItem("item");
+		}
+
+		//Create Invoice Line Item for TGE Temp Levy if applicable
+		if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
+			recInvoice.selectNewLineItem('item');
+			recInvoice.setCurrentLineItemValue('item', 'item', 10908);
+			recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
+			recInvoice.setCurrentLineItemValue('item', 'quantity',
+				1);
+			recInvoice.commitLineItem('item');
 		}
 
 		invoiceId = nlapiSubmitRecord(recInvoice);
