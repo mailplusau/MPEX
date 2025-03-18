@@ -214,47 +214,47 @@ function main() {
 
       //Check if receiver suburb/state/postcode is in the TGE Temp Levy Suburb List
       //Search Name: TGE Temperory Levy - Suburb List Search
-      var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
-        'customsearch_tge_temp_levy_suburb_list');
+      // var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
+      //   'customsearch_tge_temp_levy_suburb_list');
 
-      var newFilters = new Array();
-      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
-        receiverSuburb);
-      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
-        receiverState);
-      newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
-        receiverPostcode);
+      // var newFilters = new Array();
+      // newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
+      //   receiverSuburb);
+      // newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
+      //   receiverState);
+      // newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
+      //   receiverPostcode);
 
-      tgeTempLevySuburbListSearch.addFilters(newFilters);
+      // tgeTempLevySuburbListSearch.addFilters(newFilters);
 
-      var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
-      var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
-      if (result.length != 0) {
-        tgeReceiverTempLevyApplicable = true;
-      }
+      // var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
+      // var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
+      // if (result.length != 0) {
+      //   tgeReceiverTempLevyApplicable = true;
+      // }
 
-      if (tgeReceiverTempLevyApplicable == false) {
-        //Check if sender suburb/state/postcode is in the TGE Temp Levy Suburb List
-        //Search Name: TGE Temperory Levy - Suburb List Search
-        var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
-          'customsearch_tge_temp_levy_suburb_list');
+      // if (tgeReceiverTempLevyApplicable == false) {
+      //   //Check if sender suburb/state/postcode is in the TGE Temp Levy Suburb List
+      //   //Search Name: TGE Temperory Levy - Suburb List Search
+      //   var tgeTempLevySuburbListSearch = nlapiLoadSearch('customrecord_tge_temp_levy_suburb_list',
+      //     'customsearch_tge_temp_levy_suburb_list');
 
-        var newFilters = new Array();
-        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
-          senderSuburb);
-        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
-          senderState);
-        newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
-          senderPostcode);
+      //   var newFilters = new Array();
+      //   newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_suburb', null, 'is',
+      //     senderSuburb);
+      //   newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_temp_levy_state', null, 'is',
+      //     senderState);
+      //   newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_tge_levy_postcode', null, 'is',
+      //     senderPostcode);
 
-        tgeTempLevySuburbListSearch.addFilters(newFilters);
+      //   tgeTempLevySuburbListSearch.addFilters(newFilters);
 
-        var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
-        var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
-        if (result.length != 0) {
-          tgeReceiverTempLevyApplicable = true;
-        }
-      }
+      //   var tgeTempLevySuburbListSearchResult = tgeTempLevySuburbListSearch.runSearch();
+      //   var result = tgeTempLevySuburbListSearchResult.getResults(0, 1);
+      //   if (result.length != 0) {
+      //     tgeReceiverTempLevyApplicable = true;
+      //   }
+      // }
     }
 
     nlapiLogExecution('AUDIT', 'teirType', teirType);

@@ -453,16 +453,16 @@ function main() {
       var apLineItemRecordID = nlapiSubmitRecord(ap_stock_line_item);
 
       //Update the TGE Temp Levy field in the AP Line Item record
-      if (tgeReceiverTempLevyApplicable == true || tgeSenderTempLevyApplicable == true) {
-        var apLineItemRecord = nlapiLoadRecord(
-          'customrecord_ap_stock_line_item', apLineItemRecordID);
-        var expectedRevenue = apLineItemRecord.getFieldValue(
-          'custrecord_ap_line_item_exp_revenue');
-        //Calculate the 25% TGE Temp Levy
-        var tgeTempLevy = (expectedRevenue * 0.25).toFixed(2);
-        apLineItemRecord.setFieldValue('custrecord_tge_temp_levy', tgeTempLevy);
-        nlapiSubmitRecord(apLineItemRecord);
-      }
+      // if (tgeReceiverTempLevyApplicable == true || tgeSenderTempLevyApplicable == true) {
+      //   var apLineItemRecord = nlapiLoadRecord(
+      //     'customrecord_ap_stock_line_item', apLineItemRecordID);
+      //   var expectedRevenue = apLineItemRecord.getFieldValue(
+      //     'custrecord_ap_line_item_exp_revenue');
+      //   //Calculate the 25% TGE Temp Levy
+      //   var tgeTempLevy = (expectedRevenue * 0.25).toFixed(2);
+      //   apLineItemRecord.setFieldValue('custrecord_tge_temp_levy', tgeTempLevy);
+      //   nlapiSubmitRecord(apLineItemRecord);
+      // }
 
       nlapiLogExecution('DEBUG', 'cust_prod_stock_id', cust_prod_stock_id);
 
