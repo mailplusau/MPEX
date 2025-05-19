@@ -1867,10 +1867,10 @@ function getLatestFiles() {
 										1
 									);
 								}
-								// if (customerFreeTrial == true) {
-								//   customer_prod_stock.setFieldValue(
-								//     'custrecord_cust_prod_stock_invoiceable', 2);
-								// }
+								if (mpProd1stBarcodeUsed == true) {
+									customer_prod_stock.setFieldValue(
+										'custrecord_cust_prod_stock_invoiceable', 2);
+								}
 
 								var sourceId = getSourceID(source);
 
@@ -3588,10 +3588,10 @@ function getLatestFiles() {
 									1
 								);
 							}
-							// if (customerFreeTrial == true) {
-							//   customer_prod_stock.setFieldValue(
-							//     'custrecord_cust_prod_stock_invoiceable', 2);
-							// }
+							if (mpProd1stBarcodeUsed == true) {
+								customer_prod_stock.setFieldValue(
+									'custrecord_cust_prod_stock_invoiceable', 2);
+							}
 
 							customer_prod_stock.setFieldValue("name", barcode);
 
@@ -3801,10 +3801,10 @@ function getLatestFiles() {
 											1
 										);
 									}
-									// if (customerFreeTrial == true) {
-									//   customer_prod_stock.setFieldValue(
-									//     'custrecord_cust_prod_stock_invoiceable', 2);
-									// }
+									if (mpProd1stBarcodeUsed == true) {
+										customer_prod_stock.setFieldValue(
+											'custrecord_cust_prod_stock_invoiceable', 2);
+									}
 									customer_prod_stock.setFieldValue(
 										"custrecord_cust_prod_stock_customer",
 										customer_id
@@ -4607,10 +4607,10 @@ function getLatestFiles() {
 										1
 									);
 								}
-								// if (customerFreeTrial == true) {
-								//   customer_prod_stock.setFieldValue(
-								//     'custrecord_cust_prod_stock_invoiceable', 2);
-								// }
+								if (mpProd1stBarcodeUsed == true) {
+									customer_prod_stock.setFieldValue(
+										'custrecord_cust_prod_stock_invoiceable', 2);
+								}
 
 								var sourceId = getSourceID(source);
 
