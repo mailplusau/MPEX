@@ -160,10 +160,10 @@ function getLatestFiles() {
 						starTrack_adhoc_api_date_time_array[0].split("-");
 					starTrack_adhoc_api_date = nlapiStringToDate(
 						starTrack_adhoc_api_date[2] +
-							"/" +
-							starTrack_adhoc_api_date[1] +
-							"/" +
-							starTrack_adhoc_api_date[0]
+						"/" +
+						starTrack_adhoc_api_date[1] +
+						"/" +
+						starTrack_adhoc_api_date[0]
 					);
 				}
 
@@ -238,22 +238,38 @@ function getLatestFiles() {
 					var connote_number = scans[y].connote_number;
 					var product_type = scans[y].product_type;
 					var customer_id = scans[y].customer_ns_id;
+					var customerRecord = null;
+					var mpProd1stBarcodeUsed = false;
 
 					var zee_id = scans[y].zee_ns_id;
 					var zeeIDCustomerRecord = null;
 					var customerFreeTrial = false;
 					if (!isNullorEmpty(customer_id)) {
-						zeeIDCustomerRecord = nlapiLoadRecord(
-							"customer",
-							customer_id
-						).getFieldValue("partner");
-						var customerStatus = nlapiLoadRecord(
-							"customer",
-							customer_id
-						).getFieldValue("entitystatus");
+
+						customerRecord = nlapiLoadRecord("customer", customer_id);
+						var zeeIDCustomerRecord = customerRecord.getFieldValue("partner");
+						var customerStatus = customerRecord.getFieldValue("entitystatus");
+						var customer1stBarcodeUsed = customerRecord.getFieldValue('custentity_mp_prod_1st_barcode_used');
+
+						// zeeIDCustomerRecord = nlapiLoadRecord(
+						// 	"customer",
+						// 	customer_id
+						// ).getFieldValue("partner");
+						// var customerStatus = nlapiLoadRecord(
+						// 	"customer",
+						// 	customer_id
+						// ).getFieldValue("entitystatus");
+						// var customer1stBarcodeUsed = nlapiLoadRecord(
+						// 	"customer",
+						// 	customer_id
+						// ).getFieldValue("custentity_mp_prod_1st_barcode_used");
 						if (customerStatus == 32) {
 							customerFreeTrial == true;
 						}
+						if (isNullorEmpty(customer1stBarcodeUsed) && customerStatus == 73) {
+							mpProd1stBarcodeUsed = true;
+						}
+
 					}
 					nlapiLogExecution("DEBUG", "customer_id", customer_id);
 					nlapiLogExecution("DEBUG", "zee_id before comparison", zee_id);
@@ -511,19 +527,19 @@ function getLatestFiles() {
 						eta_delivery_date_min = eta_delivery_date_min.split("-");
 						eta_delivery_date_min = nlapiStringToDate(
 							eta_delivery_date_min[2] +
-								"/" +
-								eta_delivery_date_min[1] +
-								"/" +
-								eta_delivery_date_min[0]
+							"/" +
+							eta_delivery_date_min[1] +
+							"/" +
+							eta_delivery_date_min[0]
 						);
 
 						eta_delivery_date_max = eta_delivery_date_max.split("-");
 						eta_delivery_date_max = nlapiStringToDate(
 							eta_delivery_date_max[2] +
-								"/" +
-								eta_delivery_date_max[1] +
-								"/" +
-								eta_delivery_date_max[0]
+							"/" +
+							eta_delivery_date_max[1] +
+							"/" +
+							eta_delivery_date_max[0]
 						);
 					}
 
@@ -624,7 +640,7 @@ function getLatestFiles() {
 						customer_prod_stock.setFieldValue(
 							"custrecord_st_total_cost",
 							parseInt(starTrack_api_total_cost_ex_gst) +
-								parseInt(starTrack_api_total_gst)
+							parseInt(starTrack_api_total_gst)
 						);
 						customer_prod_stock.setFieldValue(
 							"custrecord_st_total_cost_exc_gst",
@@ -2303,6 +2319,11 @@ function getLatestFiles() {
 
 								customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
 
+								if (mpProd1stBarcodeUsed == true) {
+									customerRecord.setFieldValue('custentity_mp_prod_1st_barcode_used', customer_prod_stock_id);
+									nlapiSubmitRecord(customerRecord);
+								}
+
 								nlapiLogExecution(
 									"DEBUG",
 									"Customer Product Stock Update",
@@ -3356,6 +3377,11 @@ function getLatestFiles() {
 
 								customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
 
+								if (mpProd1stBarcodeUsed == true) {
+									customerRecord.setFieldValue('custentity_mp_prod_1st_barcode_used', customer_prod_stock_id);
+									nlapiSubmitRecord(customerRecord);
+								}
+
 								nlapiLogExecution(
 									"DEBUG",
 									"Customer Product Stock Update",
@@ -3432,7 +3458,7 @@ function getLatestFiles() {
 							customer_prod_stock.setFieldValue(
 								"custrecord_st_total_cost",
 								parseInt(starTrack_api_total_cost_ex_gst) +
-									parseInt(starTrack_api_total_gst)
+								parseInt(starTrack_api_total_gst)
 							);
 							customer_prod_stock.setFieldValue(
 								"custrecord_st_total_cost_exc_gst",
@@ -5027,6 +5053,11 @@ function getLatestFiles() {
 								}
 
 								customer_prod_stock_id = nlapiSubmitRecord(customer_prod_stock);
+
+								if (mpProd1stBarcodeUsed == true) {
+									customerRecord.setFieldValue('custentity_mp_prod_1st_barcode_used', customer_prod_stock_id);
+									nlapiSubmitRecord(customerRecord);
+								}
 
 								nlapiLogExecution(
 									"DEBUG",
