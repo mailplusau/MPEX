@@ -240,10 +240,14 @@ function getLatestFiles() {
 					var customer_id = scans[y].customer_ns_id;
 					var customerRecord = null;
 					var mpProd1stBarcodeUsed = false;
+					var shipMateTnCAccepted = false;
 
 					var zee_id = scans[y].zee_ns_id;
 					var zeeIDCustomerRecord = null;
 					var customerFreeTrial = false;
+					var invoiceable = scans[y].invoiceable;
+					var scan_type = scans[y].scan_type.toLowerCase();
+					var operator_id = scans[y].operator_ns_id;
 					if (!isNullorEmpty(customer_id)) {
 
 						customerRecord = nlapiLoadRecord("customer", customer_id);
@@ -266,10 +270,11 @@ function getLatestFiles() {
 						if (customerStatus == 32) {
 							customerFreeTrial == true;
 						}
-						if (isNullorEmpty(customer1stBarcodeUsed) && customerStatus == 73) {
+						if (isNullorEmpty(customer1stBarcodeUsed) && customerStatus == 73 && ((scans.length - 1) == y) && (scan_type == "pickup" ||
+							scan_type == "delivery" ||
+							scan_type == "lodgement")) {
 							mpProd1stBarcodeUsed = true;
 						}
-
 					}
 					nlapiLogExecution("DEBUG", "customer_id", customer_id);
 					nlapiLogExecution("DEBUG", "zee_id before comparison", zee_id);
@@ -281,9 +286,7 @@ function getLatestFiles() {
 					}
 					nlapiLogExecution("DEBUG", "zee_id after comparison", zee_id);
 					var rta_id = scans[y].id;
-					var invoiceable = scans[y].invoiceable;
-					var scan_type = scans[y].scan_type.toLowerCase();
-					var operator_id = scans[y].operator_ns_id;
+
 
 					//* Replace the inactivated or deleted operators.
 					if (operator_id == 909) {
@@ -2321,6 +2324,11 @@ function getLatestFiles() {
 
 								if (mpProd1stBarcodeUsed == true) {
 									customerRecord.setFieldValue('custentity_mp_prod_1st_barcode_used', customer_prod_stock_id);
+									customerRecord.setFieldValue("custentity_terms_conditions_agree", 1);
+									customerRecord.setFieldValue(
+										"custentity_terms_conditions_agree_date",
+										updated_at
+									);
 									nlapiSubmitRecord(customerRecord);
 								}
 
@@ -5056,6 +5064,12 @@ function getLatestFiles() {
 
 								if (mpProd1stBarcodeUsed == true) {
 									customerRecord.setFieldValue('custentity_mp_prod_1st_barcode_used', customer_prod_stock_id);
+									customerRecord.setFieldValue("custentity_terms_conditions_agree", 1);
+									customerRecord.setFieldValue(
+										"custentity_terms_conditions_agree_date",
+										updated_at
+									);
+
 									nlapiSubmitRecord(customerRecord);
 								}
 
