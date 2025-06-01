@@ -313,16 +313,16 @@ function main(type) {
 							nlapiLoadRecord("partner", 435).getFieldValue("location")
 						);
 						//recInvoice.setFieldValue('trandate', tranDate);
-						recInvoice.setFieldValue("trandate", "30/04/2025");
+						recInvoice.setFieldValue("trandate", "31/05/2025");
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_from",
-							"01/04/2025"
+							"01/05/2025"
 						);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_to",
-							"30/04/2025"
+							"31/05/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
@@ -836,16 +836,16 @@ function main(type) {
 							nlapiLoadRecord("partner", 435).getFieldValue("location")
 						);
 						//recInvoice.setFieldValue('trandate', tranDate);
-						recInvoice.setFieldValue("trandate", "30/04/2025");
+						recInvoice.setFieldValue("trandate", "31/05/2025");
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_from",
-							"01/04/2025"
+							"01/05/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_from', start_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_from', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
 						recInvoice.setFieldValue(
 							"custbody_inv_date_range_to",
-							"30/04/2025"
+							"31/05/2025"
 						);
 						// recInvoice.setFieldValue('custbody_inv_date_range_to', end_date);
 						//recInvoice.setFieldValue('custbody_inv_date_range_to', searchResults[n].getValue('custrecord_ap_order_fulfillment_date', null, "GROUP"));
