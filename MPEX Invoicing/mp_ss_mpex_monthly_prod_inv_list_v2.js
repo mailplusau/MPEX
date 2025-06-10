@@ -736,14 +736,14 @@ function main(type) {
 						}
 
 						//Create Invoice Line Item for TGE Temp Levy if applicable
-						if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
-							recInvoice.selectNewLineItem('item');
-							recInvoice.setCurrentLineItemValue('item', 'item', 10908);
-							recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
-							recInvoice.setCurrentLineItemValue('item', 'quantity',
-								1);
-							recInvoice.commitLineItem('item');
-						}
+						// if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
+						// 	recInvoice.selectNewLineItem('item');
+						// 	recInvoice.setCurrentLineItemValue('item', 'item', 10908);
+						// 	recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
+						// 	recInvoice.setCurrentLineItemValue('item', 'quantity',
+						// 		1);
+						// 	recInvoice.commitLineItem('item');
+						// }
 
 						invoiceId = nlapiSubmitRecord(recInvoice);
 						nlapiLogExecution(
