@@ -215,14 +215,14 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner',
               435)
               .getFieldValue('location'));
-            // recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '30/06/2025');
-            // recInvoice.setFieldValue('custbody_inv_date_range_from',
-            //   previousWeekStartDate);
+            recInvoice.setFieldValue('trandate', tranDate);
+            // recInvoice.setFieldValue('trandate', '30/06/2025');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '30/06/2025');
-            // recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
+              previousWeekStartDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_from',
+            //   '30/06/2025');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
@@ -382,14 +382,14 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner',
               435)
               .getFieldValue('location'));
-            // recInvoice.setFieldValue('trandate', tranDate);
-            recInvoice.setFieldValue('trandate', '30/06/2025');
-            // recInvoice.setFieldValue('custbody_inv_date_range_from',
-            //   previousWeekStartDate);
+            recInvoice.setFieldValue('trandate', tranDate);
+            // recInvoice.setFieldValue('trandate', '30/06/2025');
             recInvoice.setFieldValue('custbody_inv_date_range_from',
-              '30/06/2025');
-            // recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
-            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
+              previousWeekStartDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_from',
+            //   '30/06/2025');
+            recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
