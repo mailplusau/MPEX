@@ -215,14 +215,14 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner',
               435)
               .getFieldValue('location'));
-            recInvoice.setFieldValue('trandate', tranDate);
-            //                        recInvoice.setFieldValue('trandate', '22/08/2021');
-            recInvoice.setFieldValue('custbody_inv_date_range_from',
-              previousWeekStartDate);
+            // recInvoice.setFieldValue('trandate', tranDate);
+            recInvoice.setFieldValue('trandate', '30/06/2025');
             // recInvoice.setFieldValue('custbody_inv_date_range_from',
-            //   '1/7/2023');
-            recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
-            // recInvoice.setFieldValue('custbody_inv_date_range_to', '31/8/2023');
+            //   previousWeekStartDate);
+            recInvoice.setFieldValue('custbody_inv_date_range_from',
+              '30/06/2025');
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
@@ -302,14 +302,14 @@ function main(type) {
             }
 
             //Create Invoice Line Item for TGE Temp Levy if applicable
-            if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
-              recInvoice.selectNewLineItem('item');
-              recInvoice.setCurrentLineItemValue('item', 'item', 10908);
-              recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
-              recInvoice.setCurrentLineItemValue('item', 'quantity',
-                1);
-              recInvoice.commitLineItem('item');
-            }
+            // if (parseFloat(totalTGETempLevyPerInvoice) > 0) {
+            //   recInvoice.selectNewLineItem('item');
+            //   recInvoice.setCurrentLineItemValue('item', 'item', 10908);
+            //   recInvoice.setCurrentLineItemValue("item", "rate", totalTGETempLevyPerInvoice);
+            //   recInvoice.setCurrentLineItemValue('item', 'quantity',
+            //     1);
+            //   recInvoice.commitLineItem('item');
+            // }
 
             nlapiLogExecution('AUDIT', 'Before submit', '');
 
@@ -382,14 +382,14 @@ function main(type) {
             recInvoice.setFieldValue('location', nlapiLoadRecord('partner',
               435)
               .getFieldValue('location'));
-            recInvoice.setFieldValue('trandate', tranDate);
-            //                        recInvoice.setFieldValue('trandate', '22/08/2021');
-            recInvoice.setFieldValue('custbody_inv_date_range_from',
-              previousWeekStartDate);
+            // recInvoice.setFieldValue('trandate', tranDate);
+            recInvoice.setFieldValue('trandate', '30/06/2025');
             // recInvoice.setFieldValue('custbody_inv_date_range_from',
-            //   '1/7/2023');
-            recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
-            // recInvoice.setFieldValue('custbody_inv_date_range_to', '31/8/2023');
+            //   previousWeekStartDate);
+            recInvoice.setFieldValue('custbody_inv_date_range_from',
+              '30/06/2025');
+            // recInvoice.setFieldValue('custbody_inv_date_range_to', tranDate);
+            recInvoice.setFieldValue('custbody_inv_date_range_to', '30/06/2025');
             // recInvoice.setFieldValues('custbody_ap_product_order', internal_id);
             if (!isNullorEmpty(mpex_po) || (isNullorEmpty(product_po) &&
               isNullorEmpty(customer_po))) {
