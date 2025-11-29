@@ -6,8 +6,8 @@
  *
  * Description: Update the Customer Stock Level        
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-29 15:03:28
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-11-19 10:06:10
  *
  */
 
@@ -17,8 +17,8 @@ var adhoc_inv_deploy = 'customdeploy2';
 var prev_inv_deploy = null;
 var ctx = nlapiGetContext();
 
-var barcodes_prefix = ['mpeb', 'mpec', 'mped', 'mpen', 'mpet', 'mpef'];
-var barcodes_prefix_status = [0, 0, 0, 0, 0, 0];
+var barcodes_prefix = ['mpeb', 'mpec', 'mped', 'mpen', 'mpet', 'mpef', 'mpeg'];
+var barcodes_prefix_status = [0, 0, 0, 0, 0, 0, 0];
 
 function main() {
 
@@ -43,19 +43,17 @@ function main() {
     resultProdStock.forEachResult(function(searchResult) {
 
         var usage_loopstart_cust = ctx.getRemainingUsage();
-  
+
         var customer_id = searchResult.getValue("custrecord_cust_prod_stock_customer", null, "GROUP");
         var barcode_beg = searchResult.getValue("custrecord_ap_item_sku", "CUSTRECORD_CUST_STOCK_PROD_NAME", "GROUP");
         var product_count = searchResult.getValue("name", null, "COUNT");
 
         var index = barcodes_prefix.indexOf(barcode_beg.toLowerCase());
-        if (index > -1) {
-            barcodes_prefix_status[index] = 1;
-        }
 
         var field = 'custentity_' + barcode_beg.toLowerCase();
 
         if (!isNullorEmpty(old_customer_id) && old_customer_id != customer_id) {
+
             updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status);
             var params = {
                 custscript_prev_deploy_update_stock: ctx.getDeploymentId(),
@@ -64,15 +62,22 @@ function main() {
             reschedule = rescheduleScript(prev_inv_deploy, adhoc_inv_deploy, params);
             nlapiLogExecution('AUDIT', 'Reschedule Return', reschedule);
             if (reschedule == false) {
-
                 return false;
+            }
+            barcodes_prefix_status = [0, 0, 0, 0, 0, 0, 0];
+            if (index > -1) {
+                barcodes_prefix_status[index] = product_count;
+            }
+        } else {
+            if (index > -1) {
+                barcodes_prefix_status[index] = product_count;
             }
         }
 
-        var customer_record = nlapiLoadRecord('customer', customer_id);
-        customer_record.setFieldValue(field, product_count);
+        // var customer_record = nlapiLoadRecord('customer', customer_id);
+        // customer_record.setFieldValue(field, product_count);
 
-        nlapiSubmitRecord(customer_record);
+        // nlapiSubmitRecord(customer_record);
 
         old_customer_id = customer_id;
 
@@ -97,9 +102,11 @@ function updateCustomer(old_customer_id, barcodes_prefix, barcodes_prefix_status
         if (barcodes_prefix_status[x] == 0) {
             var field = 'custentity_' + barcodes_prefix[x];
             customer_record.setFieldValue(field, 0);
+        } else {
+            var field = 'custentity_' + barcodes_prefix[x];
+            customer_record.setFieldValue(field, barcodes_prefix_status[x]);
         }
     }
-    customer_record.setFieldValue('custentity_mpex_usage_update', 1);
 
     nlapiSubmitRecord(customer_record);
 }

@@ -3,8 +3,8 @@
  * NSVersion    Date            		Author         
  * 1.00         2019-06-19 11:06:18 		ankith.ravindran  
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-07 08:33:33
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2021-01-14 08:48:52
  *
  * @Description:
  *
@@ -21,14 +21,22 @@ function getLatestFiles() {
         prev_inv_deploy = ctx.getDeploymentId();
     }
 
+    var todayDate = new Date();
+    var yesterdayDate = new Date(todayDate);
+
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1)
+
 
     //To get todays date
     var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
-    // var today = '1/7/2020';
+    var yesterday = nlapiDateToString(yesterdayDate, 'dd-mm-yyyy');
+    // var today = '12/1/2021';
+    // 
+    nlapiLogExecution('DEBUG', 'yesterday', yesterday);
 
     var scanJSONSearch = nlapiLoadSearch('customrecord_scan_json', 'customsearch_scan_json');
     var newFilterExpression = [
-        ["name", "startswith", today], 'AND', ["isinactive", "is", "F"], 'AND', ["custrecord_scan_josn_sync", 'is', 2]
+        ["name", "startswith", yesterday], 'AND', ["isinactive", "is", "F"], 'AND', ["custrecord_scan_josn_sync", 'is', 2]
     ];
 
     scanJSONSearch.setFilterExpression(newFilterExpression);
@@ -61,7 +69,7 @@ function getLatestFiles() {
             var x = (scans.length - 1);
             var usage_loopstart_cust = ctx.getRemainingUsage();
 
-            if (usage_loopstart_cust < 300) {
+            if (usage_loopstart_cust < 500) {
                 var scan_json_2 = '{ "scans": ' + JSON.stringify(scans) + '}';
                 var scan_json_record = nlapiLoadRecord('customrecord_scan_json', scan_json_record_id);
                 scan_json_record.setFieldValue('custrecord_scan_json_2', scan_json_2);
@@ -77,6 +85,7 @@ function getLatestFiles() {
 
 
             nlapiLogExecution('DEBUG', 'remaining usage', usage_loopstart_cust);
+            nlapiLogExecution('DEBUG', 'scans[x]', scans[x]);
 
 
             var barcode = scans[x].barcode.toUpperCase();
@@ -98,8 +107,14 @@ function getLatestFiles() {
             var updated_at = updated_at[0];
             var save_barcode = true;
 
-            nlapiLogExecution('DEBUG', 'barcode usage', barcode);
-            // nlapiLogExecution('DEBUG', 'invoiceable', invoiceable);
+            nlapiLogExecution('AUDIT', 'barcode usage', barcode);
+            nlapiLogExecution('EMERGENCY', 'invoiceable', invoiceable);
+            nlapiLogExecution('EMERGENCY', 'typeof invoiceable', typeof invoiceable);
+            if (invoiceable === false) {
+                nlapiLogExecution('EMERGENCY', 'false invoiceable', invoiceable);
+            } else if (invoiceable === true) {
+                nlapiLogExecution('EMERGENCY', 'true invoiceable', invoiceable);
+            }
 
 
             var barcode_beg = barcode.slice(0, 4);
@@ -171,7 +186,7 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'allocate') {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == 'false') {
+                            if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -186,7 +201,7 @@ function getLatestFiles() {
 
                     } else if (scan_type == 'pickup') {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == 'false') {
+                            if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -200,7 +215,7 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "delivery") {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == 'false') {
+                            if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -215,7 +230,7 @@ function getLatestFiles() {
                         }
                     } else if (scan_type == "lodgement") {
                         if (!isNullorEmpty(customer_id)) {
-                            if (invoiceable == 'false') {
+                            if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                                 customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                             }
@@ -233,7 +248,7 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
-                        if (invoiceable == 'false') {
+                        if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                         }
@@ -243,7 +258,8 @@ function getLatestFiles() {
                             barcode_beg == 'MPEF' ||
                             barcode_beg == 'MPEB' ||
                             barcode_beg == 'MPEC' ||
-                            barcode_beg == 'MPED') {
+                            barcode_beg == 'MPED' ||
+                            barcode_beg == 'MPEG') {
                             if (barcode_beg == 'MPEN') {
                                 prod_id = 552;
                             } else if (barcode_beg == 'MPET') {
@@ -256,6 +272,8 @@ function getLatestFiles() {
                                 prod_id = 551;
                             } else if (barcode_beg == 'MPED') {
                                 prod_id = 549;
+                            } else if (barcode_beg == 'MPEG') {
+                                prod_id = 638;
                             }
                             customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
                         }
@@ -278,7 +296,7 @@ function getLatestFiles() {
 
                     customer_prod_stock.setFieldValue('custrecord_cust_date_stock_given', updated_at);
                     customer_prod_stock.setFieldValue('custrecord_cust_time_stock_given', time_updated_at);
-                    if (invoiceable == 'false') {
+                    if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                     }
@@ -341,7 +359,7 @@ function getLatestFiles() {
                     if (save_barcode == true) {
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_source', 6);
                         customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_operator', operator_id);
-                        if (invoiceable == 'false') {
+                        if (invoiceable === false || invoiceable == 'false' || invoiceable === 'false' || invoiceable == false) {
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_invoiceable', 2);
                             customer_prod_stock.setFieldValue('custrecord_cust_prod_stock_prepaid', 1);
                         }
@@ -350,7 +368,8 @@ function getLatestFiles() {
                             barcode_beg == 'MPEF' ||
                             barcode_beg == 'MPEB' ||
                             barcode_beg == 'MPEC' ||
-                            barcode_beg == 'MPED') {
+                            barcode_beg == 'MPED' ||
+                            barcode_beg == 'MPEG') {
                             if (barcode_beg == 'MPEN') {
                                 prod_id = 552;
                             } else if (barcode_beg == 'MPET') {
@@ -363,6 +382,8 @@ function getLatestFiles() {
                                 prod_id = 551;
                             } else if (barcode_beg == 'MPED') {
                                 prod_id = 549;
+                            } else if (barcode_beg == 'MPEG') {
+                                prod_id = 638;
                             }
                             customer_prod_stock.setFieldValue('custrecord_cust_stock_prod_name', prod_id);
                         }

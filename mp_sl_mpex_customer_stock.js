@@ -6,8 +6,8 @@
  *
  * Remarks: Page to show the list of all the customers based on the franchisee. To convert all the items listed in the financial tab into service records. Ability for the franchisee to cancel a customer as well.        
  * 
- * @Last Modified by:   ankithravindran
- * @Last Modified time: 2019-07-17 13:30:12
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-10-06 11:05:11
  *
  */
 
@@ -97,7 +97,7 @@ function main(request, response) {
 
     // form.addField('custpage_html2', 'inlinehtml').setPadding(1).setLayoutType('outsideabove').setDefaultValue(inlinehtml2);
 
-    inlineQty += '<br><br><table border="0" cellpadding="15" id="customer" class="display tablesorter table table-striped table-bordered table-responsive" cellspacing="0"><thead style="color: white;background-color: #607799;"><tr><th></th><th colspan="2" class="text-center">1Kg (Pieces)</th><th colspan="2" class="text-center">3Kg (Pieces)</th><th colspan="2" class="text-center">5Kg (Pieces)</th><th colspan="2" class="text-center">B4 (Pieces)</th><th colspan="2" class="text-center">C5 (Pieces)</th><th colspan="2" class="text-center">DL (Pieces)</th></tr><tr><th class="col-md-2"><b>CUSTOMER NAME</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th></tr></thead>';
+    inlineQty += '<br><br><table border="0" cellpadding="15" id="customer" class="display tablesorter table table-striped table-bordered table-responsive" cellspacing="0"><thead style="color: white;background-color: #607799;"><tr><th></th><th colspan="2" class="text-center">5Kg (Pieces)</th><th colspan="2" class="text-center">3Kg (Pieces)</th><th colspan="2" class="text-center">1Kg (Pieces)</th><th colspan="2" class="text-center">500g (Pieces)</th><th colspan="2" class="text-center">B4 (Pieces)</th><th colspan="2" class="text-center">C5 (Pieces)</th><th colspan="2" class="text-center">DL (Pieces)</th></tr><tr><th class="col-md-2"><b>CUSTOMER NAME</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th><th class="text-center"><b>Set Min Float (Pieces)</b></th><th class="text-center"><b>Stock on Site</b></th></tr></thead>';
 
 
 

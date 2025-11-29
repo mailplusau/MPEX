@@ -3,8 +3,8 @@
  * NSVersion    Date            		Author         
  * 1.00         2019-07-09 07:26:52 		ankith.ravindran  
  * 
- * @Last Modified by:   ankith.ravindran
- * @Last Modified time: 2019-07-16 14:24:31
+ * @Last Modified by:   ankit
+ * @Last Modified time: 2020-09-21 08:18:01
  *
  * @Description:
  *
@@ -12,7 +12,8 @@
 function getLatestFiles() {
 
 	//To get todays date
-	var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
+	// var today = nlapiDateToString(new Date(), 'dd-mm-yyyy');
+	var today = '17-09-2020'
 
 	// var url = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=21-04-2020';
 	var url = 'https://app.mailplus.com.au:8003/api/v1/admin/scans/sync?date=' + today;
@@ -31,9 +32,9 @@ function getLatestFiles() {
 	if (body.length > 999999) {
         var nb_records = parseInt(scans_length / 3500) + 1; // Number of records to create
 		for(var y = 0 ; y < nb_records; y++){
-            nlapiLogExecution('AUDIT', 'y value', y);
+            // nlapiLogExecution('AUDIT', 'y value', y);
 
-            var nb_scans_in_record = 3500; // Number of barcodes in each page except the last one.
+            var nb_scans_in_record = 3000; // Number of barcodes in each page except the last one.
             if (y == nb_records - 1) {
                 var upper_bound = scans_length;
             } else {
@@ -42,8 +43,8 @@ function getLatestFiles() {
 
 			var scans_1 = '';
 			for (var x = nb_scans_in_record*y; x < upper_bound; x++) {
-				nlapiLogExecution('DEBUG', 'y value', y);
-				nlapiLogExecution('DEBUG', 'x value', x);
+				// nlapiLogExecution('DEBUG', 'y value', y);
+				// nlapiLogExecution('DEBUG', 'x value', x);
 				if(x == nb_scans_in_record*y){
 					scans_1 += '[' ;
 				}
@@ -71,6 +72,7 @@ function getLatestFiles() {
 			}
 			
 			var scan_json_3 = '{ "scans": ' + scans_1 + '}';
+			nlapiLogExecution('AUDIT', 'scan_json_3', scan_json_3)
 			scan_json_record.setFieldValue('custrecord_json', scan_json_3);
             scan_json_record.setFieldValue('custrecord_scan_josn_sync', 2);
 
