@@ -392,6 +392,12 @@ function getLatestFiles() {
 					if (operator_id == 1165) {
 						operator_id = 1343;
 					}
+					// if (operator_id == 687) {
+					// 	operator_id = 1355;
+					// }
+					if (operator_id == 1355) { 
+						operator_id = 687;
+					}
 
 					var updated_at = scans[y].updated_at;
 					var deleted = scans[y].deleted;
